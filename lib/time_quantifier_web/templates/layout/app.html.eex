@@ -6,25 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Hello TimeQuantifier!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
-  <body>
+  <body style="background: #F6F6F8;">
     <div class="container">
       <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-          </ul>
-        </nav>
-        <span class="logo"></span>
+           <nav class="navbar navbar-light bg-light" style="background-color: #ACCDE3;">
+            <a class="navbar-brand" href="#">
+              <img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
+            </a>
+          </nav>
       </header>
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
       <main role="main">
+
         <%= render @view_module, @view_template, assigns %>
       </main>
 

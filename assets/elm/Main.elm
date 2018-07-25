@@ -164,7 +164,7 @@ svgView : List Day -> Svg msg
 svgView days =
     svg [ width (toString w ++ "px"), height (toString h ++ "px") ]
         [ Svg.style [] [ Svg.text """
-            .column rect { fill: rgba(1, 214, 78, 0.8); }
+            .column rect { fill: #72F276; }
             .column text { display: none; }
             .column:hover rect { fill: rgb(118, 214, 78); }
             .column:hover text { display: inline; }

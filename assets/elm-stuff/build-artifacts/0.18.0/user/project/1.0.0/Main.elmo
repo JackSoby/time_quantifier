@@ -140,7 +140,7 @@ var _user$project$Main$svgView = function (days) {
 				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$svg$Svg$text('\n            .column rect { fill: rgba(1, 214, 78, 0.8); }\n            .column text { display: none; }\n            .column:hover rect { fill: rgb(118, 214, 78); }\n            .column:hover text { display: inline; }\n          '),
+					_0: _elm_lang$svg$Svg$text('\n            .column rect { fill: #72F276; }\n            .column text { display: none; }\n            .column:hover rect { fill: rgb(118, 214, 78); }\n            .column:hover text { display: inline; }\n          '),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
