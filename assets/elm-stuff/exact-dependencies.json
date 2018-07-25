@@ -1,5 +1,20 @@
 {
+    "folkertdev/elm-deque": "2.0.0",
+    "opensolid/geometry": "2.1.0",
+    "gampleman/elm-visualization": "1.6.1",
+    "Zinggi/elm-webgl-math": "1.0.6",
+    "elm-tools/parser-primitives": "1.0.0",
+    "elm-lang/navigation": "2.1.0",
     "elm-lang/virtual-dom": "2.0.4",
+    "evancz/url-parser": "2.0.1",
+    "folkertdev/one-true-path-experiment": "3.0.2",
+    "elm-lang/dom": "1.1.1",
     "elm-lang/html": "2.0.0",
+    "elm-tools/parser": "2.0.1",
+    "justinmimbs/elm-date-extra": "2.1.1",
+    "elm-lang/http": "1.0.0",
+    "folkertdev/svg-path-lowlevel": "1.0.1",
+    "elm-community/list-extra": "7.1.0",
+    "elm-lang/svg": "2.0.0",
     "elm-lang/core": "5.1.1"
 }

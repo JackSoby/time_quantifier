@@ -1,0 +1,8 @@
+var _opensolid$geometry$OpenSolid_Bootstrap_Axis2d$direction = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0.direction;
+};
+var _opensolid$geometry$OpenSolid_Bootstrap_Axis2d$originPoint = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0.originPoint;
+};

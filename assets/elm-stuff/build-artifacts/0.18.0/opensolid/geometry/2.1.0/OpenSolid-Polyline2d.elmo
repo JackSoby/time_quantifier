@@ -1,0 +1,63 @@
+var _opensolid$geometry$OpenSolid_Polyline2d$vertices = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0;
+};
+var _opensolid$geometry$OpenSolid_Polyline2d$segments = function (polyline) {
+	var _p2 = _opensolid$geometry$OpenSolid_Polyline2d$vertices(polyline);
+	if (_p2.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		return A3(_elm_lang$core$List$map2, _opensolid$geometry$OpenSolid_LineSegment2d$from, _p2, _p2._1);
+	}
+};
+var _opensolid$geometry$OpenSolid_Polyline2d$length = function (_p3) {
+	return _elm_lang$core$List$sum(
+		A2(
+			_elm_lang$core$List$map,
+			_opensolid$geometry$OpenSolid_LineSegment2d$length,
+			_opensolid$geometry$OpenSolid_Polyline2d$segments(_p3)));
+};
+var _opensolid$geometry$OpenSolid_Polyline2d$boundingBox = function (polyline) {
+	return _opensolid$geometry$OpenSolid_Point2d$hullOf(
+		_opensolid$geometry$OpenSolid_Polyline2d$vertices(polyline));
+};
+var _opensolid$geometry$OpenSolid_Polyline2d$fromVertices = _opensolid$geometry$OpenSolid_Geometry_Internal$Polyline2d;
+var _opensolid$geometry$OpenSolid_Polyline2d$mapVertices = function ($function) {
+	return function (_p4) {
+		return _opensolid$geometry$OpenSolid_Polyline2d$fromVertices(
+			A2(
+				_elm_lang$core$List$map,
+				$function,
+				_opensolid$geometry$OpenSolid_Polyline2d$vertices(_p4)));
+	};
+};
+var _opensolid$geometry$OpenSolid_Polyline2d$scaleAbout = F2(
+	function (point, scale) {
+		return _opensolid$geometry$OpenSolid_Polyline2d$mapVertices(
+			A2(_opensolid$geometry$OpenSolid_Point2d$scaleAbout, point, scale));
+	});
+var _opensolid$geometry$OpenSolid_Polyline2d$rotateAround = F2(
+	function (point, angle) {
+		return _opensolid$geometry$OpenSolid_Polyline2d$mapVertices(
+			A2(_opensolid$geometry$OpenSolid_Point2d$rotateAround, point, angle));
+	});
+var _opensolid$geometry$OpenSolid_Polyline2d$translateBy = function (vector) {
+	return _opensolid$geometry$OpenSolid_Polyline2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$translateBy(vector));
+};
+var _opensolid$geometry$OpenSolid_Polyline2d$mirrorAcross = function (axis) {
+	return _opensolid$geometry$OpenSolid_Polyline2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$mirrorAcross(axis));
+};
+var _opensolid$geometry$OpenSolid_Polyline2d$projectOnto = function (axis) {
+	return _opensolid$geometry$OpenSolid_Polyline2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$projectOnto(axis));
+};
+var _opensolid$geometry$OpenSolid_Polyline2d$relativeTo = function (frame) {
+	return _opensolid$geometry$OpenSolid_Polyline2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$relativeTo(frame));
+};
+var _opensolid$geometry$OpenSolid_Polyline2d$placeIn = function (frame) {
+	return _opensolid$geometry$OpenSolid_Polyline2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$placeIn(frame));
+};

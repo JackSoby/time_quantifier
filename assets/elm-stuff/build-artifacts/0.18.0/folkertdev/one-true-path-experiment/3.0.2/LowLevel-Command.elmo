@@ -1,0 +1,692 @@
+var _folkertdev$one_true_path_experiment$LowLevel_Command$updateCursorState = F2(
+	function (drawto, state) {
+		var noControlPoint = function (state) {
+			return _elm_lang$core$Native_Utils.update(
+				state,
+				{previousControlPoint: _elm_lang$core$Maybe$Nothing});
+		};
+		var maybeUpdateCursor = function (coordinate) {
+			return _elm_lang$core$Native_Utils.update(
+				state,
+				{
+					cursor: A2(_elm_lang$core$Maybe$withDefault, state.cursor, coordinate)
+				});
+		};
+		var _p0 = state.cursor;
+		var cursorX = _p0._0;
+		var cursorY = _p0._1;
+		var _p1 = drawto;
+		switch (_p1.ctor) {
+			case 'LineTo':
+				return noControlPoint(
+					maybeUpdateCursor(
+						_elm_community$list_extra$List_Extra$last(_p1._0)));
+			case 'Horizontal':
+				return noControlPoint(
+					maybeUpdateCursor(
+						A2(
+							_elm_lang$core$Maybe$map,
+							function (x) {
+								return {ctor: '_Tuple2', _0: x, _1: cursorY};
+							},
+							_elm_community$list_extra$List_Extra$last(_p1._0))));
+			case 'Vertical':
+				return noControlPoint(
+					maybeUpdateCursor(
+						A2(
+							_elm_lang$core$Maybe$map,
+							function (y) {
+								return {ctor: '_Tuple2', _0: cursorX, _1: y};
+							},
+							_elm_community$list_extra$List_Extra$last(_p1._0))));
+			case 'CurveTo':
+				var _p2 = _elm_community$list_extra$List_Extra$last(_p1._0);
+				if (_p2.ctor === 'Nothing') {
+					return state;
+				} else {
+					return _elm_lang$core$Native_Utils.update(
+						state,
+						{
+							cursor: _p2._0._2,
+							previousControlPoint: _elm_lang$core$Maybe$Just(_p2._0._1)
+						});
+				}
+			case 'QuadraticBezierCurveTo':
+				var _p3 = _elm_community$list_extra$List_Extra$last(_p1._0);
+				if (_p3.ctor === 'Nothing') {
+					return state;
+				} else {
+					return _elm_lang$core$Native_Utils.update(
+						state,
+						{
+							cursor: _p3._0._1,
+							previousControlPoint: _elm_lang$core$Maybe$Just(_p3._0._0)
+						});
+				}
+			case 'EllipticalArc':
+				return noControlPoint(
+					maybeUpdateCursor(
+						A2(
+							_elm_lang$core$Maybe$map,
+							function (_) {
+								return _.target;
+							},
+							_elm_community$list_extra$List_Extra$last(_p1._0))));
+			default:
+				return noControlPoint(state);
+		}
+	});
+var _folkertdev$one_true_path_experiment$LowLevel_Command$makeControlPointExplicitVec2 = F2(
+	function (initial, withoutContolPoint) {
+		var folder = F2(
+			function (_p5, _p4) {
+				var _p6 = _p5;
+				var _p10 = _p6._1;
+				var _p9 = _p6._0;
+				var _p7 = _p4;
+				var _p8 = _p7._0;
+				var previousControlPoint = A2(_elm_lang$core$Maybe$withDefault, _p8.cursor, _p8.previousControlPoint);
+				var newControlPoint = A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					_p8.cursor,
+					_Zinggi$elm_webgl_math$Vector2$negate(
+						A2(_Zinggi$elm_webgl_math$Vector2$sub, previousControlPoint, _p8.cursor)));
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						_p8,
+						{
+							cursor: _p10,
+							previousControlPoint: _elm_lang$core$Maybe$Just(_p9)
+						}),
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple3', _0: newControlPoint, _1: _p9, _2: _p10},
+						_1: _p7._1
+					}
+				};
+			});
+		return A2(
+			_elm_lang$core$Tuple$mapSecond,
+			_elm_lang$core$List$reverse,
+			A3(
+				_elm_lang$core$List$foldl,
+				folder,
+				{
+					ctor: '_Tuple2',
+					_0: initial,
+					_1: {ctor: '[]'}
+				},
+				withoutContolPoint));
+	});
+var _folkertdev$one_true_path_experiment$LowLevel_Command$makeControlPointExplicitVec1 = F2(
+	function (initial, withoutContolPoint) {
+		var folder = F2(
+			function (target, _p11) {
+				var _p12 = _p11;
+				var _p13 = _p12._0;
+				var previousControlPoint = A2(_elm_lang$core$Maybe$withDefault, _p13.cursor, _p13.previousControlPoint);
+				var newControlPoint = A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					_p13.cursor,
+					_Zinggi$elm_webgl_math$Vector2$negate(
+						A2(_Zinggi$elm_webgl_math$Vector2$sub, previousControlPoint, _p13.cursor)));
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						_p13,
+						{
+							cursor: target,
+							previousControlPoint: _elm_lang$core$Maybe$Just(newControlPoint)
+						}),
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: newControlPoint, _1: target},
+						_1: _p12._1
+					}
+				};
+			});
+		return A2(
+			_elm_lang$core$Tuple$mapSecond,
+			_elm_lang$core$List$reverse,
+			A3(
+				_elm_lang$core$List$foldl,
+				folder,
+				{
+					ctor: '_Tuple2',
+					_0: initial,
+					_1: {ctor: '[]'}
+				},
+				withoutContolPoint));
+	});
+var _folkertdev$one_true_path_experiment$LowLevel_Command$toLowLevelDrawTo = function (drawto) {
+	var _p14 = drawto;
+	switch (_p14.ctor) {
+		case 'LineTo':
+			return A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$LineTo, _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute, _p14._0);
+		case 'Horizontal':
+			return A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$Horizontal, _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute, _p14._0);
+		case 'Vertical':
+			return A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$Vertical, _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute, _p14._0);
+		case 'CurveTo':
+			return A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$CurveTo, _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute, _p14._0);
+		case 'QuadraticBezierCurveTo':
+			return A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$QuadraticBezierCurveTo, _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute, _p14._0);
+		case 'EllipticalArc':
+			return A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$EllipticalArc, _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute, _p14._0);
+		default:
+			return _folkertdev$svg_path_lowlevel$Path_LowLevel$ClosePath;
+	}
+};
+var _folkertdev$one_true_path_experiment$LowLevel_Command$toLowLevelMoveTo = function (_p15) {
+	var _p16 = _p15;
+	return A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$MoveTo, _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute, _p16._0);
+};
+var _folkertdev$one_true_path_experiment$LowLevel_Command$last = A2(
+	_elm_lang$core$List$foldr,
+	F2(
+		function (element, accum) {
+			return _elm_lang$core$Native_Utils.eq(accum, _elm_lang$core$Maybe$Nothing) ? _elm_lang$core$Maybe$Just(element) : accum;
+		}),
+	_elm_lang$core$Maybe$Nothing);
+var _folkertdev$one_true_path_experiment$LowLevel_Command$coordinatesToAbsolute = F3(
+	function (mode, toAbsolute, coordinates) {
+		var _p17 = mode;
+		if (_p17.ctor === 'Absolute') {
+			return A2(
+				_elm_lang$core$Maybe$map,
+				function ($final) {
+					return {ctor: '_Tuple2', _0: $final, _1: coordinates};
+				},
+				_folkertdev$one_true_path_experiment$LowLevel_Command$last(coordinates));
+		} else {
+			var folder = F3(
+				function (f, element, _p18) {
+					var _p19 = _p18;
+					var _p22 = _p19._1;
+					var _p21 = _p19._0;
+					var _p20 = _p22;
+					if (_p20.ctor === 'Nothing') {
+						return {
+							ctor: '_Tuple2',
+							_0: {
+								ctor: '::',
+								_0: f(element),
+								_1: _p21
+							},
+							_1: _elm_lang$core$Maybe$Just(element)
+						};
+					} else {
+						return {
+							ctor: '_Tuple2',
+							_0: {
+								ctor: '::',
+								_0: f(element),
+								_1: _p21
+							},
+							_1: _p22
+						};
+					}
+				});
+			var _p23 = A3(
+				_elm_lang$core$List$foldr,
+				folder(toAbsolute),
+				{
+					ctor: '_Tuple2',
+					_0: {ctor: '[]'},
+					_1: _elm_lang$core$Maybe$Nothing
+				},
+				coordinates);
+			if (_p23._1.ctor === 'Nothing') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				return _elm_lang$core$Maybe$Just(
+					{
+						ctor: '_Tuple2',
+						_0: toAbsolute(_p23._1._0),
+						_1: _p23._0
+					});
+			}
+		}
+	});
+var _folkertdev$one_true_path_experiment$LowLevel_Command$smallestArc = _folkertdev$svg_path_lowlevel$Path_LowLevel$SmallestArc;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$largestArc = _folkertdev$svg_path_lowlevel$Path_LowLevel$LargestArc;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$counterClockwise = _folkertdev$svg_path_lowlevel$Path_LowLevel$CounterClockwise;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$clockwise = _folkertdev$svg_path_lowlevel$Path_LowLevel$Clockwise;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$EllipticalArcArgument = F5(
+	function (a, b, c, d, e) {
+		return {radii: a, xAxisRotate: b, arcFlag: c, direction: d, target: e};
+	});
+var _folkertdev$one_true_path_experiment$LowLevel_Command$CursorState = F3(
+	function (a, b, c) {
+		return {start: a, cursor: b, previousControlPoint: c};
+	});
+var _folkertdev$one_true_path_experiment$LowLevel_Command$MoveTo = function (a) {
+	return {ctor: 'MoveTo', _0: a};
+};
+var _folkertdev$one_true_path_experiment$LowLevel_Command$moveTo = _folkertdev$one_true_path_experiment$LowLevel_Command$MoveTo;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$fromLowLevelMoveTo = F2(
+	function (_p25, _p24) {
+		var _p26 = _p25;
+		var _p30 = _p26._1;
+		var _p27 = _p24;
+		var _p29 = _p27;
+		var _p28 = _p26._0;
+		if (_p28.ctor === 'Absolute') {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					_p29,
+					{start: _p30, cursor: _p30, previousControlPoint: _elm_lang$core$Maybe$Nothing}),
+				_1: _folkertdev$one_true_path_experiment$LowLevel_Command$MoveTo(_p30)
+			};
+		} else {
+			var absoluteTarget = A2(_Zinggi$elm_webgl_math$Vector2$add, _p30, _p27.cursor);
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					_p29,
+					{start: absoluteTarget, cursor: absoluteTarget, previousControlPoint: _elm_lang$core$Maybe$Nothing}),
+				_1: _folkertdev$one_true_path_experiment$LowLevel_Command$MoveTo(absoluteTarget)
+			};
+		}
+	});
+var _folkertdev$one_true_path_experiment$LowLevel_Command$ClosePath = {ctor: 'ClosePath'};
+var _folkertdev$one_true_path_experiment$LowLevel_Command$closePath = _folkertdev$one_true_path_experiment$LowLevel_Command$ClosePath;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$EllipticalArc = function (a) {
+	return {ctor: 'EllipticalArc', _0: a};
+};
+var _folkertdev$one_true_path_experiment$LowLevel_Command$arcTo = _folkertdev$one_true_path_experiment$LowLevel_Command$EllipticalArc;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$QuadraticBezierCurveTo = function (a) {
+	return {ctor: 'QuadraticBezierCurveTo', _0: a};
+};
+var _folkertdev$one_true_path_experiment$LowLevel_Command$quadraticCurveTo = _folkertdev$one_true_path_experiment$LowLevel_Command$QuadraticBezierCurveTo;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$CurveTo = function (a) {
+	return {ctor: 'CurveTo', _0: a};
+};
+var _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo = _folkertdev$one_true_path_experiment$LowLevel_Command$CurveTo;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$Vertical = function (a) {
+	return {ctor: 'Vertical', _0: a};
+};
+var _folkertdev$one_true_path_experiment$LowLevel_Command$verticalTo = _folkertdev$one_true_path_experiment$LowLevel_Command$Vertical;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$Horizontal = function (a) {
+	return {ctor: 'Horizontal', _0: a};
+};
+var _folkertdev$one_true_path_experiment$LowLevel_Command$horizontalTo = _folkertdev$one_true_path_experiment$LowLevel_Command$Horizontal;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$LineTo = function (a) {
+	return {ctor: 'LineTo', _0: a};
+};
+var _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo = _folkertdev$one_true_path_experiment$LowLevel_Command$LineTo;
+var _folkertdev$one_true_path_experiment$LowLevel_Command$fromLowLevelDrawTo = F2(
+	function (drawto, _p31) {
+		var _p32 = _p31;
+		var _p53 = _p32;
+		var _p52 = _p32.cursor;
+		var _p33 = drawto;
+		switch (_p33.ctor) {
+			case 'LineTo':
+				var updateState = function (_p34) {
+					var _p35 = _p34;
+					return {
+						ctor: '_Tuple2',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$LineTo(_p35._1),
+						_1: _elm_lang$core$Native_Utils.update(
+							_p53,
+							{cursor: _p35._0, previousControlPoint: _elm_lang$core$Maybe$Nothing})
+					};
+				};
+				return A2(
+					_elm_lang$core$Maybe$map,
+					updateState,
+					A3(
+						_folkertdev$one_true_path_experiment$LowLevel_Command$coordinatesToAbsolute,
+						_p33._0,
+						_Zinggi$elm_webgl_math$Vector2$add(_p52),
+						_p33._1));
+			case 'Horizontal':
+				var updateState = function (_p36) {
+					var _p37 = _p36;
+					return {
+						ctor: '_Tuple2',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$LineTo(_p37._1),
+						_1: _elm_lang$core$Native_Utils.update(
+							_p53,
+							{
+								cursor: {
+									ctor: '_Tuple2',
+									_0: _elm_lang$core$Tuple$first(_p37._0),
+									_1: _elm_lang$core$Tuple$second(_p52)
+								},
+								previousControlPoint: _elm_lang$core$Maybe$Nothing
+							})
+					};
+				};
+				return A2(
+					_elm_lang$core$Maybe$map,
+					updateState,
+					A3(
+						_folkertdev$one_true_path_experiment$LowLevel_Command$coordinatesToAbsolute,
+						_p33._0,
+						_Zinggi$elm_webgl_math$Vector2$add(_p52),
+						A2(
+							_elm_lang$core$List$map,
+							function (x) {
+								return {ctor: '_Tuple2', _0: x, _1: 0};
+							},
+							_p33._1)));
+			case 'Vertical':
+				var updateState = function (_p38) {
+					var _p39 = _p38;
+					return {
+						ctor: '_Tuple2',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$LineTo(_p39._1),
+						_1: _elm_lang$core$Native_Utils.update(
+							_p53,
+							{
+								cursor: {
+									ctor: '_Tuple2',
+									_0: _elm_lang$core$Tuple$first(_p52),
+									_1: _elm_lang$core$Tuple$second(_p39._0)
+								},
+								previousControlPoint: _elm_lang$core$Maybe$Nothing
+							})
+					};
+				};
+				return A2(
+					_elm_lang$core$Maybe$map,
+					updateState,
+					A3(
+						_folkertdev$one_true_path_experiment$LowLevel_Command$coordinatesToAbsolute,
+						_p33._0,
+						_Zinggi$elm_webgl_math$Vector2$add(_p52),
+						A2(
+							_elm_lang$core$List$map,
+							function (y) {
+								return {ctor: '_Tuple2', _0: 0, _1: y};
+							},
+							_p33._1)));
+			case 'CurveTo':
+				var updateState = function (_p40) {
+					var _p41 = _p40;
+					return {
+						ctor: '_Tuple2',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$CurveTo(_p41._1),
+						_1: _elm_lang$core$Native_Utils.update(
+							_p53,
+							{
+								cursor: _p41._0._2,
+								previousControlPoint: _elm_lang$core$Maybe$Just(_p41._0._1)
+							})
+					};
+				};
+				return A2(
+					_elm_lang$core$Maybe$map,
+					updateState,
+					A3(
+						_folkertdev$one_true_path_experiment$LowLevel_Command$coordinatesToAbsolute,
+						_p33._0,
+						_Zinggi$elm_webgl_math$Vector3$map(
+							_Zinggi$elm_webgl_math$Vector2$add(_p52)),
+						_p33._1));
+			case 'SmoothCurveTo':
+				var updateState = function (_p42) {
+					var _p43 = _p42;
+					return {
+						ctor: '_Tuple2',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$CurveTo(_p43._1),
+						_1: _p43._0
+					};
+				};
+				return A2(
+					_elm_lang$core$Maybe$map,
+					function (_p44) {
+						return updateState(
+							A2(
+								_folkertdev$one_true_path_experiment$LowLevel_Command$makeControlPointExplicitVec2,
+								_p53,
+								_elm_lang$core$Tuple$second(_p44)));
+					},
+					A3(
+						_folkertdev$one_true_path_experiment$LowLevel_Command$coordinatesToAbsolute,
+						_p33._0,
+						_Zinggi$elm_webgl_math$Vector2$map(
+							_Zinggi$elm_webgl_math$Vector2$add(_p52)),
+						_p33._1));
+			case 'QuadraticBezierCurveTo':
+				var updateState = function (_p45) {
+					var _p46 = _p45;
+					return {
+						ctor: '_Tuple2',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$QuadraticBezierCurveTo(_p46._1),
+						_1: _elm_lang$core$Native_Utils.update(
+							_p53,
+							{
+								cursor: _p46._0._1,
+								previousControlPoint: _elm_lang$core$Maybe$Just(_p46._0._0)
+							})
+					};
+				};
+				return A2(
+					_elm_lang$core$Maybe$map,
+					updateState,
+					A3(
+						_folkertdev$one_true_path_experiment$LowLevel_Command$coordinatesToAbsolute,
+						_p33._0,
+						_Zinggi$elm_webgl_math$Vector2$map(
+							_Zinggi$elm_webgl_math$Vector2$add(_p52)),
+						_p33._1));
+			case 'SmoothQuadraticBezierCurveTo':
+				var updateState = function (_p47) {
+					var _p48 = _p47;
+					return {
+						ctor: '_Tuple2',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$QuadraticBezierCurveTo(_p48._1),
+						_1: _p48._0
+					};
+				};
+				return A2(
+					_elm_lang$core$Maybe$map,
+					function (_p49) {
+						return updateState(
+							A2(
+								_folkertdev$one_true_path_experiment$LowLevel_Command$makeControlPointExplicitVec1,
+								_p53,
+								_elm_lang$core$Tuple$second(_p49)));
+					},
+					A3(
+						_folkertdev$one_true_path_experiment$LowLevel_Command$coordinatesToAbsolute,
+						_p33._0,
+						_Zinggi$elm_webgl_math$Vector2$add(_p52),
+						_p33._1));
+			case 'EllipticalArc':
+				var updateState = function (_p50) {
+					var _p51 = _p50;
+					return {
+						ctor: '_Tuple2',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$EllipticalArc(_p51._1),
+						_1: _elm_lang$core$Native_Utils.update(
+							_p53,
+							{cursor: _p51._0.target, previousControlPoint: _elm_lang$core$Maybe$Nothing})
+					};
+				};
+				var argumentToAbsolute = function (argument) {
+					return _elm_lang$core$Native_Utils.update(
+						argument,
+						{
+							target: A2(_Zinggi$elm_webgl_math$Vector2$add, _p52, argument.target)
+						});
+				};
+				return A2(
+					_elm_lang$core$Maybe$map,
+					updateState,
+					A3(_folkertdev$one_true_path_experiment$LowLevel_Command$coordinatesToAbsolute, _p33._0, argumentToAbsolute, _p33._1));
+			default:
+				return _elm_lang$core$Maybe$Just(
+					{
+						ctor: '_Tuple2',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$ClosePath,
+						_1: _elm_lang$core$Native_Utils.update(
+							_p53,
+							{cursor: _p32.start})
+					});
+		}
+	});
+var _folkertdev$one_true_path_experiment$LowLevel_Command$fromLowLevelDrawTos = F2(
+	function (drawtos, state) {
+		var folder = F2(
+			function (element, _p54) {
+				var _p55 = _p54;
+				var _p58 = _p55._0;
+				var _p57 = _p55._1;
+				var _p56 = A2(_folkertdev$one_true_path_experiment$LowLevel_Command$fromLowLevelDrawTo, element, _p58);
+				if (_p56.ctor === 'Nothing') {
+					return {ctor: '_Tuple2', _0: _p58, _1: _p57};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _p56._0._1,
+						_1: {ctor: '::', _0: _p56._0._0, _1: _p57}
+					};
+				}
+			});
+		return A2(
+			_elm_lang$core$Tuple$mapSecond,
+			_elm_lang$core$List$reverse,
+			A3(
+				_elm_lang$core$List$foldl,
+				folder,
+				{
+					ctor: '_Tuple2',
+					_0: state,
+					_1: {ctor: '[]'}
+				},
+				drawtos));
+	});
+var _folkertdev$one_true_path_experiment$LowLevel_Command$mapCoordinateDrawTo = F2(
+	function (f, drawto) {
+		var _p59 = drawto;
+		switch (_p59.ctor) {
+			case 'LineTo':
+				return _folkertdev$one_true_path_experiment$LowLevel_Command$LineTo(
+					A2(_elm_lang$core$List$map, f, _p59._0));
+			case 'Horizontal':
+				return _folkertdev$one_true_path_experiment$LowLevel_Command$Horizontal(
+					A2(
+						_elm_lang$core$List$map,
+						function (_p60) {
+							return _elm_lang$core$Tuple$first(
+								f(
+									function (x) {
+										return {ctor: '_Tuple2', _0: x, _1: 0};
+									}(_p60)));
+						},
+						_p59._0));
+			case 'Vertical':
+				return _folkertdev$one_true_path_experiment$LowLevel_Command$Vertical(
+					A2(
+						_elm_lang$core$List$map,
+						function (_p61) {
+							return _elm_lang$core$Tuple$second(
+								f(
+									function (y) {
+										return {ctor: '_Tuple2', _0: 0, _1: y};
+									}(_p61)));
+						},
+						_p59._0));
+			case 'CurveTo':
+				return _folkertdev$one_true_path_experiment$LowLevel_Command$CurveTo(
+					A2(
+						_elm_lang$core$List$map,
+						_Zinggi$elm_webgl_math$Vector3$map(f),
+						_p59._0));
+			case 'QuadraticBezierCurveTo':
+				return _folkertdev$one_true_path_experiment$LowLevel_Command$QuadraticBezierCurveTo(
+					A2(
+						_elm_lang$core$List$map,
+						_Zinggi$elm_webgl_math$Vector2$map(f),
+						_p59._0));
+			case 'EllipticalArc':
+				return _folkertdev$one_true_path_experiment$LowLevel_Command$EllipticalArc(
+					A2(
+						_elm_lang$core$List$map,
+						function (argument) {
+							return _elm_lang$core$Native_Utils.update(
+								argument,
+								{
+									target: f(argument.target)
+								});
+						},
+						_p59._0));
+			default:
+				return _folkertdev$one_true_path_experiment$LowLevel_Command$ClosePath;
+		}
+	});
+var _folkertdev$one_true_path_experiment$LowLevel_Command$merge = F2(
+	function (instruction1, instruction2) {
+		var _p62 = {ctor: '_Tuple2', _0: instruction1, _1: instruction2};
+		_v28_7:
+		do {
+			if (_p62.ctor === '_Tuple2') {
+				switch (_p62._0.ctor) {
+					case 'LineTo':
+						if (_p62._1.ctor === 'LineTo') {
+							return _elm_lang$core$Result$Ok(
+								_folkertdev$one_true_path_experiment$LowLevel_Command$LineTo(
+									A2(_elm_lang$core$Basics_ops['++'], _p62._0._0, _p62._1._0)));
+						} else {
+							break _v28_7;
+						}
+					case 'Horizontal':
+						if (_p62._1.ctor === 'Horizontal') {
+							return _elm_lang$core$Result$Ok(
+								_folkertdev$one_true_path_experiment$LowLevel_Command$Horizontal(
+									A2(_elm_lang$core$Basics_ops['++'], _p62._0._0, _p62._1._0)));
+						} else {
+							break _v28_7;
+						}
+					case 'Vertical':
+						if (_p62._1.ctor === 'Vertical') {
+							return _elm_lang$core$Result$Ok(
+								_folkertdev$one_true_path_experiment$LowLevel_Command$Vertical(
+									A2(_elm_lang$core$Basics_ops['++'], _p62._0._0, _p62._1._0)));
+						} else {
+							break _v28_7;
+						}
+					case 'CurveTo':
+						if (_p62._1.ctor === 'CurveTo') {
+							return _elm_lang$core$Result$Ok(
+								_folkertdev$one_true_path_experiment$LowLevel_Command$CurveTo(
+									A2(_elm_lang$core$Basics_ops['++'], _p62._0._0, _p62._1._0)));
+						} else {
+							break _v28_7;
+						}
+					case 'QuadraticBezierCurveTo':
+						if (_p62._1.ctor === 'QuadraticBezierCurveTo') {
+							return _elm_lang$core$Result$Ok(
+								_folkertdev$one_true_path_experiment$LowLevel_Command$QuadraticBezierCurveTo(
+									A2(_elm_lang$core$Basics_ops['++'], _p62._0._0, _p62._1._0)));
+						} else {
+							break _v28_7;
+						}
+					case 'EllipticalArc':
+						if (_p62._1.ctor === 'EllipticalArc') {
+							return _elm_lang$core$Result$Ok(
+								_folkertdev$one_true_path_experiment$LowLevel_Command$EllipticalArc(
+									A2(_elm_lang$core$Basics_ops['++'], _p62._0._0, _p62._1._0)));
+						} else {
+							break _v28_7;
+						}
+					default:
+						if (_p62._1.ctor === 'ClosePath') {
+							return _elm_lang$core$Result$Ok(_folkertdev$one_true_path_experiment$LowLevel_Command$ClosePath);
+						} else {
+							break _v28_7;
+						}
+				}
+			} else {
+				break _v28_7;
+			}
+		} while(false);
+		return _elm_lang$core$Result$Err(
+			{ctor: '_Tuple2', _0: instruction1, _1: instruction2});
+	});

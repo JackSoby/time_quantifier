@@ -1,0 +1,105 @@
+var _opensolid$geometry$OpenSolid_Polygon2d$vertices = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0;
+};
+var _opensolid$geometry$OpenSolid_Polygon2d$edges = function (polygon) {
+	var _p2 = _opensolid$geometry$OpenSolid_Polygon2d$vertices(polygon);
+	if (_p2.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		return A3(
+			_elm_lang$core$List$map2,
+			_opensolid$geometry$OpenSolid_LineSegment2d$from,
+			_p2,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p2._1,
+				{
+					ctor: '::',
+					_0: _p2._0,
+					_1: {ctor: '[]'}
+				}));
+	}
+};
+var _opensolid$geometry$OpenSolid_Polygon2d$perimeter = function (_p3) {
+	return _elm_lang$core$List$sum(
+		A2(
+			_elm_lang$core$List$map,
+			_opensolid$geometry$OpenSolid_LineSegment2d$length,
+			_opensolid$geometry$OpenSolid_Polygon2d$edges(_p3)));
+};
+var _opensolid$geometry$OpenSolid_Polygon2d$counterclockwiseArea = function (polygon) {
+	var _p4 = _opensolid$geometry$OpenSolid_Polygon2d$vertices(polygon);
+	if (_p4.ctor === '[]') {
+		return 0;
+	} else {
+		if (_p4._1.ctor === '[]') {
+			return 0;
+		} else {
+			if (_p4._1._1.ctor === '[]') {
+				return 0;
+			} else {
+				var _p5 = _p4._1._1;
+				var segmentArea = F2(
+					function (start, end) {
+						return _opensolid$geometry$OpenSolid_Triangle2d$counterclockwiseArea(
+							_opensolid$geometry$OpenSolid_Triangle2d$fromVertices(
+								{ctor: '_Tuple3', _0: _p4._0, _1: start, _2: end}));
+					});
+				var segmentAreas = A3(
+					_elm_lang$core$List$map2,
+					segmentArea,
+					{ctor: '::', _0: _p4._1._0, _1: _p5},
+					_p5);
+				return _elm_lang$core$List$sum(segmentAreas);
+			}
+		}
+	}
+};
+var _opensolid$geometry$OpenSolid_Polygon2d$area = function (_p6) {
+	return _elm_lang$core$Basics$abs(
+		_opensolid$geometry$OpenSolid_Polygon2d$counterclockwiseArea(_p6));
+};
+var _opensolid$geometry$OpenSolid_Polygon2d$clockwiseArea = function (polygon) {
+	return 0 - _opensolid$geometry$OpenSolid_Polygon2d$counterclockwiseArea(polygon);
+};
+var _opensolid$geometry$OpenSolid_Polygon2d$boundingBox = function (polygon) {
+	return _opensolid$geometry$OpenSolid_Point2d$hullOf(
+		_opensolid$geometry$OpenSolid_Polygon2d$vertices(polygon));
+};
+var _opensolid$geometry$OpenSolid_Polygon2d$fromVertices = _opensolid$geometry$OpenSolid_Geometry_Internal$Polygon2d;
+var _opensolid$geometry$OpenSolid_Polygon2d$mapVertices = function ($function) {
+	return function (_p7) {
+		return _opensolid$geometry$OpenSolid_Polygon2d$fromVertices(
+			A2(
+				_elm_lang$core$List$map,
+				$function,
+				_opensolid$geometry$OpenSolid_Polygon2d$vertices(_p7)));
+	};
+};
+var _opensolid$geometry$OpenSolid_Polygon2d$scaleAbout = F2(
+	function (point, scale) {
+		return _opensolid$geometry$OpenSolid_Polygon2d$mapVertices(
+			A2(_opensolid$geometry$OpenSolid_Point2d$scaleAbout, point, scale));
+	});
+var _opensolid$geometry$OpenSolid_Polygon2d$rotateAround = F2(
+	function (point, angle) {
+		return _opensolid$geometry$OpenSolid_Polygon2d$mapVertices(
+			A2(_opensolid$geometry$OpenSolid_Point2d$rotateAround, point, angle));
+	});
+var _opensolid$geometry$OpenSolid_Polygon2d$translateBy = function (vector) {
+	return _opensolid$geometry$OpenSolid_Polygon2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$translateBy(vector));
+};
+var _opensolid$geometry$OpenSolid_Polygon2d$mirrorAcross = function (axis) {
+	return _opensolid$geometry$OpenSolid_Polygon2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$mirrorAcross(axis));
+};
+var _opensolid$geometry$OpenSolid_Polygon2d$relativeTo = function (frame) {
+	return _opensolid$geometry$OpenSolid_Polygon2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$relativeTo(frame));
+};
+var _opensolid$geometry$OpenSolid_Polygon2d$placeIn = function (frame) {
+	return _opensolid$geometry$OpenSolid_Polygon2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$placeIn(frame));
+};

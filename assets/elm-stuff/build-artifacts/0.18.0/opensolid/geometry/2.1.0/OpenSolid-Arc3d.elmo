@@ -1,0 +1,380 @@
+var _opensolid$geometry$OpenSolid_Arc3d$sweptAngle = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0.sweptAngle;
+};
+var _opensolid$geometry$OpenSolid_Arc3d$startPoint = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0.startPoint;
+};
+var _opensolid$geometry$OpenSolid_Arc3d$axis = function (_p4) {
+	var _p5 = _p4;
+	return _p5._0.axis;
+};
+var _opensolid$geometry$OpenSolid_Arc3d$centerPoint = function (arc) {
+	return _opensolid$geometry$OpenSolid_Axis3d$originPoint(
+		_opensolid$geometry$OpenSolid_Arc3d$axis(arc));
+};
+var _opensolid$geometry$OpenSolid_Arc3d$radius = function (arc) {
+	return A2(
+		_opensolid$geometry$OpenSolid_Point3d$distanceFrom,
+		_opensolid$geometry$OpenSolid_Arc3d$centerPoint(arc),
+		_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc));
+};
+var _opensolid$geometry$OpenSolid_Arc3d$numApproximationSegments = F2(
+	function (tolerance, arc) {
+		if ((_elm_lang$core$Native_Utils.cmp(0, tolerance) < 0) && (_elm_lang$core$Native_Utils.cmp(
+			tolerance,
+			_opensolid$geometry$OpenSolid_Arc3d$radius(arc)) < 0)) {
+			var maxSegmentAngle = _elm_lang$core$Basics$sqrt(
+				(8 * tolerance) / _opensolid$geometry$OpenSolid_Arc3d$radius(arc));
+			return _elm_lang$core$Basics$ceiling(
+				_elm_lang$core$Basics$abs(
+					_opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc)) / maxSegmentAngle);
+		} else {
+			return 1;
+		}
+	});
+var _opensolid$geometry$OpenSolid_Arc3d$endPoint = function (arc) {
+	return A3(
+		_opensolid$geometry$OpenSolid_Point3d$rotateAround,
+		_opensolid$geometry$OpenSolid_Arc3d$axis(arc),
+		_opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc),
+		_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc));
+};
+var _opensolid$geometry$OpenSolid_Arc3d$pointOn = function (arc) {
+	var arcSweptAngle = _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc);
+	var axialVector = _opensolid$geometry$OpenSolid_Direction3d$toVector(
+		_opensolid$geometry$OpenSolid_Axis3d$direction(
+			_opensolid$geometry$OpenSolid_Arc3d$axis(arc)));
+	var arcCenterPoint = _opensolid$geometry$OpenSolid_Arc3d$centerPoint(arc);
+	var xVector = A2(
+		_opensolid$geometry$OpenSolid_Vector3d$from,
+		arcCenterPoint,
+		_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc));
+	var yVector = A2(_opensolid$geometry$OpenSolid_Vector3d$crossProduct, axialVector, xVector);
+	var _p6 = _opensolid$geometry$OpenSolid_Vector3d$components(yVector);
+	var x2 = _p6._0;
+	var y2 = _p6._1;
+	var z2 = _p6._2;
+	var _p7 = _opensolid$geometry$OpenSolid_Vector3d$components(xVector);
+	var x1 = _p7._0;
+	var y1 = _p7._1;
+	var z1 = _p7._2;
+	var _p8 = _opensolid$geometry$OpenSolid_Point3d$coordinates(arcCenterPoint);
+	var x0 = _p8._0;
+	var y0 = _p8._1;
+	var z0 = _p8._2;
+	return function (t) {
+		var angle = t * arcSweptAngle;
+		var cosAngle = _elm_lang$core$Basics$cos(angle);
+		var sinAngle = _elm_lang$core$Basics$sin(angle);
+		return _opensolid$geometry$OpenSolid_Point3d$fromCoordinates(
+			{ctor: '_Tuple3', _0: (x0 + (x1 * cosAngle)) + (x2 * sinAngle), _1: (y0 + (y1 * cosAngle)) + (y2 * sinAngle), _2: (z0 + (z1 * cosAngle)) + (z2 * sinAngle)});
+	};
+};
+var _opensolid$geometry$OpenSolid_Arc3d$toPolyline = F2(
+	function (tolerance, arc) {
+		var numSegments = A2(_opensolid$geometry$OpenSolid_Arc3d$numApproximationSegments, tolerance, arc);
+		var point = function (index) {
+			return A2(
+				_opensolid$geometry$OpenSolid_Arc3d$pointOn,
+				arc,
+				_elm_lang$core$Basics$toFloat(index) / _elm_lang$core$Basics$toFloat(numSegments));
+		};
+		var points = A2(
+			_elm_lang$core$List$map,
+			point,
+			A2(_elm_lang$core$List$range, 0, numSegments));
+		return _opensolid$geometry$OpenSolid_Polyline3d$fromVertices(points);
+	});
+var _opensolid$geometry$OpenSolid_Arc3d$derivative = function (arc) {
+	var arcSweptAngle = _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc);
+	var xVector = A2(
+		_opensolid$geometry$OpenSolid_Vector3d$from,
+		_opensolid$geometry$OpenSolid_Arc3d$centerPoint(arc),
+		_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc));
+	var _p9 = _opensolid$geometry$OpenSolid_Vector3d$components(xVector);
+	var x1 = _p9._0;
+	var y1 = _p9._1;
+	var z1 = _p9._2;
+	var axialVector = _opensolid$geometry$OpenSolid_Direction3d$toVector(
+		_opensolid$geometry$OpenSolid_Axis3d$direction(
+			_opensolid$geometry$OpenSolid_Arc3d$axis(arc)));
+	var yVector = A2(_opensolid$geometry$OpenSolid_Vector3d$crossProduct, axialVector, xVector);
+	var _p10 = _opensolid$geometry$OpenSolid_Vector3d$components(yVector);
+	var x2 = _p10._0;
+	var y2 = _p10._1;
+	var z2 = _p10._2;
+	return function (t) {
+		var angle = t * arcSweptAngle;
+		var cosAngle = _elm_lang$core$Basics$cos(angle);
+		var sinAngle = _elm_lang$core$Basics$sin(angle);
+		return _opensolid$geometry$OpenSolid_Vector3d$fromComponents(
+			{ctor: '_Tuple3', _0: arcSweptAngle * ((cosAngle * x2) - (sinAngle * x1)), _1: arcSweptAngle * ((cosAngle * y2) - (sinAngle * y1)), _2: arcSweptAngle * ((cosAngle * z2) - (sinAngle * z1))});
+	};
+};
+var _opensolid$geometry$OpenSolid_Arc3d$evaluate = function (arc) {
+	var arcSweptAngle = _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc);
+	var axialVector = _opensolid$geometry$OpenSolid_Direction3d$toVector(
+		_opensolid$geometry$OpenSolid_Axis3d$direction(
+			_opensolid$geometry$OpenSolid_Arc3d$axis(arc)));
+	var arcCenterPoint = _opensolid$geometry$OpenSolid_Arc3d$centerPoint(arc);
+	var xVector = A2(
+		_opensolid$geometry$OpenSolid_Vector3d$from,
+		arcCenterPoint,
+		_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc));
+	var yVector = A2(_opensolid$geometry$OpenSolid_Vector3d$crossProduct, axialVector, xVector);
+	var _p11 = _opensolid$geometry$OpenSolid_Vector3d$components(yVector);
+	var x2 = _p11._0;
+	var y2 = _p11._1;
+	var z2 = _p11._2;
+	var _p12 = _opensolid$geometry$OpenSolid_Vector3d$components(xVector);
+	var x1 = _p12._0;
+	var y1 = _p12._1;
+	var z1 = _p12._2;
+	var _p13 = _opensolid$geometry$OpenSolid_Point3d$coordinates(arcCenterPoint);
+	var x0 = _p13._0;
+	var y0 = _p13._1;
+	var z0 = _p13._2;
+	return function (t) {
+		var angle = t * arcSweptAngle;
+		var cosAngle = _elm_lang$core$Basics$cos(angle);
+		var sinAngle = _elm_lang$core$Basics$sin(angle);
+		return {
+			ctor: '_Tuple2',
+			_0: _opensolid$geometry$OpenSolid_Point3d$fromCoordinates(
+				{ctor: '_Tuple3', _0: (x0 + (x1 * cosAngle)) + (x2 * sinAngle), _1: (y0 + (y1 * cosAngle)) + (y2 * sinAngle), _2: (z0 + (z1 * cosAngle)) + (z2 * sinAngle)}),
+			_1: _opensolid$geometry$OpenSolid_Vector3d$fromComponents(
+				{ctor: '_Tuple3', _0: arcSweptAngle * ((cosAngle * x2) - (sinAngle * x1)), _1: arcSweptAngle * ((cosAngle * y2) - (sinAngle * y1)), _2: arcSweptAngle * ((cosAngle * z2) - (sinAngle * z1))})
+		};
+	};
+};
+var _opensolid$geometry$OpenSolid_Arc3d$axialDirection = function (arc) {
+	return _opensolid$geometry$OpenSolid_Axis3d$direction(
+		_opensolid$geometry$OpenSolid_Arc3d$axis(arc));
+};
+var _opensolid$geometry$OpenSolid_Arc3d$projectInto = F2(
+	function (sketchPlane, arc) {
+		var normalComponent = A2(
+			_opensolid$geometry$OpenSolid_Direction3d$componentIn,
+			_opensolid$geometry$OpenSolid_SketchPlane3d$normalDirection(sketchPlane),
+			_opensolid$geometry$OpenSolid_Arc3d$axialDirection(arc));
+		var yRatio = _elm_lang$core$Basics$abs(normalComponent);
+		var ellipticalSweptAngle = (_elm_lang$core$Native_Utils.cmp(normalComponent, 0) > -1) ? _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc) : (0 - _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc));
+		var arcRadius = _opensolid$geometry$OpenSolid_Arc3d$radius(arc);
+		var radialVector = A2(
+			_opensolid$geometry$OpenSolid_Vector3d$from,
+			_opensolid$geometry$OpenSolid_Arc3d$centerPoint(arc),
+			_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc));
+		var candidateXDirection2d = function () {
+			var _p14 = A2(
+				_opensolid$geometry$OpenSolid_Direction3d$projectInto,
+				sketchPlane,
+				_opensolid$geometry$OpenSolid_Arc3d$axialDirection(arc));
+			if (_p14.ctor === 'Just') {
+				return _opensolid$geometry$OpenSolid_Direction2d$rotateClockwise(_p14._0);
+			} else {
+				return _opensolid$geometry$OpenSolid_Direction2d$x;
+			}
+		}();
+		var candidateXDirection3d = A2(_opensolid$geometry$OpenSolid_Direction3d$on, sketchPlane, candidateXDirection2d);
+		var _p15 = (_elm_lang$core$Native_Utils.cmp(
+			A2(_opensolid$geometry$OpenSolid_Vector3d$componentIn, candidateXDirection3d, radialVector),
+			0) > -1) ? {ctor: '_Tuple2', _0: candidateXDirection2d, _1: candidateXDirection3d} : {
+			ctor: '_Tuple2',
+			_0: _opensolid$geometry$OpenSolid_Direction2d$flip(candidateXDirection2d),
+			_1: _opensolid$geometry$OpenSolid_Direction3d$flip(candidateXDirection3d)
+		};
+		var xDirection2d = _p15._0;
+		var xDirection3d = _p15._1;
+		var ellipticalStartAngle = function () {
+			var xVector = _opensolid$geometry$OpenSolid_Direction3d$toVector(xDirection3d);
+			var crossProduct = A2(_opensolid$geometry$OpenSolid_Vector3d$crossProduct, xVector, radialVector);
+			var y = A2(
+				_opensolid$geometry$OpenSolid_Vector3d$componentIn,
+				_opensolid$geometry$OpenSolid_Arc3d$axialDirection(arc),
+				crossProduct);
+			var x = A2(_opensolid$geometry$OpenSolid_Vector3d$dotProduct, radialVector, xVector);
+			var arcStartAngle = A2(_elm_lang$core$Basics$atan2, y, x);
+			return (_elm_lang$core$Native_Utils.cmp(normalComponent, 0) > -1) ? arcStartAngle : (0 - arcStartAngle);
+		}();
+		return _opensolid$geometry$OpenSolid_Geometry_Internal$EllipticalArc2d(
+			{
+				ellipse: _opensolid$geometry$OpenSolid_Geometry_Internal$Ellipse2d(
+					{
+						axes: _opensolid$geometry$OpenSolid_Frame2d$with(
+							{
+								originPoint: A2(
+									_opensolid$geometry$OpenSolid_Point3d$projectInto,
+									sketchPlane,
+									_opensolid$geometry$OpenSolid_Arc3d$centerPoint(arc)),
+								xDirection: xDirection2d
+							}),
+						xRadius: arcRadius,
+						yRadius: arcRadius * yRatio
+					}),
+				startAngle: ellipticalStartAngle,
+				sweptAngle: ellipticalSweptAngle
+			});
+	});
+var _opensolid$geometry$OpenSolid_Arc3d$around = F2(
+	function (axis, _p16) {
+		var _p17 = _p16;
+		var _p18 = _p17.startPoint;
+		return _opensolid$geometry$OpenSolid_Geometry_Internal$Arc3d(
+			{
+				axis: _opensolid$geometry$OpenSolid_Axis3d$with(
+					{
+						originPoint: A2(_opensolid$geometry$OpenSolid_Point3d$projectOntoAxis, axis, _p18),
+						direction: _opensolid$geometry$OpenSolid_Axis3d$direction(axis)
+					}),
+				startPoint: _p18,
+				sweptAngle: _p17.sweptAngle
+			});
+	});
+var _opensolid$geometry$OpenSolid_Arc3d$on = F2(
+	function (sketchPlane, arc2d) {
+		var place = _opensolid$geometry$OpenSolid_Point3d$on(sketchPlane);
+		var axis = _opensolid$geometry$OpenSolid_Axis3d$with(
+			{
+				originPoint: place(
+					_opensolid$geometry$OpenSolid_Arc2d$centerPoint(arc2d)),
+				direction: _opensolid$geometry$OpenSolid_SketchPlane3d$normalDirection(sketchPlane)
+			});
+		return A2(
+			_opensolid$geometry$OpenSolid_Arc3d$around,
+			axis,
+			{
+				startPoint: place(
+					_opensolid$geometry$OpenSolid_Arc2d$startPoint(arc2d)),
+				sweptAngle: _opensolid$geometry$OpenSolid_Arc2d$sweptAngle(arc2d)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Arc3d$throughPoints = function (points) {
+	return A2(
+		_elm_lang$core$Maybe$andThen,
+		function (sketchPlane) {
+			var _p19 = points;
+			var firstPoint = _p19._0;
+			var secondPoint = _p19._1;
+			var thirdPoint = _p19._2;
+			return A2(
+				_elm_lang$core$Maybe$map,
+				_opensolid$geometry$OpenSolid_Arc3d$on(sketchPlane),
+				_opensolid$geometry$OpenSolid_Arc2d$throughPoints(
+					{
+						ctor: '_Tuple3',
+						_0: A2(_opensolid$geometry$OpenSolid_Point3d$projectInto, sketchPlane, firstPoint),
+						_1: A2(_opensolid$geometry$OpenSolid_Point3d$projectInto, sketchPlane, secondPoint),
+						_2: A2(_opensolid$geometry$OpenSolid_Point3d$projectInto, sketchPlane, thirdPoint)
+					}));
+		},
+		_opensolid$geometry$OpenSolid_SketchPlane3d$throughPoints(points));
+};
+var _opensolid$geometry$OpenSolid_Arc3d$reverse = function (arc) {
+	return A2(
+		_opensolid$geometry$OpenSolid_Arc3d$around,
+		_opensolid$geometry$OpenSolid_Arc3d$axis(arc),
+		{
+			startPoint: _opensolid$geometry$OpenSolid_Arc3d$endPoint(arc),
+			sweptAngle: 0 - _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc)
+		});
+};
+var _opensolid$geometry$OpenSolid_Arc3d$scaleAbout = F3(
+	function (point, scale, arc) {
+		var currentAxis = _opensolid$geometry$OpenSolid_Arc3d$axis(arc);
+		var currentAxisDirection = _opensolid$geometry$OpenSolid_Axis3d$direction(currentAxis);
+		var scaledDirection = (_elm_lang$core$Native_Utils.cmp(scale, 0.0) < 0) ? _opensolid$geometry$OpenSolid_Direction3d$flip(currentAxisDirection) : currentAxisDirection;
+		var scalePoint = A2(_opensolid$geometry$OpenSolid_Point3d$scaleAbout, point, scale);
+		var scaledOrigin = scalePoint(
+			_opensolid$geometry$OpenSolid_Axis3d$originPoint(currentAxis));
+		var scaledAxis = _opensolid$geometry$OpenSolid_Axis3d$with(
+			{originPoint: scaledOrigin, direction: scaledDirection});
+		return A2(
+			_opensolid$geometry$OpenSolid_Arc3d$around,
+			scaledAxis,
+			{
+				startPoint: scalePoint(
+					_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc)),
+				sweptAngle: _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Arc3d$rotateAround = F2(
+	function (rotationAxis, angle) {
+		var rotatePoint = A2(_opensolid$geometry$OpenSolid_Point3d$rotateAround, rotationAxis, angle);
+		var rotateAxis = A2(_opensolid$geometry$OpenSolid_Axis3d$rotateAround, rotationAxis, angle);
+		return function (arc) {
+			return A2(
+				_opensolid$geometry$OpenSolid_Arc3d$around,
+				rotateAxis(
+					_opensolid$geometry$OpenSolid_Arc3d$axis(arc)),
+				{
+					startPoint: rotatePoint(
+						_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc)),
+					sweptAngle: _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc)
+				});
+		};
+	});
+var _opensolid$geometry$OpenSolid_Arc3d$translateBy = F2(
+	function (displacement, arc) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Arc3d$around,
+			A2(
+				_opensolid$geometry$OpenSolid_Axis3d$translateBy,
+				displacement,
+				_opensolid$geometry$OpenSolid_Arc3d$axis(arc)),
+			{
+				startPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$translateBy,
+					displacement,
+					_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc)),
+				sweptAngle: _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Arc3d$mirrorAcross = function (plane) {
+	var mirrorPoint = _opensolid$geometry$OpenSolid_Point3d$mirrorAcross(plane);
+	var mirrorAxis = _opensolid$geometry$OpenSolid_Axis3d$mirrorAcross(plane);
+	return function (arc) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Arc3d$around,
+			mirrorAxis(
+				_opensolid$geometry$OpenSolid_Arc3d$axis(arc)),
+			{
+				startPoint: mirrorPoint(
+					_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc)),
+				sweptAngle: 0 - _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc)
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Arc3d$relativeTo = F2(
+	function (frame, arc) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Arc3d$around,
+			A2(
+				_opensolid$geometry$OpenSolid_Axis3d$relativeTo,
+				frame,
+				_opensolid$geometry$OpenSolid_Arc3d$axis(arc)),
+			{
+				startPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$relativeTo,
+					frame,
+					_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc)),
+				sweptAngle: _opensolid$geometry$OpenSolid_Frame3d$isRightHanded(frame) ? _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc) : (0 - _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc))
+			});
+	});
+var _opensolid$geometry$OpenSolid_Arc3d$placeIn = F2(
+	function (frame, arc) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Arc3d$around,
+			A2(
+				_opensolid$geometry$OpenSolid_Axis3d$placeIn,
+				frame,
+				_opensolid$geometry$OpenSolid_Arc3d$axis(arc)),
+			{
+				startPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$placeIn,
+					frame,
+					_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc)),
+				sweptAngle: _opensolid$geometry$OpenSolid_Frame3d$isRightHanded(frame) ? _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc) : (0 - _opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc))
+			});
+	});

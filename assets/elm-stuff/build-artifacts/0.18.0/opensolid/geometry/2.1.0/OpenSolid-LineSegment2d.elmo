@@ -1,0 +1,167 @@
+var _opensolid$geometry$OpenSolid_LineSegment2d$endpoints = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0;
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$interpolate = function (lineSegment) {
+	var _p2 = _opensolid$geometry$OpenSolid_LineSegment2d$endpoints(lineSegment);
+	var start = _p2._0;
+	var end = _p2._1;
+	return A2(_opensolid$geometry$OpenSolid_Point2d$interpolateFrom, start, end);
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$midpoint = function (lineSegment) {
+	return A2(_opensolid$geometry$OpenSolid_LineSegment2d$interpolate, lineSegment, 0.5);
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$vector = function (lineSegment) {
+	var _p3 = _opensolid$geometry$OpenSolid_LineSegment2d$endpoints(lineSegment);
+	var p1 = _p3._0;
+	var p2 = _p3._1;
+	return A2(_opensolid$geometry$OpenSolid_Vector2d$from, p1, p2);
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$length = function (_p4) {
+	return _opensolid$geometry$OpenSolid_Vector2d$length(
+		_opensolid$geometry$OpenSolid_LineSegment2d$vector(_p4));
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$squaredLength = function (_p5) {
+	return _opensolid$geometry$OpenSolid_Vector2d$squaredLength(
+		_opensolid$geometry$OpenSolid_LineSegment2d$vector(_p5));
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$direction = function (_p6) {
+	return _opensolid$geometry$OpenSolid_Vector2d$direction(
+		_opensolid$geometry$OpenSolid_LineSegment2d$vector(_p6));
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$normalDirection = function (_p7) {
+	return _opensolid$geometry$OpenSolid_Vector2d$direction(
+		_opensolid$geometry$OpenSolid_Vector2d$perpendicularTo(
+			_opensolid$geometry$OpenSolid_LineSegment2d$vector(_p7)));
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$intersectionPoint = F2(
+	function (lineSegment1, lineSegment2) {
+		var _p8 = _opensolid$geometry$OpenSolid_LineSegment2d$endpoints(lineSegment2);
+		var q = _p8._0;
+		var q_ = _p8._1;
+		var _p9 = _opensolid$geometry$OpenSolid_LineSegment2d$endpoints(lineSegment1);
+		var p = _p9._0;
+		var p_ = _p9._1;
+		var _p10 = {
+			ctor: '_Tuple5',
+			_0: _opensolid$geometry$OpenSolid_LineSegment2d$vector(lineSegment1),
+			_1: _opensolid$geometry$OpenSolid_LineSegment2d$vector(lineSegment2),
+			_2: A2(_opensolid$geometry$OpenSolid_Vector2d$from, p, q),
+			_3: A2(_opensolid$geometry$OpenSolid_Vector2d$from, p, q_),
+			_4: A2(_opensolid$geometry$OpenSolid_Vector2d$from, q, p_)
+		};
+		var r = _p10._0;
+		var s = _p10._1;
+		var pq = _p10._2;
+		var pq_ = _p10._3;
+		var qp_ = _p10._4;
+		var _p11 = {
+			ctor: '_Tuple4',
+			_0: A2(_opensolid$geometry$OpenSolid_Vector2d$crossProduct, pq, r),
+			_1: A2(_opensolid$geometry$OpenSolid_Vector2d$crossProduct, pq, s),
+			_2: A2(_opensolid$geometry$OpenSolid_Vector2d$crossProduct, s, qp_),
+			_3: A2(_opensolid$geometry$OpenSolid_Vector2d$crossProduct, r, pq_)
+		};
+		var pqXr = _p11._0;
+		var pqXs = _p11._1;
+		var sXqp_ = _p11._2;
+		var rXpq_ = _p11._3;
+		var _p12 = {ctor: '_Tuple2', _0: pqXs - sXqp_, _1: pqXr + rXpq_};
+		var tDenominator = _p12._0;
+		var uDenominator = _p12._1;
+		if (_elm_lang$core$Native_Utils.eq(tDenominator, 0) || _elm_lang$core$Native_Utils.eq(uDenominator, 0)) {
+			return (_elm_lang$core$Native_Utils.cmp(
+				A2(_opensolid$geometry$OpenSolid_Vector2d$dotProduct, r, s),
+				0) < 0) ? (_elm_lang$core$Native_Utils.eq(p_, q_) ? _elm_lang$core$Maybe$Just(p_) : (_elm_lang$core$Native_Utils.eq(p, q) ? _elm_lang$core$Maybe$Just(p) : _elm_lang$core$Maybe$Nothing)) : (_elm_lang$core$Native_Utils.eq(p_, q) ? _elm_lang$core$Maybe$Just(p_) : (_elm_lang$core$Native_Utils.eq(p, q_) ? _elm_lang$core$Maybe$Just(p) : _elm_lang$core$Maybe$Nothing));
+		} else {
+			var _p13 = {ctor: '_Tuple2', _0: pqXs / tDenominator, _1: pqXr / uDenominator};
+			var t = _p13._0;
+			var u = _p13._1;
+			if (((_elm_lang$core$Native_Utils.cmp(0, t) < 1) && (_elm_lang$core$Native_Utils.cmp(t, 1) < 1)) && ((_elm_lang$core$Native_Utils.cmp(0, u) < 1) && (_elm_lang$core$Native_Utils.cmp(u, 1) < 1))) {
+				var intersection = (_elm_lang$core$Native_Utils.cmp(
+					A2(_elm_lang$core$Basics$min, t, 1 - t),
+					A2(_elm_lang$core$Basics$min, u, 1 - u)) < 1) ? A2(_opensolid$geometry$OpenSolid_LineSegment2d$interpolate, lineSegment1, t) : A2(_opensolid$geometry$OpenSolid_LineSegment2d$interpolate, lineSegment2, u);
+				return _elm_lang$core$Maybe$Just(intersection);
+			} else {
+				return _elm_lang$core$Maybe$Nothing;
+			}
+		}
+	});
+var _opensolid$geometry$OpenSolid_LineSegment2d$boundingBox = function (lineSegment) {
+	var _p14 = _opensolid$geometry$OpenSolid_LineSegment2d$endpoints(lineSegment);
+	var p1 = _p14._0;
+	var p2 = _p14._1;
+	return A2(_opensolid$geometry$OpenSolid_Point2d$hull, p1, p2);
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$endPoint = function (_p15) {
+	var _p16 = _p15;
+	return _p16._0._1;
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$startPoint = function (_p17) {
+	var _p18 = _p17;
+	return _p18._0._0;
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$fromEndpoints = _opensolid$geometry$OpenSolid_Geometry_Internal$LineSegment2d;
+var _opensolid$geometry$OpenSolid_LineSegment2d$from = F2(
+	function (startPoint, endPoint) {
+		return _opensolid$geometry$OpenSolid_LineSegment2d$fromEndpoints(
+			{ctor: '_Tuple2', _0: startPoint, _1: endPoint});
+	});
+var _opensolid$geometry$OpenSolid_LineSegment2d$along = F3(
+	function (axis, start, end) {
+		return _opensolid$geometry$OpenSolid_LineSegment2d$fromEndpoints(
+			{
+				ctor: '_Tuple2',
+				_0: A2(_opensolid$geometry$OpenSolid_Point2d$along, axis, start),
+				_1: A2(_opensolid$geometry$OpenSolid_Point2d$along, axis, end)
+			});
+	});
+var _opensolid$geometry$OpenSolid_LineSegment2d$reverse = function (lineSegment) {
+	var _p19 = _opensolid$geometry$OpenSolid_LineSegment2d$endpoints(lineSegment);
+	var p1 = _p19._0;
+	var p2 = _p19._1;
+	return _opensolid$geometry$OpenSolid_LineSegment2d$fromEndpoints(
+		{ctor: '_Tuple2', _0: p2, _1: p1});
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$mapEndpoints = F2(
+	function ($function, lineSegment) {
+		var _p20 = _opensolid$geometry$OpenSolid_LineSegment2d$endpoints(lineSegment);
+		var p1 = _p20._0;
+		var p2 = _p20._1;
+		return _opensolid$geometry$OpenSolid_LineSegment2d$fromEndpoints(
+			{
+				ctor: '_Tuple2',
+				_0: $function(p1),
+				_1: $function(p2)
+			});
+	});
+var _opensolid$geometry$OpenSolid_LineSegment2d$scaleAbout = F2(
+	function (point, scale) {
+		return _opensolid$geometry$OpenSolid_LineSegment2d$mapEndpoints(
+			A2(_opensolid$geometry$OpenSolid_Point2d$scaleAbout, point, scale));
+	});
+var _opensolid$geometry$OpenSolid_LineSegment2d$rotateAround = F2(
+	function (centerPoint, angle) {
+		return _opensolid$geometry$OpenSolid_LineSegment2d$mapEndpoints(
+			A2(_opensolid$geometry$OpenSolid_Point2d$rotateAround, centerPoint, angle));
+	});
+var _opensolid$geometry$OpenSolid_LineSegment2d$translateBy = function (vector) {
+	return _opensolid$geometry$OpenSolid_LineSegment2d$mapEndpoints(
+		_opensolid$geometry$OpenSolid_Point2d$translateBy(vector));
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$mirrorAcross = function (axis) {
+	return _opensolid$geometry$OpenSolid_LineSegment2d$mapEndpoints(
+		_opensolid$geometry$OpenSolid_Point2d$mirrorAcross(axis));
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$projectOnto = function (axis) {
+	return _opensolid$geometry$OpenSolid_LineSegment2d$mapEndpoints(
+		_opensolid$geometry$OpenSolid_Point2d$projectOnto(axis));
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$relativeTo = function (frame) {
+	return _opensolid$geometry$OpenSolid_LineSegment2d$mapEndpoints(
+		_opensolid$geometry$OpenSolid_Point2d$relativeTo(frame));
+};
+var _opensolid$geometry$OpenSolid_LineSegment2d$placeIn = function (frame) {
+	return _opensolid$geometry$OpenSolid_LineSegment2d$mapEndpoints(
+		_opensolid$geometry$OpenSolid_Point2d$placeIn(frame));
+};

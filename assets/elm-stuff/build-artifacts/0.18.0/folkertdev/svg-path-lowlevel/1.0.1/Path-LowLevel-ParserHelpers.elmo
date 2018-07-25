@@ -1,0 +1,424 @@
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers_ops = _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers_ops || {};
+_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers_ops['|-'] = F2(
+	function (ignoreParser, keepParser) {
+		return A3(
+			_elm_tools$parser$Parser$map2,
+			F2(
+				function (_p0, keep) {
+					return keep;
+				}),
+			ignoreParser,
+			keepParser);
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$optional = function (parser) {
+	return _elm_tools$parser$Parser$oneOf(
+		{
+			ctor: '::',
+			_0: A2(
+				_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers_ops['|-'],
+				parser,
+				_elm_tools$parser$Parser$succeed(
+					{ctor: '_Tuple0'})),
+			_1: {
+				ctor: '::',
+				_0: _elm_tools$parser$Parser$succeed(
+					{ctor: '_Tuple0'}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault = F2(
+	function ($default, parser) {
+		return _elm_tools$parser$Parser$oneOf(
+			{
+				ctor: '::',
+				_0: parser,
+				_1: {
+					ctor: '::',
+					_0: _elm_tools$parser$Parser$succeed($default),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$try = function (parser) {
+	return A3(
+		_elm_tools$parser$Parser$delayedCommitMap,
+		_elm_lang$core$Basics$always,
+		parser,
+		_elm_tools$parser$Parser$succeed(
+			{ctor: '_Tuple0'}));
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$applySign = F2(
+	function (sign, num) {
+		var _p1 = sign;
+		if (_p1.ctor === 'Plus') {
+			return num;
+		} else {
+			return 0 - num;
+		}
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$flag = A2(
+	_elm_tools$parser$Parser$inContext,
+	'flag',
+	_elm_tools$parser$Parser$oneOf(
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_tools$parser$Parser$map,
+				function (_p2) {
+					return 1;
+				},
+				_elm_tools$parser$Parser$symbol('1')),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_tools$parser$Parser$map,
+					function (_p3) {
+						return 0;
+					},
+					_elm_tools$parser$Parser$symbol('0')),
+				_1: {ctor: '[]'}
+			}
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace = function ($char) {
+	return _elm_lang$core$Native_Utils.eq(
+		$char,
+		_elm_lang$core$Native_Utils.chr(' ')) || (_elm_lang$core$Native_Utils.eq(
+		$char,
+		_elm_lang$core$Native_Utils.chr('\t')) || (_elm_lang$core$Native_Utils.eq(
+		$char,
+		_elm_lang$core$Native_Utils.chr('\r')) || _elm_lang$core$Native_Utils.eq(
+		$char,
+		_elm_lang$core$Native_Utils.chr('\n'))));
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$wsp = A2(
+	_elm_tools$parser$Parser$inContext,
+	'whitespace',
+	_elm_tools$parser$Parser$oneOf(
+		{
+			ctor: '::',
+			_0: _elm_tools$parser$Parser$symbol(' '),
+			_1: {
+				ctor: '::',
+				_0: _elm_tools$parser$Parser$symbol('\t'),
+				_1: {
+					ctor: '::',
+					_0: _elm_tools$parser$Parser$symbol('\r'),
+					_1: {
+						ctor: '::',
+						_0: _elm_tools$parser$Parser$symbol('\n'),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$comma = _elm_tools$parser$Parser$symbol(',');
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp = A2(
+	_elm_tools$parser$Parser$inContext,
+	'comma or whitespace',
+	_elm_tools$parser$Parser$oneOf(
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_tools$parser$Parser_ops['|.'],
+				A2(
+					_elm_tools$parser$Parser_ops['|.'],
+					A2(
+						_elm_tools$parser$Parser_ops['|.'],
+						_elm_tools$parser$Parser$succeed(
+							{ctor: '_Tuple0'}),
+						A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$oneOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)),
+					A2(
+						_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+						{ctor: '_Tuple0'},
+						_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$comma)),
+				A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$zeroOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_tools$parser$Parser_ops['|.'],
+					A2(
+						_elm_tools$parser$Parser_ops['|.'],
+						_elm_tools$parser$Parser$succeed(
+							{ctor: '_Tuple0'}),
+						_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$comma),
+					A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$zeroOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)),
+				_1: {ctor: '[]'}
+			}
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimitedEndForbidden = F3(
+	function (parseItem, delimiter, revItems) {
+		var chompRest = function (item) {
+			return A3(
+				_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimitedEndForbidden,
+				parseItem,
+				delimiter,
+				{ctor: '::', _0: item, _1: revItems});
+		};
+		return _elm_tools$parser$Parser$oneOf(
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_tools$parser$Parser$delayedCommit,
+					delimiter,
+					A2(_elm_tools$parser$Parser$andThen, chompRest, parseItem)),
+				_1: {
+					ctor: '::',
+					_0: _elm_tools$parser$Parser$succeed(
+						_elm_lang$core$List$reverse(revItems)),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited = function (_p4) {
+	var _p5 = _p4;
+	var _p6 = _p5.item;
+	return _elm_tools$parser$Parser$oneOf(
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_tools$parser$Parser$andThen,
+				function (first) {
+					return A3(
+						_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimitedEndForbidden,
+						_p6,
+						_p5.delimiter,
+						{
+							ctor: '::',
+							_0: first,
+							_1: {ctor: '[]'}
+						});
+				},
+				_p6),
+			_1: {
+				ctor: '::',
+				_0: _elm_tools$parser$Parser$succeed(
+					{ctor: '[]'}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$resultToParser = function (result) {
+	var _p7 = result;
+	if (_p7.ctor === 'Err') {
+		return _elm_tools$parser$Parser$fail(_p7._0);
+	} else {
+		return _elm_tools$parser$Parser$succeed(_p7._0);
+	}
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$digitSequence = A2(
+	_elm_tools$parser$Parser$inContext,
+	'digit sequence',
+	A2(
+		_elm_tools$parser$Parser$andThen,
+		function (_p8) {
+			return _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$resultToParser(
+				_elm_lang$core$String$toInt(_p8));
+		},
+		A2(_elm_tools$parser$Parser$keep, _elm_tools$parser$Parser$oneOrMore, _elm_lang$core$Char$isDigit)));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$integerConstant = A2(_elm_tools$parser$Parser$inContext, 'integer constant', _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$digitSequence);
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$applyExponent = F2(
+	function ($float, _p9) {
+		var _p10 = _p9;
+		return _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$resultToParser(
+			_elm_lang$core$String$toFloat(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString($float),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'e',
+						_elm_lang$core$Basics$toString(_p10._0)))));
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$join = _elm_tools$parser$Parser$andThen(_elm_lang$core$Basics$identity);
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$fractionalConstant = function () {
+	var helper = F2(
+		function (left, right) {
+			return _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$resultToParser(
+				_elm_lang$core$String$toFloat(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(left),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'.',
+							_elm_lang$core$Basics$toString(right)))));
+		});
+	return _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$join(
+		_elm_tools$parser$Parser$oneOf(
+			{
+				ctor: '::',
+				_0: A3(
+					_elm_tools$parser$Parser$delayedCommitMap,
+					helper,
+					A2(
+						_elm_tools$parser$Parser_ops['|.'],
+						A2(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault, 0, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$digitSequence),
+						_elm_tools$parser$Parser$symbol('.')),
+					_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$digitSequence),
+				_1: {
+					ctor: '::',
+					_0: A3(
+						_elm_tools$parser$Parser$delayedCommitMap,
+						helper,
+						A2(
+							_elm_tools$parser$Parser_ops['|.'],
+							A2(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault, 0, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$digitSequence),
+							_elm_tools$parser$Parser$symbol('.')),
+						_elm_tools$parser$Parser$succeed(0)),
+					_1: {ctor: '[]'}
+				}
+			}));
+}();
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$Minus = {ctor: 'Minus'};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$Plus = {ctor: 'Plus'};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$sign = _elm_tools$parser$Parser$oneOf(
+	{
+		ctor: '::',
+		_0: A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers_ops['|-'],
+			_elm_tools$parser$Parser$symbol('-'),
+			_elm_tools$parser$Parser$succeed(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$Minus)),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers_ops['|-'],
+				_elm_tools$parser$Parser$symbol('+'),
+				_elm_tools$parser$Parser$succeed(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$Plus)),
+			_1: {ctor: '[]'}
+		}
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$Exponent = function (a) {
+	return {ctor: 'Exponent', _0: a};
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$exponent = A2(
+	_elm_tools$parser$Parser$map,
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$Exponent,
+	A2(
+		_elm_tools$parser$Parser_ops['|='],
+		A2(
+			_elm_tools$parser$Parser_ops['|='],
+			A2(
+				_elm_tools$parser$Parser_ops['|.'],
+				_elm_tools$parser$Parser$succeed(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$applySign),
+				_elm_tools$parser$Parser$oneOf(
+					{
+						ctor: '::',
+						_0: _elm_tools$parser$Parser$symbol('e'),
+						_1: {
+							ctor: '::',
+							_0: _elm_tools$parser$Parser$symbol('E'),
+							_1: {ctor: '[]'}
+						}
+					})),
+			A2(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$Plus, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$sign)),
+		_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$digitSequence));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$floatingPointConstant = A2(
+	_elm_tools$parser$Parser$inContext,
+	'floating point constant',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$join(
+		_elm_tools$parser$Parser$oneOf(
+			{
+				ctor: '::',
+				_0: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$try(
+					A2(
+						_elm_tools$parser$Parser_ops['|='],
+						A2(
+							_elm_tools$parser$Parser_ops['|='],
+							_elm_tools$parser$Parser$succeed(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$applyExponent),
+							_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$fractionalConstant),
+						A2(
+							_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+							_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$Exponent(0),
+							_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$exponent))),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_tools$parser$Parser_ops['|='],
+						A2(
+							_elm_tools$parser$Parser_ops['|='],
+							_elm_tools$parser$Parser$succeed(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$applyExponent),
+							A2(_elm_tools$parser$Parser$map, _elm_lang$core$Basics$toFloat, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$digitSequence)),
+						A2(
+							_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+							_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$Exponent(0),
+							_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$exponent)),
+					_1: {ctor: '[]'}
+				}
+			})));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$number = _elm_tools$parser$Parser$oneOf(
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_tools$parser$Parser_ops['|='],
+			A2(
+				_elm_tools$parser$Parser_ops['|='],
+				_elm_tools$parser$Parser$succeed(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$applySign),
+				A2(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$Plus, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$sign)),
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$floatingPointConstant),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_tools$parser$Parser$map,
+				_elm_lang$core$Basics$toFloat,
+				A2(
+					_elm_tools$parser$Parser_ops['|='],
+					A2(
+						_elm_tools$parser$Parser_ops['|='],
+						_elm_tools$parser$Parser$succeed(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$applySign),
+						A2(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$Plus, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$sign)),
+					_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$integerConstant)),
+			_1: {ctor: '[]'}
+		}
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair = A2(
+	_elm_tools$parser$Parser$inContext,
+	'coordinate pair',
+	A2(
+		_elm_tools$parser$Parser_ops['|='],
+		A2(
+			_elm_tools$parser$Parser_ops['|.'],
+			A2(
+				_elm_tools$parser$Parser_ops['|='],
+				_elm_tools$parser$Parser$succeed(
+					F2(
+						function (v0, v1) {
+							return {ctor: '_Tuple2', _0: v0, _1: v1};
+						})),
+				_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$number),
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$optional(_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)),
+		_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$number));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$nonNegativeNumber = A2(
+	_elm_tools$parser$Parser$inContext,
+	'non-negative number',
+	_elm_tools$parser$Parser$oneOf(
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_tools$parser$Parser_ops['|='],
+				A2(
+					_elm_tools$parser$Parser_ops['|.'],
+					_elm_tools$parser$Parser$succeed(_elm_lang$core$Basics$identity),
+					A2(
+						_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+						{ctor: '_Tuple0'},
+						_elm_tools$parser$Parser$symbol('+'))),
+				_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$floatingPointConstant),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_tools$parser$Parser$map,
+					_elm_lang$core$Basics$toFloat,
+					A2(
+						_elm_tools$parser$Parser_ops['|='],
+						A2(
+							_elm_tools$parser$Parser_ops['|.'],
+							_elm_tools$parser$Parser$succeed(_elm_lang$core$Basics$identity),
+							A2(
+								_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+								{ctor: '_Tuple0'},
+								_elm_tools$parser$Parser$symbol('+'))),
+						_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$integerConstant)),
+				_1: {ctor: '[]'}
+			}
+		}));

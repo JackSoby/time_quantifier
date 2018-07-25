@@ -1,0 +1,1233 @@
+var _folkertdev$one_true_path_experiment$Curve$repeatFinalPoint = function (items) {
+	var _p0 = _elm_community$list_extra$List_Extra$last(items);
+	if (_p0.ctor === 'Nothing') {
+		return items;
+	} else {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			items,
+			{
+				ctor: '::',
+				_0: _p0._0,
+				_1: {ctor: '[]'}
+			});
+	}
+};
+var _folkertdev$one_true_path_experiment$Curve$repeatFirstPoint = function (items) {
+	var _p1 = items;
+	if (_p1.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		return {ctor: '::', _0: _p1._0, _1: items};
+	}
+};
+var _folkertdev$one_true_path_experiment$Curve$natural = function (points) {
+	var _p2 = points;
+	if (_p2.ctor === '[]') {
+		return _folkertdev$one_true_path_experiment$SubPath$empty;
+	} else {
+		if (_p2._1.ctor === '[]') {
+			return _folkertdev$one_true_path_experiment$SubPath$empty;
+		} else {
+			if (_p2._1._1.ctor === '[]') {
+				return A2(
+					_folkertdev$one_true_path_experiment$SubPath$subpath,
+					_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p2._0),
+					{
+						ctor: '::',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+							{
+								ctor: '::',
+								_0: _p2._1._0,
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					});
+			} else {
+				return A2(
+					_folkertdev$one_true_path_experiment$SubPath$subpath,
+					_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p2._0),
+					{
+						ctor: '::',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+							_folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$naturalControlPoints(points)),
+						_1: {ctor: '[]'}
+					});
+			}
+		}
+	}
+};
+var _folkertdev$one_true_path_experiment$Curve$toH = F2(
+	function (h0, h1) {
+		return _elm_lang$core$Native_Utils.eq(h0, 0) ? ((_elm_lang$core$Native_Utils.cmp(h1, 0) < 0) ? (0 * -1) : h1) : h0;
+	});
+var _folkertdev$one_true_path_experiment$Curve$monotonePoint = F4(
+	function (_p4, _p3, t0, t1) {
+		var _p5 = _p4;
+		var _p9 = _p5._0;
+		var _p6 = _p3;
+		var _p8 = _p6._1;
+		var _p7 = _p6._0;
+		var dx = (_p7 - _p9) / 3;
+		return {
+			ctor: '_Tuple3',
+			_0: {ctor: '_Tuple2', _0: _p9 + dx, _1: _p5._1 + (dx * t0)},
+			_1: {ctor: '_Tuple2', _0: _p7 - dx, _1: _p8 - (dx * t1)},
+			_2: {ctor: '_Tuple2', _0: _p7, _1: _p8}
+		};
+	});
+var _folkertdev$one_true_path_experiment$Curve$slope2 = F3(
+	function (p0, p1, t) {
+		var _p10 = A2(_Zinggi$elm_webgl_math$Vector2$sub, p0, p1);
+		var dx = _p10._0;
+		var dy = _p10._1;
+		return (!_elm_lang$core$Native_Utils.eq(dx, 0)) ? ((((3 * dy) / dx) - t) / 2) : t;
+	});
+var _folkertdev$one_true_path_experiment$Curve$catmullRomDistance = F3(
+	function (alpha, p1, p2) {
+		var l23_2a = Math.pow(
+			_Zinggi$elm_webgl_math$Vector2$lengthSquared(
+				A2(_Zinggi$elm_webgl_math$Vector2$sub, p1, p2)),
+			alpha);
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Basics$sqrt(l23_2a),
+			_1: l23_2a
+		};
+	});
+var _folkertdev$one_true_path_experiment$Curve$cardinalPoint = F5(
+	function (k, p0, p1, p2, p) {
+		return {
+			ctor: '_Tuple3',
+			_0: A2(
+				_Zinggi$elm_webgl_math$Vector2$add,
+				p1,
+				A2(
+					_Zinggi$elm_webgl_math$Vector2$scale,
+					k,
+					A2(_Zinggi$elm_webgl_math$Vector2$sub, p2, p0))),
+			_1: A2(
+				_Zinggi$elm_webgl_math$Vector2$add,
+				p2,
+				A2(
+					_Zinggi$elm_webgl_math$Vector2$scale,
+					k,
+					A2(_Zinggi$elm_webgl_math$Vector2$sub, p1, p))),
+			_2: p2
+		};
+	});
+var _folkertdev$one_true_path_experiment$Curve$cardinal = F2(
+	function (tension, points) {
+		var k = (1 - tension) / 6;
+		var helper = function (points) {
+			var _p11 = points;
+			if (((_p11.ctor === '::') && (_p11._1.ctor === '::')) && (_p11._1._1.ctor === '::')) {
+				if (_p11._1._1._1.ctor === '::') {
+					var _p14 = _p11._1._1._1._0;
+					var _p13 = _p11._1._1._0;
+					var _p12 = _p11._1._0;
+					return {
+						ctor: '::',
+						_0: A5(_folkertdev$one_true_path_experiment$Curve$cardinalPoint, k, _p11._0, _p12, _p13, _p14),
+						_1: helper(
+							{
+								ctor: '::',
+								_0: _p12,
+								_1: {
+									ctor: '::',
+									_0: _p13,
+									_1: {ctor: '::', _0: _p14, _1: _p11._1._1._1._1}
+								}
+							})
+					};
+				} else {
+					var _p15 = _p11._1._0;
+					return {
+						ctor: '::',
+						_0: A5(_folkertdev$one_true_path_experiment$Curve$cardinalPoint, k, _p11._0, _p15, _p11._1._1._0, _p15),
+						_1: {ctor: '[]'}
+					};
+				}
+			} else {
+				return {ctor: '[]'};
+			}
+		};
+		var _p16 = points;
+		if ((_p16.ctor === '::') && (_p16._1.ctor === '::')) {
+			if (_p16._1._1.ctor === '[]') {
+				return A2(
+					_folkertdev$one_true_path_experiment$SubPath$subpath,
+					_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p16._0),
+					{
+						ctor: '::',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+							{
+								ctor: '::',
+								_0: _p16._1._0,
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					});
+			} else {
+				var _p18 = _p16._1._0;
+				var _p17 = _p16._0;
+				return A2(
+					_folkertdev$one_true_path_experiment$SubPath$subpath,
+					_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p17),
+					{
+						ctor: '::',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+							{
+								ctor: '::',
+								_0: A5(_folkertdev$one_true_path_experiment$Curve$cardinalPoint, k, _p17, _p18, _p18, _p16._1._1._0),
+								_1: helper(points)
+							}),
+						_1: {ctor: '[]'}
+					});
+			}
+		} else {
+			return _folkertdev$one_true_path_experiment$SubPath$empty;
+		}
+	});
+var _folkertdev$one_true_path_experiment$Curve$cardinalOpen = F2(
+	function (tension, points) {
+		var k = (1 - tension) / 6;
+		var _p19 = points;
+		if ((((_p19.ctor === '::') && (_p19._1.ctor === '::')) && (_p19._1._1.ctor === '::')) && (_p19._1._1._1.ctor === '::')) {
+			var _p23 = _p19._1._1._1._1;
+			var _p22 = _p19._1._1._1._0;
+			var _p21 = _p19._1._1._0;
+			var _p20 = _p19._1._0;
+			return A2(
+				_folkertdev$one_true_path_experiment$SubPath$subpath,
+				_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p20),
+				_elm_lang$core$List$singleton(
+					_folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+						A5(
+							_elm_lang$core$List$map4,
+							_folkertdev$one_true_path_experiment$Curve$cardinalPoint(k),
+							{
+								ctor: '::',
+								_0: _p19._0,
+								_1: {
+									ctor: '::',
+									_0: _p20,
+									_1: {
+										ctor: '::',
+										_0: _p21,
+										_1: {ctor: '::', _0: _p22, _1: _p23}
+									}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _p20,
+								_1: {
+									ctor: '::',
+									_0: _p21,
+									_1: {ctor: '::', _0: _p22, _1: _p23}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _p21,
+								_1: {ctor: '::', _0: _p22, _1: _p23}
+							},
+							{ctor: '::', _0: _p22, _1: _p23}))));
+		} else {
+			return _folkertdev$one_true_path_experiment$SubPath$empty;
+		}
+	});
+var _folkertdev$one_true_path_experiment$Curve$cardinalClosed = F2(
+	function (tension, points) {
+		var k = (1 - tension) / 6;
+		var helper = F2(
+			function (ending, points) {
+				var _p24 = points;
+				if (((_p24.ctor === '::') && (_p24._1.ctor === '::')) && (_p24._1._1.ctor === '::')) {
+					if (_p24._1._1._1.ctor === '[]') {
+						return A3(ending, _p24._0, _p24._1._0, _p24._1._1._0);
+					} else {
+						var _p27 = _p24._1._1._1._0;
+						var _p26 = _p24._1._1._0;
+						var _p25 = _p24._1._0;
+						return {
+							ctor: '::',
+							_0: A5(_folkertdev$one_true_path_experiment$Curve$cardinalPoint, k, _p24._0, _p25, _p26, _p27),
+							_1: A2(
+								helper,
+								ending,
+								{
+									ctor: '::',
+									_0: _p25,
+									_1: {
+										ctor: '::',
+										_0: _p26,
+										_1: {ctor: '::', _0: _p27, _1: _p24._1._1._1._1}
+									}
+								})
+						};
+					}
+				} else {
+					return {ctor: '[]'};
+				}
+			});
+		var _p28 = points;
+		if (_p28.ctor === '[]') {
+			return _folkertdev$one_true_path_experiment$SubPath$empty;
+		} else {
+			if (_p28._1.ctor === '[]') {
+				return A2(
+					_folkertdev$one_true_path_experiment$SubPath$subpath,
+					_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p28._0),
+					{
+						ctor: '::',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$closePath,
+						_1: {ctor: '[]'}
+					});
+			} else {
+				if (_p28._1._1.ctor === '[]') {
+					return A2(
+						_folkertdev$one_true_path_experiment$SubPath$subpath,
+						_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p28._1._0),
+						{
+							ctor: '::',
+							_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+								{
+									ctor: '::',
+									_0: _p28._0,
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: _folkertdev$one_true_path_experiment$LowLevel_Command$closePath,
+								_1: {ctor: '[]'}
+							}
+						});
+				} else {
+					var _p30 = _p28._1._0;
+					var _p29 = _p28._0;
+					var end = F3(
+						function (p0, p1, p2) {
+							return {
+								ctor: '::',
+								_0: A5(_folkertdev$one_true_path_experiment$Curve$cardinalPoint, k, p0, p1, p2, _p29),
+								_1: {
+									ctor: '::',
+									_0: A5(_folkertdev$one_true_path_experiment$Curve$cardinalPoint, k, p1, p2, _p29, _p30),
+									_1: {
+										ctor: '::',
+										_0: A5(_folkertdev$one_true_path_experiment$Curve$cardinalPoint, k, p2, _p29, _p30, _p28._1._1._0),
+										_1: {ctor: '[]'}
+									}
+								}
+							};
+						});
+					return A2(
+						_folkertdev$one_true_path_experiment$SubPath$subpath,
+						_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p30),
+						{
+							ctor: '::',
+							_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+								A2(helper, end, points)),
+							_1: {ctor: '[]'}
+						});
+				}
+			}
+		}
+	});
+var _folkertdev$one_true_path_experiment$Curve$interpolateVec2 = F3(
+	function (t, a, b) {
+		return A2(
+			_Zinggi$elm_webgl_math$Vector2$add,
+			A2(_Zinggi$elm_webgl_math$Vector2$scale, t, a),
+			A2(_Zinggi$elm_webgl_math$Vector2$scale, 1 - t, b));
+	});
+var _folkertdev$one_true_path_experiment$Curve$basisPoint = F3(
+	function (p0, p1, p) {
+		return {
+			ctor: '_Tuple3',
+			_0: A2(
+				_Zinggi$elm_webgl_math$Vector2$divideBy,
+				3,
+				A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					p1,
+					A2(_Zinggi$elm_webgl_math$Vector2$scale, 2, p0))),
+			_1: A2(
+				_Zinggi$elm_webgl_math$Vector2$divideBy,
+				3,
+				A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					p0,
+					A2(_Zinggi$elm_webgl_math$Vector2$scale, 2, p1))),
+			_2: A2(
+				_Zinggi$elm_webgl_math$Vector2$divideBy,
+				6,
+				A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					p,
+					A2(
+						_Zinggi$elm_webgl_math$Vector2$add,
+						p0,
+						A2(_Zinggi$elm_webgl_math$Vector2$scale, 4, p1))))
+		};
+	});
+var _folkertdev$one_true_path_experiment$Curve$basis = function (points) {
+	var commonCase = function (points) {
+		var _p31 = points;
+		if ((_p31.ctor === '::') && (_p31._1.ctor === '::')) {
+			if (_p31._1._1.ctor === '[]') {
+				var _p32 = _p31._1._0;
+				return {
+					ctor: '::',
+					_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+						{
+							ctor: '::',
+							_0: A3(_folkertdev$one_true_path_experiment$Curve$basisPoint, _p31._0, _p32, _p32),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+							{
+								ctor: '::',
+								_0: _p32,
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				};
+			} else {
+				var _p34 = _p31._1._0;
+				var _p33 = _p31._1._1._0;
+				return {
+					ctor: '::',
+					_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+						{
+							ctor: '::',
+							_0: A3(_folkertdev$one_true_path_experiment$Curve$basisPoint, _p31._0, _p34, _p33),
+							_1: {ctor: '[]'}
+						}),
+					_1: commonCase(
+						{
+							ctor: '::',
+							_0: _p34,
+							_1: {ctor: '::', _0: _p33, _1: _p31._1._1._1}
+						})
+				};
+			}
+		} else {
+			return {ctor: '[]'};
+		}
+	};
+	var _p35 = points;
+	if ((_p35.ctor === '::') && (_p35._1.ctor === '::')) {
+		if (_p35._1._1.ctor === '::') {
+			var _p36 = _p35._0;
+			var toFirst = A2(
+				_Zinggi$elm_webgl_math$Vector2$divideBy,
+				6,
+				A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					_p35._1._0,
+					A2(_Zinggi$elm_webgl_math$Vector2$scale, 5, _p36)));
+			return A2(
+				_folkertdev$one_true_path_experiment$SubPath$subpath,
+				_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p36),
+				{
+					ctor: '::',
+					_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+						{
+							ctor: '::',
+							_0: toFirst,
+							_1: {ctor: '[]'}
+						}),
+					_1: commonCase(points)
+				});
+		} else {
+			return A2(
+				_folkertdev$one_true_path_experiment$SubPath$subpath,
+				_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p35._0),
+				{
+					ctor: '::',
+					_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+						{
+							ctor: '::',
+							_0: _p35._1._0,
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				});
+		}
+	} else {
+		return _folkertdev$one_true_path_experiment$SubPath$empty;
+	}
+};
+var _folkertdev$one_true_path_experiment$Curve$bundle = F2(
+	function (beta, points) {
+		var _p37 = points;
+		if (_p37.ctor === '[]') {
+			return _folkertdev$one_true_path_experiment$SubPath$empty;
+		} else {
+			var _p38 = _p37._0;
+			var deltas = A2(
+				_Zinggi$elm_webgl_math$Vector2$sub,
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					_p38,
+					_elm_community$list_extra$List_Extra$last(_p37._1)),
+				_p38);
+			var j = _elm_lang$core$Basics$toFloat(
+				_elm_lang$core$List$length(points) - 1);
+			var helper = F2(
+				function (i, p) {
+					var t = _elm_lang$core$Basics$toFloat(i) / j;
+					return A3(
+						_folkertdev$one_true_path_experiment$Curve$interpolateVec2,
+						beta,
+						p,
+						A2(
+							_Zinggi$elm_webgl_math$Vector2$add,
+							_p38,
+							A2(_Zinggi$elm_webgl_math$Vector2$scale, t, deltas)));
+				});
+			return _folkertdev$one_true_path_experiment$Curve$basis(
+				A2(_elm_lang$core$List$indexedMap, helper, points));
+		}
+	});
+var _folkertdev$one_true_path_experiment$Curve$basisClosed = function (points) {
+	var commonCase = F2(
+		function (close, points) {
+			var _p39 = points;
+			if ((_p39.ctor === '::') && (_p39._1.ctor === '::')) {
+				if (_p39._1._1.ctor === '[]') {
+					return A2(close, _p39._0, _p39._1._0);
+				} else {
+					var _p41 = _p39._1._0;
+					var _p40 = _p39._1._1._0;
+					return {
+						ctor: '::',
+						_0: A3(_folkertdev$one_true_path_experiment$Curve$basisPoint, _p39._0, _p41, _p40),
+						_1: A2(
+							commonCase,
+							close,
+							{
+								ctor: '::',
+								_0: _p41,
+								_1: {ctor: '::', _0: _p40, _1: _p39._1._1._1}
+							})
+					};
+				}
+			} else {
+				return {ctor: '[]'};
+			}
+		});
+	var _p42 = points;
+	if ((_p42.ctor === '::') && (_p42._1.ctor === '::')) {
+		if (_p42._1._1.ctor === '::') {
+			var _p46 = _p42._1._1._0;
+			var _p45 = _p42._1._0;
+			var _p44 = _p42._0;
+			var closing = F2(
+				function (p0, p1) {
+					return {
+						ctor: '::',
+						_0: A3(_folkertdev$one_true_path_experiment$Curve$basisPoint, p0, p1, _p44),
+						_1: {
+							ctor: '::',
+							_0: A3(_folkertdev$one_true_path_experiment$Curve$basisPoint, p1, _p44, _p45),
+							_1: {
+								ctor: '::',
+								_0: A3(_folkertdev$one_true_path_experiment$Curve$basisPoint, _p44, _p45, _p46),
+								_1: {ctor: '[]'}
+							}
+						}
+					};
+				});
+			var _p43 = {ctor: '_Tuple3', _0: _p44, _1: _p45, _2: _p46};
+			var p0 = _p43._0;
+			var p1 = _p43._1;
+			var p = _p43._2;
+			var start = A2(
+				_Zinggi$elm_webgl_math$Vector2$divideBy,
+				6,
+				A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					p,
+					A2(
+						_Zinggi$elm_webgl_math$Vector2$add,
+						A2(_Zinggi$elm_webgl_math$Vector2$scale, 4, p1),
+						p0)));
+			return A2(
+				_folkertdev$one_true_path_experiment$SubPath$subpath,
+				_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(start),
+				{
+					ctor: '::',
+					_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+						A2(
+							commonCase,
+							closing,
+							{
+								ctor: '::',
+								_0: _p45,
+								_1: {ctor: '::', _0: _p46, _1: _p42._1._1._1}
+							})),
+					_1: {ctor: '[]'}
+				});
+		} else {
+			return A2(
+				_folkertdev$one_true_path_experiment$SubPath$subpath,
+				_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p42._0),
+				{
+					ctor: '::',
+					_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+						{
+							ctor: '::',
+							_0: _p42._1._0,
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				});
+		}
+	} else {
+		return _folkertdev$one_true_path_experiment$SubPath$empty;
+	}
+};
+var _folkertdev$one_true_path_experiment$Curve$basisOpen = function (points) {
+	var helper = function (points) {
+		var _p47 = points;
+		if (((_p47.ctor === '::') && (_p47._1.ctor === '::')) && (_p47._1._1.ctor === '::')) {
+			var _p49 = _p47._1._0;
+			var _p48 = _p47._1._1._0;
+			return {
+				ctor: '::',
+				_0: A3(_folkertdev$one_true_path_experiment$Curve$basisPoint, _p47._0, _p49, _p48),
+				_1: helper(
+					{
+						ctor: '::',
+						_0: _p49,
+						_1: {ctor: '::', _0: _p48, _1: _p47._1._1._1}
+					})
+			};
+		} else {
+			return {ctor: '[]'};
+		}
+	};
+	var _p50 = points;
+	if (((_p50.ctor === '::') && (_p50._1.ctor === '::')) && (_p50._1._1.ctor === '::')) {
+		var _p52 = _p50._1._0;
+		var _p51 = _p50._1._1._0;
+		var start = A2(
+			_Zinggi$elm_webgl_math$Vector2$divideBy,
+			6,
+			A2(
+				_Zinggi$elm_webgl_math$Vector2$add,
+				_p51,
+				A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					A2(_Zinggi$elm_webgl_math$Vector2$scale, 4, _p52),
+					_p50._0)));
+		return A2(
+			_folkertdev$one_true_path_experiment$SubPath$subpath,
+			_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(start),
+			{
+				ctor: '::',
+				_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+					helper(
+						{
+							ctor: '::',
+							_0: _p52,
+							_1: {ctor: '::', _0: _p51, _1: _p50._1._1._1}
+						})),
+				_1: {ctor: '[]'}
+			});
+	} else {
+		return _folkertdev$one_true_path_experiment$SubPath$empty;
+	}
+};
+var _folkertdev$one_true_path_experiment$Curve$toPolarWithCenter = function (_p53) {
+	var _p54 = _p53;
+	return _elm_lang$core$List$map(
+		function (_p55) {
+			var _p56 = _p55;
+			var _p58 = _p56._1;
+			var _p57 = _p56._0;
+			return {
+				ctor: '_Tuple2',
+				_0: (_p58 * _elm_lang$core$Basics$sin(_p57)) + _p54._0,
+				_1: ((0 - _p58) * _elm_lang$core$Basics$cos(_p57)) + _p54._1
+			};
+		});
+};
+var _folkertdev$one_true_path_experiment$Curve$linearClosed = function (points) {
+	var _p59 = points;
+	if (_p59.ctor === '[]') {
+		return _folkertdev$one_true_path_experiment$SubPath$empty;
+	} else {
+		return A2(
+			_folkertdev$one_true_path_experiment$SubPath$subpath,
+			_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p59._0),
+			{
+				ctor: '::',
+				_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(_p59._1),
+				_1: {
+					ctor: '::',
+					_0: _folkertdev$one_true_path_experiment$LowLevel_Command$closePath,
+					_1: {ctor: '[]'}
+				}
+			});
+	}
+};
+var _folkertdev$one_true_path_experiment$Curve$smoothQuadraticBezier = F3(
+	function (start, first, points) {
+		var lowLevelDrawTos = {
+			ctor: '::',
+			_0: A2(
+				_folkertdev$svg_path_lowlevel$Path_LowLevel$QuadraticBezierCurveTo,
+				_folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute,
+				{
+					ctor: '::',
+					_0: first,
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$SmoothQuadraticBezierCurveTo, _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute, points),
+				_1: {ctor: '[]'}
+			}
+		};
+		var lowLevelSubPath = {
+			moveto: A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$MoveTo, _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute, start),
+			drawtos: lowLevelDrawTos
+		};
+		return _folkertdev$one_true_path_experiment$SubPath$fromLowLevel(lowLevelSubPath);
+	});
+var _folkertdev$one_true_path_experiment$Curve$quadraticBezier = F2(
+	function (start, points) {
+		var _p60 = points;
+		if (_p60.ctor === '[]') {
+			return _folkertdev$one_true_path_experiment$SubPath$empty;
+		} else {
+			return A2(
+				_folkertdev$one_true_path_experiment$SubPath$subpath,
+				_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(start),
+				{
+					ctor: '::',
+					_0: _folkertdev$one_true_path_experiment$LowLevel_Command$quadraticCurveTo(points),
+					_1: {ctor: '[]'}
+				});
+		}
+	});
+var _folkertdev$one_true_path_experiment$Curve$smoothCubicBezier = F3(
+	function (start, first, points) {
+		var lowLevelDrawTos = {
+			ctor: '::',
+			_0: A2(
+				_folkertdev$svg_path_lowlevel$Path_LowLevel$CurveTo,
+				_folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute,
+				{
+					ctor: '::',
+					_0: first,
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$SmoothCurveTo, _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute, points),
+				_1: {ctor: '[]'}
+			}
+		};
+		var lowLevelSubPath = {
+			moveto: A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$MoveTo, _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute, start),
+			drawtos: lowLevelDrawTos
+		};
+		return _folkertdev$one_true_path_experiment$SubPath$fromLowLevel(lowLevelSubPath);
+	});
+var _folkertdev$one_true_path_experiment$Curve$cubicBezier = F2(
+	function (start, points) {
+		var _p61 = points;
+		if (_p61.ctor === '[]') {
+			return _folkertdev$one_true_path_experiment$SubPath$empty;
+		} else {
+			return A2(
+				_folkertdev$one_true_path_experiment$SubPath$subpath,
+				_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(start),
+				{
+					ctor: '::',
+					_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(points),
+					_1: {ctor: '[]'}
+				});
+		}
+	});
+var _folkertdev$one_true_path_experiment$Curve$linear = function (points) {
+	var _p62 = points;
+	if (_p62.ctor === '[]') {
+		return _folkertdev$one_true_path_experiment$SubPath$empty;
+	} else {
+		return A2(
+			_folkertdev$one_true_path_experiment$SubPath$subpath,
+			_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p62._0),
+			{
+				ctor: '::',
+				_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(_p62._1),
+				_1: {ctor: '[]'}
+			});
+	}
+};
+var _folkertdev$one_true_path_experiment$Curve$radial = function (_p63) {
+	var _p64 = _p63;
+	return function (_p65) {
+		return _folkertdev$one_true_path_experiment$Curve$linear(
+			A2(
+				_folkertdev$one_true_path_experiment$Curve$toPolarWithCenter,
+				{ctor: '_Tuple2', _0: _p64._0, _1: _p64._1},
+				_p65));
+	};
+};
+var _folkertdev$one_true_path_experiment$Curve$step = F2(
+	function (factor, points) {
+		var helper = F2(
+			function (_p67, _p66) {
+				var _p68 = _p67;
+				var _p72 = _p68._0;
+				var _p69 = _p66;
+				var _p71 = _p69._1;
+				var _p70 = _p69._0;
+				if (_elm_lang$core$Native_Utils.cmp(factor, 0) < 1) {
+					return {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: _p72, _1: _p71},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: _p70, _1: _p71},
+							_1: {ctor: '[]'}
+						}
+					};
+				} else {
+					var x1 = (_p72 * (1 - factor)) + (_p70 * factor);
+					return {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: x1, _1: _p68._1},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: x1, _1: _p71},
+							_1: {ctor: '[]'}
+						}
+					};
+				}
+			});
+		var _p73 = points;
+		if (_p73.ctor === '[]') {
+			return _folkertdev$one_true_path_experiment$SubPath$empty;
+		} else {
+			var _p75 = _p73._1;
+			var _p74 = _p73._0;
+			return _folkertdev$one_true_path_experiment$Curve$linear(
+				{
+					ctor: '::',
+					_0: _p74,
+					_1: A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$List$concat(
+							A3(_elm_lang$core$List$map2, helper, points, _p75)),
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$Maybe$withDefault,
+								_p74,
+								_elm_community$list_extra$List_Extra$last(_p75)),
+							_1: {ctor: '[]'}
+						})
+				});
+		}
+	});
+var _folkertdev$one_true_path_experiment$Curve$stepBefore = _folkertdev$one_true_path_experiment$Curve$step(0);
+var _folkertdev$one_true_path_experiment$Curve$stepAfter = _folkertdev$one_true_path_experiment$Curve$step(1);
+var _folkertdev$one_true_path_experiment$Curve$area = function (points) {
+	var _p76 = _elm_lang$core$List$unzip(points);
+	var low = _p76._0;
+	var high = _p76._1;
+	return _folkertdev$one_true_path_experiment$SubPath$close(
+		A2(
+			_folkertdev$one_true_path_experiment$SubPath$connect,
+			A2(_folkertdev$one_true_path_experiment$Curve$step, 1.0, high),
+			A2(_folkertdev$one_true_path_experiment$Curve$step, 1.0, low)));
+};
+var _folkertdev$one_true_path_experiment$Curve_ops = _folkertdev$one_true_path_experiment$Curve_ops || {};
+_folkertdev$one_true_path_experiment$Curve_ops['=>'] = F2(
+	function (v0, v1) {
+		return {ctor: '_Tuple2', _0: v0, _1: v1};
+	});
+var _folkertdev$one_true_path_experiment$Curve$sign = function (x) {
+	return (_elm_lang$core$Native_Utils.cmp(x, 0) < 0) ? -1 : 1;
+};
+var _folkertdev$one_true_path_experiment$Curve$slope3 = F3(
+	function (_p79, _p78, _p77) {
+		var _p80 = _p79;
+		var _p81 = _p78;
+		var _p86 = _p81;
+		var _p82 = _p77;
+		var _p83 = A2(_Zinggi$elm_webgl_math$Vector2$sub, _p82, _p86);
+		var dx2 = _p83._0;
+		var dy2 = _p83._1;
+		var _p84 = A2(_Zinggi$elm_webgl_math$Vector2$sub, _p86, _p80);
+		var dx1 = _p84._0;
+		var dy1 = _p84._1;
+		var _p85 = {
+			ctor: '_Tuple2',
+			_0: A2(_folkertdev$one_true_path_experiment$Curve$toH, dx1, dx2),
+			_1: A2(_folkertdev$one_true_path_experiment$Curve$toH, dx2, dx1)
+		};
+		var s0h = _p85._0;
+		var s1h = _p85._1;
+		var s1 = dy2 / s1h;
+		var s0 = dy1 / s0h;
+		var p = ((s0 * dx2) + (s1 * dx1)) / (dx1 + dx2);
+		return (_folkertdev$one_true_path_experiment$Curve$sign(s0) + _folkertdev$one_true_path_experiment$Curve$sign(s1)) * A2(
+			_elm_lang$core$Basics$min,
+			A2(
+				_elm_lang$core$Basics$min,
+				_elm_lang$core$Basics$abs(s0),
+				_elm_lang$core$Basics$abs(s1)),
+			0.5 * _elm_lang$core$Basics$abs(p));
+	});
+var _folkertdev$one_true_path_experiment$Curve$monotoneX = function (points) {
+	var _p87 = points;
+	if ((_p87.ctor === '::') && (_p87._1.ctor === '::')) {
+		if (_p87._1._1.ctor === '::') {
+			var _p96 = _p87._1._0;
+			var _p95 = _p87._0;
+			var _p94 = _p87._1._1._0;
+			var helper = F2(
+				function (t0, points) {
+					var _p88 = points;
+					if ((_p88.ctor === '::') && (_p88._1.ctor === '::')) {
+						if (_p88._1._1.ctor === '::') {
+							var _p91 = _p88._1._0;
+							var _p90 = _p88._0;
+							var _p89 = _p88._1._1._0;
+							var t1 = A3(_folkertdev$one_true_path_experiment$Curve$slope3, _p90, _p91, _p89);
+							return {
+								ctor: '::',
+								_0: A4(_folkertdev$one_true_path_experiment$Curve$monotonePoint, _p90, _p91, t0, t1),
+								_1: A2(
+									helper,
+									t1,
+									{
+										ctor: '::',
+										_0: _p91,
+										_1: {ctor: '::', _0: _p89, _1: _p88._1._1._1}
+									})
+							};
+						} else {
+							var _p93 = _p88._1._0;
+							var _p92 = _p88._0;
+							return {
+								ctor: '::',
+								_0: A4(
+									_folkertdev$one_true_path_experiment$Curve$monotonePoint,
+									_p92,
+									_p93,
+									t0,
+									A3(_folkertdev$one_true_path_experiment$Curve$slope2, _p92, _p93, t0)),
+								_1: {ctor: '[]'}
+							};
+						}
+					} else {
+						return {ctor: '[]'};
+					}
+				});
+			var t1 = A3(_folkertdev$one_true_path_experiment$Curve$slope3, _p95, _p96, _p94);
+			var initialInstruction = A4(
+				_folkertdev$one_true_path_experiment$Curve$monotonePoint,
+				_p95,
+				_p96,
+				A3(_folkertdev$one_true_path_experiment$Curve$slope2, _p95, _p96, t1),
+				t1);
+			return A2(
+				_folkertdev$one_true_path_experiment$SubPath$subpath,
+				_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p95),
+				{
+					ctor: '::',
+					_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+						{
+							ctor: '::',
+							_0: initialInstruction,
+							_1: A2(
+								helper,
+								t1,
+								{
+									ctor: '::',
+									_0: _p96,
+									_1: {ctor: '::', _0: _p94, _1: _p87._1._1._1}
+								})
+						}),
+					_1: {ctor: '[]'}
+				});
+		} else {
+			return A2(
+				_folkertdev$one_true_path_experiment$SubPath$subpath,
+				_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p87._0),
+				{
+					ctor: '::',
+					_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+						{
+							ctor: '::',
+							_0: _p87._1._0,
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				});
+		}
+	} else {
+		return _folkertdev$one_true_path_experiment$SubPath$empty;
+	}
+};
+var _folkertdev$one_true_path_experiment$Curve$monotoneY = function (points) {
+	return A2(
+		_folkertdev$one_true_path_experiment$SubPath$mapCoordinate,
+		function (_p97) {
+			var _p98 = _p97;
+			return {ctor: '_Tuple2', _0: _p98._1, _1: _p98._0};
+		},
+		_folkertdev$one_true_path_experiment$Curve$monotoneX(
+			A2(
+				_elm_lang$core$List$map,
+				function (_p99) {
+					var _p100 = _p99;
+					return {ctor: '_Tuple2', _0: _p100._1, _1: _p100._0};
+				},
+				points)));
+};
+var _folkertdev$one_true_path_experiment$Curve$epsilon = 1.0e-12;
+var _folkertdev$one_true_path_experiment$Curve$catmullRomPoint = F5(
+	function (alpha, p0, p1, p2, p3) {
+		var _p101 = A3(_folkertdev$one_true_path_experiment$Curve$catmullRomDistance, alpha, p2, p3);
+		var l23_a = _p101._0;
+		var l23_2a = _p101._1;
+		var _p102 = A3(_folkertdev$one_true_path_experiment$Curve$catmullRomDistance, alpha, p1, p2);
+		var l12_a = _p102._0;
+		var l12_2a = _p102._1;
+		var helper2 = function (p) {
+			var m = (3 * l23_a) * (l23_a + l12_a);
+			var b = ((2 * l23_2a) + ((3 * l23_a) * l12_a)) + l12_2a;
+			return A2(
+				_Zinggi$elm_webgl_math$Vector2$divideBy,
+				m,
+				A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					A2(_Zinggi$elm_webgl_math$Vector2$scale, 0 - l12_2a, p3),
+					A2(
+						_Zinggi$elm_webgl_math$Vector2$add,
+						A2(_Zinggi$elm_webgl_math$Vector2$scale, l23_2a, p1),
+						A2(_Zinggi$elm_webgl_math$Vector2$scale, b, p))));
+		};
+		var control2 = (_elm_lang$core$Native_Utils.cmp(l23_a, _folkertdev$one_true_path_experiment$Curve$epsilon) > 0) ? helper2(p2) : p2;
+		var _p103 = A3(_folkertdev$one_true_path_experiment$Curve$catmullRomDistance, alpha, p0, p1);
+		var l01_a = _p103._0;
+		var l01_2a = _p103._1;
+		var helper1 = function (p) {
+			var n = (3 * l01_a) * (l01_a + l12_a);
+			var a = ((2 * l01_2a) + ((3 * l01_a) * l12_a)) + l12_2a;
+			return A2(
+				_Zinggi$elm_webgl_math$Vector2$divideBy,
+				n,
+				A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					A2(_Zinggi$elm_webgl_math$Vector2$scale, l01_2a, p2),
+					A2(
+						_Zinggi$elm_webgl_math$Vector2$sub,
+						A2(_Zinggi$elm_webgl_math$Vector2$scale, a, p),
+						A2(_Zinggi$elm_webgl_math$Vector2$scale, l12_2a, p0))));
+		};
+		var control1 = (_elm_lang$core$Native_Utils.cmp(l01_a, _folkertdev$one_true_path_experiment$Curve$epsilon) > 0) ? helper1(p1) : p1;
+		return {ctor: '_Tuple3', _0: control1, _1: control2, _2: p2};
+	});
+var _folkertdev$one_true_path_experiment$Curve$catmullRomHelper = F3(
+	function (alpha, ending, points) {
+		var _p104 = points;
+		if (((_p104.ctor === '::') && (_p104._1.ctor === '::')) && (_p104._1._1.ctor === '::')) {
+			if (_p104._1._1._1.ctor === '[]') {
+				return A3(ending, _p104._0, _p104._1._0, _p104._1._1._0);
+			} else {
+				var _p107 = _p104._1._1._0;
+				var _p106 = _p104._1._0;
+				var _p105 = _p104._1._1._1._0;
+				return {
+					ctor: '::',
+					_0: A5(_folkertdev$one_true_path_experiment$Curve$catmullRomPoint, alpha, _p104._0, _p106, _p107, _p105),
+					_1: A3(
+						_folkertdev$one_true_path_experiment$Curve$catmullRomHelper,
+						alpha,
+						ending,
+						{
+							ctor: '::',
+							_0: _p106,
+							_1: {
+								ctor: '::',
+								_0: _p107,
+								_1: {ctor: '::', _0: _p105, _1: _p104._1._1._1._1}
+							}
+						})
+				};
+			}
+		} else {
+			return {ctor: '[]'};
+		}
+	});
+var _folkertdev$one_true_path_experiment$Curve$catmullRom = F2(
+	function (alpha, points) {
+		if (_elm_lang$core$Native_Utils.eq(alpha, 0)) {
+			return A2(_folkertdev$one_true_path_experiment$Curve$cardinal, 0, points);
+		} else {
+			var _p108 = points;
+			_v35_2:
+			do {
+				if ((_p108.ctor === '::') && (_p108._1.ctor === '::')) {
+					if (_p108._1._1.ctor === '[]') {
+						return A2(
+							_folkertdev$one_true_path_experiment$SubPath$subpath,
+							_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p108._0),
+							{
+								ctor: '::',
+								_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+									{
+										ctor: '::',
+										_0: _p108._1._0,
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							});
+					} else {
+						if (_p108._1._1._1.ctor === '::') {
+							var _p109 = _p108._0;
+							var ending = F3(
+								function (p0, p1, p2) {
+									return {
+										ctor: '::',
+										_0: A5(_folkertdev$one_true_path_experiment$Curve$catmullRomPoint, alpha, p0, p1, p2, p2),
+										_1: {ctor: '[]'}
+									};
+								});
+							return A2(
+								_folkertdev$one_true_path_experiment$SubPath$subpath,
+								_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p109),
+								{
+									ctor: '::',
+									_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+										A3(
+											_folkertdev$one_true_path_experiment$Curve$catmullRomHelper,
+											alpha,
+											ending,
+											{ctor: '::', _0: _p109, _1: points})),
+									_1: {ctor: '[]'}
+								});
+						} else {
+							break _v35_2;
+						}
+					}
+				} else {
+					break _v35_2;
+				}
+			} while(false);
+			return _folkertdev$one_true_path_experiment$SubPath$empty;
+		}
+	});
+var _folkertdev$one_true_path_experiment$Curve$catmullRomOpen = F2(
+	function (alpha, points) {
+		if (_elm_lang$core$Native_Utils.eq(alpha, 0)) {
+			return A2(_folkertdev$one_true_path_experiment$Curve$cardinalOpen, 0, points);
+		} else {
+			var _p110 = points;
+			if (((_p110.ctor === '::') && (_p110._1.ctor === '::')) && (_p110._1._1.ctor === '::')) {
+				if (_p110._1._1._1.ctor === '[]') {
+					return A2(
+						_folkertdev$one_true_path_experiment$SubPath$subpath,
+						_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p110._1._1._0),
+						{ctor: '[]'});
+				} else {
+					var ending = F3(
+						function (_p113, _p112, _p111) {
+							return {ctor: '[]'};
+						});
+					return A2(
+						_folkertdev$one_true_path_experiment$SubPath$subpath,
+						_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p110._1._0),
+						{
+							ctor: '::',
+							_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+								A3(_folkertdev$one_true_path_experiment$Curve$catmullRomHelper, alpha, ending, points)),
+							_1: {ctor: '[]'}
+						});
+				}
+			} else {
+				return _folkertdev$one_true_path_experiment$SubPath$empty;
+			}
+		}
+	});
+var _folkertdev$one_true_path_experiment$Curve$catmullRomClosed = F2(
+	function (alpha, points) {
+		if (_elm_lang$core$Native_Utils.eq(alpha, 0)) {
+			return A2(_folkertdev$one_true_path_experiment$Curve$cardinalClosed, 0, points);
+		} else {
+			var _p114 = points;
+			if (_p114.ctor === '[]') {
+				return _folkertdev$one_true_path_experiment$SubPath$empty;
+			} else {
+				if (_p114._1.ctor === '[]') {
+					return A2(
+						_folkertdev$one_true_path_experiment$SubPath$subpath,
+						_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p114._0),
+						{ctor: '[]'});
+				} else {
+					if (_p114._1._1.ctor === '[]') {
+						return A2(
+							_folkertdev$one_true_path_experiment$SubPath$subpath,
+							_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p114._1._0),
+							{
+								ctor: '::',
+								_0: _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+									{
+										ctor: '::',
+										_0: _p114._0,
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _folkertdev$one_true_path_experiment$LowLevel_Command$closePath,
+									_1: {ctor: '[]'}
+								}
+							});
+					} else {
+						var _p116 = _p114._1._0;
+						var _p115 = _p114._0;
+						var ending = F3(
+							function (p0, p1, p2) {
+								return {
+									ctor: '::',
+									_0: A5(_folkertdev$one_true_path_experiment$Curve$catmullRomPoint, alpha, p0, p1, p2, _p115),
+									_1: {
+										ctor: '::',
+										_0: A5(_folkertdev$one_true_path_experiment$Curve$catmullRomPoint, alpha, p1, p2, _p115, _p116),
+										_1: {
+											ctor: '::',
+											_0: A5(_folkertdev$one_true_path_experiment$Curve$catmullRomPoint, alpha, p2, _p115, _p116, _p114._1._1._0),
+											_1: {ctor: '[]'}
+										}
+									}
+								};
+							});
+						return A2(
+							_folkertdev$one_true_path_experiment$SubPath$subpath,
+							_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(_p116),
+							{
+								ctor: '::',
+								_0: _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+									A3(_folkertdev$one_true_path_experiment$Curve$catmullRomHelper, alpha, ending, points)),
+								_1: {ctor: '[]'}
+							});
+					}
+				}
+			}
+		}
+	});

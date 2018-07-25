@@ -1,0 +1,301 @@
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$parameterValueToArcLength = F2(
+	function (_p0, t) {
+		var _p1 = _p0;
+		return A2(_opensolid$geometry$OpenSolid_ArcLength$fromParameterValue, _p1._1, t);
+	});
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$arcLengthToParameterValue = F2(
+	function (_p2, s) {
+		var _p3 = _p2;
+		return A2(_opensolid$geometry$OpenSolid_ArcLength$toParameterValue, _p3._1, s);
+	});
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$arcLength = function (_p4) {
+	var _p5 = _p4;
+	return _opensolid$geometry$OpenSolid_ArcLength$fromParameterization(_p5._1);
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$transformBy = F2(
+	function (ellipseTransformation, _p6) {
+		var _p7 = _p6;
+		var _p8 = _p7._0;
+		return _opensolid$geometry$OpenSolid_Geometry_Internal$EllipticalArc2d(
+			_elm_lang$core$Native_Utils.update(
+				_p8,
+				{
+					ellipse: ellipseTransformation(_p8.ellipse)
+				}));
+	});
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$scaleAbout = F2(
+	function (point, scale) {
+		return _opensolid$geometry$OpenSolid_EllipticalArc2d$transformBy(
+			A2(_opensolid$geometry$OpenSolid_Ellipse2d$scaleAbout, point, scale));
+	});
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$rotateAround = F2(
+	function (point, angle) {
+		return _opensolid$geometry$OpenSolid_EllipticalArc2d$transformBy(
+			A2(_opensolid$geometry$OpenSolid_Ellipse2d$rotateAround, point, angle));
+	});
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$translateBy = function (displacement) {
+	return _opensolid$geometry$OpenSolid_EllipticalArc2d$transformBy(
+		_opensolid$geometry$OpenSolid_Ellipse2d$translateBy(displacement));
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$mirrorAcross = function (axis) {
+	return _opensolid$geometry$OpenSolid_EllipticalArc2d$transformBy(
+		_opensolid$geometry$OpenSolid_Ellipse2d$mirrorAcross(axis));
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$relativeTo = function (frame) {
+	return _opensolid$geometry$OpenSolid_EllipticalArc2d$transformBy(
+		_opensolid$geometry$OpenSolid_Ellipse2d$relativeTo(frame));
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$placeIn = function (frame) {
+	return _opensolid$geometry$OpenSolid_EllipticalArc2d$transformBy(
+		_opensolid$geometry$OpenSolid_Ellipse2d$placeIn(frame));
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$reverse = function (_p9) {
+	var _p10 = _p9;
+	var _p11 = _p10._0;
+	return _opensolid$geometry$OpenSolid_Geometry_Internal$EllipticalArc2d(
+		_elm_lang$core$Native_Utils.update(
+			_p11,
+			{startAngle: _p11.startAngle + _p11.sweptAngle, sweptAngle: 0 - _p11.sweptAngle}));
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$sweptAngle = function (_p12) {
+	var _p13 = _p12;
+	return _p13._0.sweptAngle;
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$startAngle = function (_p14) {
+	var _p15 = _p14;
+	return _p15._0.startAngle;
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$yRadius = function (_p16) {
+	var _p17 = _p16;
+	return _opensolid$geometry$OpenSolid_Ellipse2d$yRadius(_p17._0.ellipse);
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$xRadius = function (_p18) {
+	var _p19 = _p18;
+	return _opensolid$geometry$OpenSolid_Ellipse2d$xRadius(_p19._0.ellipse);
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$maxSecondDerivativeMagnitude = function (arc) {
+	var ry = _opensolid$geometry$OpenSolid_EllipticalArc2d$yRadius(arc);
+	var rx = _opensolid$geometry$OpenSolid_EllipticalArc2d$xRadius(arc);
+	var dTheta = _opensolid$geometry$OpenSolid_EllipticalArc2d$sweptAngle(arc);
+	var dThetaSquared = dTheta * dTheta;
+	var kx = dThetaSquared * rx;
+	var ky = dThetaSquared * ry;
+	var theta0 = _opensolid$geometry$OpenSolid_EllipticalArc2d$startAngle(arc);
+	var theta1 = theta0 + dTheta;
+	var thetaInterval = A2(_opensolid$geometry$OpenSolid_Scalar$hull, theta0, theta1);
+	var sinThetaInterval = _opensolid$geometry$OpenSolid_Interval$sin(thetaInterval);
+	var includeKx = A2(_opensolid$geometry$OpenSolid_Interval$contains, 0, sinThetaInterval);
+	var includeKy = _elm_lang$core$Native_Utils.eq(
+		_opensolid$geometry$OpenSolid_Interval$maxValue(sinThetaInterval),
+		1) || _elm_lang$core$Native_Utils.eq(
+		_opensolid$geometry$OpenSolid_Interval$minValue(sinThetaInterval),
+		-1);
+	if ((_elm_lang$core$Native_Utils.cmp(kx, ky) > -1) && includeKx) {
+		return kx;
+	} else {
+		if ((_elm_lang$core$Native_Utils.cmp(ky, kx) > -1) && includeKy) {
+			return ky;
+		} else {
+			var sinTheta1 = _elm_lang$core$Basics$sin(theta1);
+			var cosTheta1 = _elm_lang$core$Basics$cos(theta1);
+			var sinTheta0 = _elm_lang$core$Basics$sin(theta0);
+			var cosTheta0 = _elm_lang$core$Basics$cos(theta0);
+			var rySquared = ry * ry;
+			var rxSquared = rx * rx;
+			var d0 = ((rxSquared * cosTheta0) * cosTheta0) + ((rySquared * sinTheta0) * sinTheta0);
+			var d1 = ((rxSquared * cosTheta1) * cosTheta1) + ((rySquared * sinTheta1) * sinTheta1);
+			return dThetaSquared * _elm_lang$core$Basics$sqrt(
+				A2(_elm_lang$core$Basics$max, d0, d1));
+		}
+	}
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$derivativeMagnitude = function (arc) {
+	var dTheta = _opensolid$geometry$OpenSolid_EllipticalArc2d$sweptAngle(arc);
+	var absDTheta = _elm_lang$core$Basics$abs(dTheta);
+	var theta0 = _opensolid$geometry$OpenSolid_EllipticalArc2d$startAngle(arc);
+	var ry = _opensolid$geometry$OpenSolid_EllipticalArc2d$yRadius(arc);
+	var rx = _opensolid$geometry$OpenSolid_EllipticalArc2d$xRadius(arc);
+	return function (t) {
+		var theta = theta0 + (t * dTheta);
+		var dx = rx * _elm_lang$core$Basics$sin(theta);
+		var dy = ry * _elm_lang$core$Basics$cos(theta);
+		return absDTheta * _elm_lang$core$Basics$sqrt((dx * dx) + (dy * dy));
+	};
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$yAxis = function (_p20) {
+	var _p21 = _p20;
+	return _opensolid$geometry$OpenSolid_Ellipse2d$yAxis(_p21._0.ellipse);
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$xAxis = function (_p22) {
+	var _p23 = _p22;
+	return _opensolid$geometry$OpenSolid_Ellipse2d$xAxis(_p23._0.ellipse);
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$axes = function (_p24) {
+	var _p25 = _p24;
+	return _opensolid$geometry$OpenSolid_Ellipse2d$axes(_p25._0.ellipse);
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$pointOn = F2(
+	function (arc, t) {
+		var theta = _opensolid$geometry$OpenSolid_EllipticalArc2d$startAngle(arc) + (t * _opensolid$geometry$OpenSolid_EllipticalArc2d$sweptAngle(arc));
+		return A2(
+			_opensolid$geometry$OpenSolid_Point2d$placeIn,
+			_opensolid$geometry$OpenSolid_EllipticalArc2d$axes(arc),
+			_opensolid$geometry$OpenSolid_Point2d$fromCoordinates(
+				{
+					ctor: '_Tuple2',
+					_0: _opensolid$geometry$OpenSolid_EllipticalArc2d$xRadius(arc) * _elm_lang$core$Basics$cos(theta),
+					_1: _opensolid$geometry$OpenSolid_EllipticalArc2d$yRadius(arc) * _elm_lang$core$Basics$sin(theta)
+				}));
+	});
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$startPoint = function (arc) {
+	return A2(_opensolid$geometry$OpenSolid_EllipticalArc2d$pointOn, arc, 0);
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$endPoint = function (arc) {
+	return A2(_opensolid$geometry$OpenSolid_EllipticalArc2d$pointOn, arc, 1);
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$pointAlong = F2(
+	function (_p26, s) {
+		var _p27 = _p26;
+		return A2(
+			_elm_lang$core$Maybe$map,
+			_opensolid$geometry$OpenSolid_EllipticalArc2d$pointOn(_p27._0),
+			A2(_opensolid$geometry$OpenSolid_ArcLength$toParameterValue, _p27._1, s));
+	});
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$derivative = F2(
+	function (arc, t) {
+		var deltaTheta = _opensolid$geometry$OpenSolid_EllipticalArc2d$sweptAngle(arc);
+		var theta = _opensolid$geometry$OpenSolid_EllipticalArc2d$startAngle(arc) + (t * deltaTheta);
+		return A2(
+			_opensolid$geometry$OpenSolid_Vector2d$placeIn,
+			_opensolid$geometry$OpenSolid_EllipticalArc2d$axes(arc),
+			_opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+				{
+					ctor: '_Tuple2',
+					_0: ((0 - _opensolid$geometry$OpenSolid_EllipticalArc2d$xRadius(arc)) * deltaTheta) * _elm_lang$core$Basics$sin(theta),
+					_1: (_opensolid$geometry$OpenSolid_EllipticalArc2d$yRadius(arc) * deltaTheta) * _elm_lang$core$Basics$cos(theta)
+				}));
+	});
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$tangentAlong = F2(
+	function (_p28, s) {
+		var _p29 = _p28;
+		return A2(
+			_elm_lang$core$Maybe$andThen,
+			_opensolid$geometry$OpenSolid_Vector2d$direction,
+			A2(
+				_elm_lang$core$Maybe$map,
+				_opensolid$geometry$OpenSolid_EllipticalArc2d$derivative(_p29._0),
+				A2(_opensolid$geometry$OpenSolid_ArcLength$toParameterValue, _p29._1, s)));
+	});
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$xDirection = function (arc) {
+	return _opensolid$geometry$OpenSolid_Frame2d$xDirection(
+		_opensolid$geometry$OpenSolid_EllipticalArc2d$axes(arc));
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$yDirection = function (arc) {
+	return _opensolid$geometry$OpenSolid_Frame2d$yDirection(
+		_opensolid$geometry$OpenSolid_EllipticalArc2d$axes(arc));
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$centerPoint = function (_p30) {
+	var _p31 = _p30;
+	return _opensolid$geometry$OpenSolid_Ellipse2d$centerPoint(_p31._0.ellipse);
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$with = function (_p32) {
+	var _p33 = _p32;
+	return _opensolid$geometry$OpenSolid_Geometry_Internal$EllipticalArc2d(
+		{
+			ellipse: _opensolid$geometry$OpenSolid_Ellipse2d$with(
+				{centerPoint: _p33.centerPoint, xDirection: _p33.xDirection, xRadius: _p33.xRadius, yRadius: _p33.yRadius}),
+			startAngle: _p33.startAngle,
+			sweptAngle: _p33.sweptAngle
+		});
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$fromEndpoints = function (_p34) {
+	var _p35 = _p34;
+	var _p41 = _p35.yRadius;
+	var _p40 = _p35.xRadius;
+	var _p39 = _p35.xDirection;
+	if ((_elm_lang$core$Native_Utils.cmp(_p40, 0) > 0) && (_elm_lang$core$Native_Utils.cmp(_p41, 0) > 0)) {
+		var temporaryFrame = _opensolid$geometry$OpenSolid_Frame2d$with(
+			{
+				originPoint: A2(
+					_opensolid$geometry$OpenSolid_Point2d$translateBy,
+					_opensolid$geometry$OpenSolid_Vector2d$with(
+						{direction: _p39, length: 0 - _p40}),
+					_p35.startPoint),
+				xDirection: _p39
+			});
+		var _p36 = _opensolid$geometry$OpenSolid_Point2d$coordinates(
+			A2(_opensolid$geometry$OpenSolid_Point2d$relativeTo, temporaryFrame, _p35.endPoint));
+		var x2Ellipse = _p36._0;
+		var y2Ellipse = _p36._1;
+		var x2 = x2Ellipse / _p40;
+		var cx2 = x2 - 1;
+		var y2 = y2Ellipse / _p41;
+		var cy2 = y2;
+		var d = _elm_lang$core$Basics$sqrt((cx2 * cx2) + (cy2 * cy2)) / 2;
+		if ((_elm_lang$core$Native_Utils.cmp(d, 0) > 0) && (_elm_lang$core$Native_Utils.cmp(d, 1) < 0)) {
+			var yDirection = _opensolid$geometry$OpenSolid_Direction2d$perpendicularTo(_p39);
+			var offsetAngle = _elm_lang$core$Basics$acos(d);
+			var midAngle = A2(_elm_lang$core$Basics$atan2, 0 - cy2, 0 - cx2);
+			var _p37 = function () {
+				var _p38 = _p35.sweptAngle;
+				switch (_p38.ctor) {
+					case 'SmallPositive':
+						return {ctor: '_Tuple2', _0: midAngle + offsetAngle, _1: _elm_lang$core$Basics$pi - (2 * offsetAngle)};
+					case 'SmallNegative':
+						return {ctor: '_Tuple2', _0: midAngle - offsetAngle, _1: (0 - _elm_lang$core$Basics$pi) + (2 * offsetAngle)};
+					case 'LargePositive':
+						return {ctor: '_Tuple2', _0: midAngle - offsetAngle, _1: _elm_lang$core$Basics$pi + (2 * offsetAngle)};
+					default:
+						return {ctor: '_Tuple2', _0: midAngle + offsetAngle, _1: (0 - _elm_lang$core$Basics$pi) - (2 * offsetAngle)};
+				}
+			}();
+			var startAngle = _p37._0;
+			var sweptAngleInRadians = _p37._1;
+			var centerPoint = A2(
+				_opensolid$geometry$OpenSolid_Point2d$placeIn,
+				temporaryFrame,
+				_opensolid$geometry$OpenSolid_Point2d$fromCoordinates(
+					{
+						ctor: '_Tuple2',
+						_0: _p40 - (_p40 * _elm_lang$core$Basics$cos(startAngle)),
+						_1: (0 - _p41) * _elm_lang$core$Basics$sin(startAngle)
+					}));
+			return _elm_lang$core$Maybe$Just(
+				_opensolid$geometry$OpenSolid_EllipticalArc2d$with(
+					{
+						centerPoint: centerPoint,
+						xDirection: _p39,
+						xRadius: _p40,
+						yRadius: _p41,
+						startAngle: (_elm_lang$core$Native_Utils.cmp(startAngle, _elm_lang$core$Basics$pi) > 0) ? (startAngle - (2 * _elm_lang$core$Basics$pi)) : ((_elm_lang$core$Native_Utils.cmp(startAngle, 0 - _elm_lang$core$Basics$pi) < 0) ? (startAngle + (2 * _elm_lang$core$Basics$pi)) : startAngle),
+						sweptAngle: sweptAngleInRadians
+					}));
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$LargeNegative = {ctor: 'LargeNegative'};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$largeNegative = _opensolid$geometry$OpenSolid_EllipticalArc2d$LargeNegative;
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$LargePositive = {ctor: 'LargePositive'};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$largePositive = _opensolid$geometry$OpenSolid_EllipticalArc2d$LargePositive;
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$SmallNegative = {ctor: 'SmallNegative'};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$smallNegative = _opensolid$geometry$OpenSolid_EllipticalArc2d$SmallNegative;
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$SmallPositive = {ctor: 'SmallPositive'};
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$smallPositive = _opensolid$geometry$OpenSolid_EllipticalArc2d$SmallPositive;
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$ArcLengthParameterized = F2(
+	function (a, b) {
+		return {ctor: 'ArcLengthParameterized', _0: a, _1: b};
+	});
+var _opensolid$geometry$OpenSolid_EllipticalArc2d$arcLengthParameterized = F2(
+	function (tolerance, arc) {
+		var parameterization = _opensolid$geometry$OpenSolid_ArcLength$parameterization(
+			{
+				tolerance: tolerance,
+				derivativeMagnitude: _opensolid$geometry$OpenSolid_EllipticalArc2d$derivativeMagnitude(arc),
+				maxSecondDerivativeMagnitude: _opensolid$geometry$OpenSolid_EllipticalArc2d$maxSecondDerivativeMagnitude(arc)
+			});
+		return A2(_opensolid$geometry$OpenSolid_EllipticalArc2d$ArcLengthParameterized, arc, parameterization);
+	});

@@ -1,0 +1,237 @@
+var _opensolid$geometry$OpenSolid_Point2d$hullOf = function (points) {
+	return _opensolid$geometry$OpenSolid_BoundingBox2d$hullOf(
+		A2(_elm_lang$core$List$map, _opensolid$geometry$OpenSolid_BoundingBox2d$singleton, points));
+};
+var _opensolid$geometry$OpenSolid_Point2d$signedDistanceFrom = F2(
+	function (axis, point) {
+		var displacementVector = A2(
+			_opensolid$geometry$OpenSolid_Vector2d$from,
+			_opensolid$geometry$OpenSolid_Bootstrap_Axis2d$originPoint(axis),
+			point);
+		var directionVector = _opensolid$geometry$OpenSolid_Direction2d$toVector(
+			_opensolid$geometry$OpenSolid_Bootstrap_Axis2d$direction(axis));
+		return A2(_opensolid$geometry$OpenSolid_Vector2d$crossProduct, directionVector, displacementVector);
+	});
+var _opensolid$geometry$OpenSolid_Point2d$signedDistanceAlong = F2(
+	function (axis, point) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Vector2d$componentIn,
+			_opensolid$geometry$OpenSolid_Bootstrap_Axis2d$direction(axis),
+			A2(
+				_opensolid$geometry$OpenSolid_Vector2d$from,
+				_opensolid$geometry$OpenSolid_Bootstrap_Axis2d$originPoint(axis),
+				point));
+	});
+var _opensolid$geometry$OpenSolid_Point2d$distanceAlong = _opensolid$geometry$OpenSolid_Point2d$signedDistanceAlong;
+var _opensolid$geometry$OpenSolid_Point2d$squaredDistanceFrom = F2(
+	function (firstPoint, secondPoint) {
+		return _opensolid$geometry$OpenSolid_Vector2d$squaredLength(
+			A2(_opensolid$geometry$OpenSolid_Vector2d$from, firstPoint, secondPoint));
+	});
+var _opensolid$geometry$OpenSolid_Point2d$distanceFrom = F2(
+	function (firstPoint, secondPoint) {
+		return _elm_lang$core$Basics$sqrt(
+			A2(_opensolid$geometry$OpenSolid_Point2d$squaredDistanceFrom, firstPoint, secondPoint));
+	});
+var _opensolid$geometry$OpenSolid_Point2d$equalWithin = F3(
+	function (tolerance, firstPoint, secondPoint) {
+		return _elm_lang$core$Native_Utils.cmp(
+			A2(_opensolid$geometry$OpenSolid_Point2d$squaredDistanceFrom, firstPoint, secondPoint),
+			tolerance * tolerance) < 1;
+	});
+var _opensolid$geometry$OpenSolid_Point2d$yCoordinate = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0._1;
+};
+var _opensolid$geometry$OpenSolid_Point2d$xCoordinate = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0._0;
+};
+var _opensolid$geometry$OpenSolid_Point2d$coordinates = function (_p4) {
+	var _p5 = _p4;
+	return _p5._0;
+};
+var _opensolid$geometry$OpenSolid_Point2d$polarCoordinates = function (point) {
+	return _elm_lang$core$Basics$toPolar(
+		_opensolid$geometry$OpenSolid_Point2d$coordinates(point));
+};
+var _opensolid$geometry$OpenSolid_Point2d$hull = F2(
+	function (firstPoint, secondPoint) {
+		var _p6 = _opensolid$geometry$OpenSolid_Point2d$coordinates(secondPoint);
+		var x2 = _p6._0;
+		var y2 = _p6._1;
+		var _p7 = _opensolid$geometry$OpenSolid_Point2d$coordinates(firstPoint);
+		var x1 = _p7._0;
+		var y1 = _p7._1;
+		return _opensolid$geometry$OpenSolid_BoundingBox2d$with(
+			{
+				minX: A2(_elm_lang$core$Basics$min, x1, x2),
+				maxX: A2(_elm_lang$core$Basics$max, x1, x2),
+				minY: A2(_elm_lang$core$Basics$min, y1, y2),
+				maxY: A2(_elm_lang$core$Basics$max, y1, y2)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Point2d$fromCoordinates = _opensolid$geometry$OpenSolid_Geometry_Internal$Point2d;
+var _opensolid$geometry$OpenSolid_Point2d$fromPolarCoordinates = function (coordinates) {
+	return _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(
+		_elm_lang$core$Basics$fromPolar(coordinates));
+};
+var _opensolid$geometry$OpenSolid_Point2d$interpolateFrom = F3(
+	function (p1, p2, t) {
+		var _p8 = _opensolid$geometry$OpenSolid_Point2d$coordinates(p2);
+		var x2 = _p8._0;
+		var y2 = _p8._1;
+		var _p9 = _opensolid$geometry$OpenSolid_Point2d$coordinates(p1);
+		var x1 = _p9._0;
+		var y1 = _p9._1;
+		return _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(
+			{
+				ctor: '_Tuple2',
+				_0: A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, x1, x2, t),
+				_1: A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, y1, y2, t)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Point2d$midpoint = F2(
+	function (firstPoint, secondPoint) {
+		return A3(_opensolid$geometry$OpenSolid_Point2d$interpolateFrom, firstPoint, secondPoint, 0.5);
+	});
+var _opensolid$geometry$OpenSolid_Point2d$circumcenter = function (_p10) {
+	var _p11 = _p10;
+	var _p17 = _p11._2;
+	var _p16 = _p11._1;
+	var _p15 = _p11._0;
+	var c2 = A2(_opensolid$geometry$OpenSolid_Point2d$squaredDistanceFrom, _p17, _p15);
+	var b2 = A2(_opensolid$geometry$OpenSolid_Point2d$squaredDistanceFrom, _p16, _p17);
+	var a2 = A2(_opensolid$geometry$OpenSolid_Point2d$squaredDistanceFrom, _p15, _p16);
+	var t1 = a2 * ((b2 + c2) - a2);
+	var t2 = b2 * ((c2 + a2) - b2);
+	var t3 = c2 * ((a2 + b2) - c2);
+	var sum = (t1 + t2) + t3;
+	if (_elm_lang$core$Native_Utils.eq(sum, 0)) {
+		return _elm_lang$core$Maybe$Nothing;
+	} else {
+		var _p12 = _opensolid$geometry$OpenSolid_Point2d$coordinates(_p17);
+		var x3 = _p12._0;
+		var y3 = _p12._1;
+		var _p13 = _opensolid$geometry$OpenSolid_Point2d$coordinates(_p16);
+		var x2 = _p13._0;
+		var y2 = _p13._1;
+		var _p14 = _opensolid$geometry$OpenSolid_Point2d$coordinates(_p15);
+		var x1 = _p14._0;
+		var y1 = _p14._1;
+		var w3 = t3 / sum;
+		var w2 = t2 / sum;
+		var w1 = t1 / sum;
+		return _elm_lang$core$Maybe$Just(
+			_opensolid$geometry$OpenSolid_Point2d$fromCoordinates(
+				{ctor: '_Tuple2', _0: ((w1 * x3) + (w2 * x1)) + (w3 * x2), _1: ((w1 * y3) + (w2 * y1)) + (w3 * y2)}));
+	}
+};
+var _opensolid$geometry$OpenSolid_Point2d$translateBy = F2(
+	function (vector, point) {
+		var _p18 = _opensolid$geometry$OpenSolid_Point2d$coordinates(point);
+		var px = _p18._0;
+		var py = _p18._1;
+		var _p19 = _opensolid$geometry$OpenSolid_Vector2d$components(vector);
+		var vx = _p19._0;
+		var vy = _p19._1;
+		return _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(
+			{ctor: '_Tuple2', _0: px + vx, _1: py + vy});
+	});
+var _opensolid$geometry$OpenSolid_Point2d$along = F2(
+	function (axis, distance) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Point2d$translateBy,
+			_opensolid$geometry$OpenSolid_Vector2d$with(
+				{
+					length: distance,
+					direction: _opensolid$geometry$OpenSolid_Bootstrap_Axis2d$direction(axis)
+				}),
+			_opensolid$geometry$OpenSolid_Bootstrap_Axis2d$originPoint(axis));
+	});
+var _opensolid$geometry$OpenSolid_Point2d$relativeTo = F2(
+	function (frame, point) {
+		return _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(
+			_opensolid$geometry$OpenSolid_Vector2d$components(
+				A2(
+					_opensolid$geometry$OpenSolid_Vector2d$relativeTo,
+					frame,
+					A2(
+						_opensolid$geometry$OpenSolid_Vector2d$from,
+						_opensolid$geometry$OpenSolid_Bootstrap_Frame2d$originPoint(frame),
+						point))));
+	});
+var _opensolid$geometry$OpenSolid_Point2d$origin = _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(
+	{ctor: '_Tuple2', _0: 0, _1: 0});
+var _opensolid$geometry$OpenSolid_Point2d$addTo = F2(
+	function (point, vector) {
+		return A2(_opensolid$geometry$OpenSolid_Point2d$translateBy, vector, point);
+	});
+var _opensolid$geometry$OpenSolid_Point2d$scaleAbout = F3(
+	function (centerPoint, scale, point) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Point2d$addTo,
+			centerPoint,
+			A2(
+				_opensolid$geometry$OpenSolid_Vector2d$scaleBy,
+				scale,
+				A2(_opensolid$geometry$OpenSolid_Vector2d$from, centerPoint, point)));
+	});
+var _opensolid$geometry$OpenSolid_Point2d$rotateAround = F2(
+	function (centerPoint, angle) {
+		return function (_p20) {
+			return A2(
+				_opensolid$geometry$OpenSolid_Point2d$addTo,
+				centerPoint,
+				A2(
+					_opensolid$geometry$OpenSolid_Vector2d$rotateBy,
+					angle,
+					A2(_opensolid$geometry$OpenSolid_Vector2d$from, centerPoint, _p20)));
+		};
+	});
+var _opensolid$geometry$OpenSolid_Point2d$mirrorAcross = function (axis) {
+	return function (_p21) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Point2d$addTo,
+			_opensolid$geometry$OpenSolid_Bootstrap_Axis2d$originPoint(axis),
+			A2(
+				_opensolid$geometry$OpenSolid_Vector2d$mirrorAcross,
+				axis,
+				A2(
+					_opensolid$geometry$OpenSolid_Vector2d$from,
+					_opensolid$geometry$OpenSolid_Bootstrap_Axis2d$originPoint(axis),
+					_p21)));
+	};
+};
+var _opensolid$geometry$OpenSolid_Point2d$projectOnto = function (axis) {
+	return function (_p22) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Point2d$addTo,
+			_opensolid$geometry$OpenSolid_Bootstrap_Axis2d$originPoint(axis),
+			A2(
+				_opensolid$geometry$OpenSolid_Vector2d$projectOnto,
+				axis,
+				A2(
+					_opensolid$geometry$OpenSolid_Vector2d$from,
+					_opensolid$geometry$OpenSolid_Bootstrap_Axis2d$originPoint(axis),
+					_p22)));
+	};
+};
+var _opensolid$geometry$OpenSolid_Point2d$placeIn = F2(
+	function (frame, point) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Point2d$addTo,
+			_opensolid$geometry$OpenSolid_Bootstrap_Frame2d$originPoint(frame),
+			A2(
+				_opensolid$geometry$OpenSolid_Vector2d$placeIn,
+				frame,
+				_opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+					_opensolid$geometry$OpenSolid_Point2d$coordinates(point))));
+	});
+var _opensolid$geometry$OpenSolid_Point2d$in_ = F2(
+	function (frame, coordinates) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Point2d$placeIn,
+			frame,
+			_opensolid$geometry$OpenSolid_Point2d$fromCoordinates(coordinates));
+	});

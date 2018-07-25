@@ -1,0 +1,199 @@
+var _folkertdev$elm_deque$Deque$emptyAbstract = {
+	sizeF: 0,
+	front: {ctor: '[]'},
+	sizeR: 0,
+	rear: {ctor: '[]'}
+};
+var _folkertdev$elm_deque$Deque$fromList = function (_p0) {
+	return _folkertdev$elm_deque$Internal$Deque(
+		A2(_folkertdev$elm_deque$Internal$fromList, _folkertdev$elm_deque$Deque$emptyAbstract, _p0));
+};
+var _folkertdev$elm_deque$Deque$partition = F2(
+	function (p, _p1) {
+		var _p2 = _p1;
+		var _p5 = _p2._0;
+		var _p3 = A2(_elm_lang$core$List$partition, p, _p5.rear);
+		var l2 = _p3._0;
+		var r2 = _p3._1;
+		var _p4 = A2(_elm_lang$core$List$partition, p, _p5.front);
+		var l1 = _p4._0;
+		var r1 = _p4._1;
+		return {
+			ctor: '_Tuple2',
+			_0: _folkertdev$elm_deque$Deque$fromList(
+				A2(_elm_lang$core$Basics_ops['++'], l1, l2)),
+			_1: _folkertdev$elm_deque$Deque$fromList(
+				A2(_elm_lang$core$Basics_ops['++'], r1, r2))
+		};
+	});
+var _folkertdev$elm_deque$Deque$empty = _folkertdev$elm_deque$Internal$Deque(_folkertdev$elm_deque$Deque$emptyAbstract);
+var _folkertdev$elm_deque$Deque$unwrap = function (_p6) {
+	var _p7 = _p6;
+	return _p7._0;
+};
+var _folkertdev$elm_deque$Deque$popFront = function (_p8) {
+	return A2(
+		_elm_lang$core$Tuple$mapSecond,
+		_folkertdev$elm_deque$Internal$Deque,
+		A2(
+			_folkertdev$elm_deque$Internal$popFront,
+			_folkertdev$elm_deque$Deque$emptyAbstract,
+			_folkertdev$elm_deque$Deque$unwrap(_p8)));
+};
+var _folkertdev$elm_deque$Deque$popBack = function (_p9) {
+	return A2(
+		_elm_lang$core$Tuple$mapSecond,
+		_folkertdev$elm_deque$Internal$Deque,
+		A2(
+			_folkertdev$elm_deque$Internal$popBack,
+			_folkertdev$elm_deque$Deque$emptyAbstract,
+			_folkertdev$elm_deque$Deque$unwrap(_p9)));
+};
+var _folkertdev$elm_deque$Deque$isEmpty = function (_p10) {
+	return _folkertdev$elm_deque$Internal$isEmpty(
+		_folkertdev$elm_deque$Deque$unwrap(_p10));
+};
+var _folkertdev$elm_deque$Deque$append = F2(
+	function (_p12, _p11) {
+		var _p13 = _p12;
+		var _p18 = _p13._0;
+		var _p17 = _p13;
+		var _p14 = _p11;
+		var _p16 = _p14._0;
+		var _p15 = _p14;
+		return _folkertdev$elm_deque$Deque$isEmpty(_p17) ? _p15 : (_folkertdev$elm_deque$Deque$isEmpty(_p15) ? _p17 : _folkertdev$elm_deque$Internal$Deque(
+			{
+				sizeF: _p18.sizeF + _p18.sizeR,
+				front: A2(
+					_elm_lang$core$Basics_ops['++'],
+					_p18.front,
+					_elm_lang$core$List$reverse(_p18.rear)),
+				sizeR: _p16.sizeF + _p16.sizeR,
+				rear: _elm_lang$core$List$reverse(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p16.front,
+						_elm_lang$core$List$reverse(_p16.rear)))
+			}));
+	});
+var _folkertdev$elm_deque$Deque$member = function (elem) {
+	return function (_p19) {
+		return A2(
+			_folkertdev$elm_deque$Internal$member,
+			elem,
+			_folkertdev$elm_deque$Deque$unwrap(_p19));
+	};
+};
+var _folkertdev$elm_deque$Deque$length = function (_p20) {
+	return _folkertdev$elm_deque$Internal$length(
+		_folkertdev$elm_deque$Deque$unwrap(_p20));
+};
+var _folkertdev$elm_deque$Deque$foldl = F2(
+	function (f, initial) {
+		return function (_p21) {
+			return A3(
+				_folkertdev$elm_deque$Internal$foldl,
+				f,
+				initial,
+				_folkertdev$elm_deque$Deque$unwrap(_p21));
+		};
+	});
+var _folkertdev$elm_deque$Deque$foldr = F2(
+	function (f, initial) {
+		return function (_p22) {
+			return A3(
+				_folkertdev$elm_deque$Internal$foldr,
+				f,
+				initial,
+				_folkertdev$elm_deque$Deque$unwrap(_p22));
+		};
+	});
+var _folkertdev$elm_deque$Deque$first = function (_p23) {
+	return _folkertdev$elm_deque$Internal$first(
+		_folkertdev$elm_deque$Deque$unwrap(_p23));
+};
+var _folkertdev$elm_deque$Deque$last = function (_p24) {
+	return _folkertdev$elm_deque$Internal$last(
+		_folkertdev$elm_deque$Deque$unwrap(_p24));
+};
+var _folkertdev$elm_deque$Deque$takeFront = function (i) {
+	return function (_p25) {
+		return A2(
+			_folkertdev$elm_deque$Internal$takeFront,
+			i,
+			_folkertdev$elm_deque$Deque$unwrap(_p25));
+	};
+};
+var _folkertdev$elm_deque$Deque$takeBack = function (i) {
+	return function (_p26) {
+		return A2(
+			_folkertdev$elm_deque$Internal$takeBack,
+			i,
+			_folkertdev$elm_deque$Deque$unwrap(_p26));
+	};
+};
+var _folkertdev$elm_deque$Deque$toList = function (_p27) {
+	return _folkertdev$elm_deque$Internal$toList(
+		_folkertdev$elm_deque$Deque$unwrap(_p27));
+};
+var _folkertdev$elm_deque$Deque$map2 = F3(
+	function (f, a, b) {
+		return _folkertdev$elm_deque$Deque$fromList(
+			A3(
+				_elm_lang$core$List$map2,
+				f,
+				_folkertdev$elm_deque$Deque$toList(a),
+				_folkertdev$elm_deque$Deque$toList(b)));
+	});
+var _folkertdev$elm_deque$Deque$andMap = _folkertdev$elm_deque$Deque$map2(
+	F2(
+		function (x, y) {
+			return y(x);
+		}));
+var _folkertdev$elm_deque$Deque$mapAbstract = F2(
+	function (f, _p28) {
+		var _p29 = _p28;
+		return _folkertdev$elm_deque$Internal$Deque(
+			f(_p29._0));
+	});
+var _folkertdev$elm_deque$Deque$pushFront = F2(
+	function (elem, _p30) {
+		var _p31 = _p30;
+		var _p32 = _p31._0;
+		return A2(
+			_folkertdev$elm_deque$Deque$mapAbstract,
+			_folkertdev$elm_deque$Internal$rebalance,
+			_folkertdev$elm_deque$Internal$Deque(
+				_elm_lang$core$Native_Utils.update(
+					_p32,
+					{
+						sizeF: _p32.sizeF + 1,
+						front: {ctor: '::', _0: elem, _1: _p32.front}
+					})));
+	});
+var _folkertdev$elm_deque$Deque$singleton = function (elem) {
+	return A2(_folkertdev$elm_deque$Deque$pushFront, elem, _folkertdev$elm_deque$Deque$empty);
+};
+var _folkertdev$elm_deque$Deque$pushBack = F2(
+	function (elem, _p33) {
+		var _p34 = _p33;
+		var _p35 = _p34._0;
+		return A2(
+			_folkertdev$elm_deque$Deque$mapAbstract,
+			_folkertdev$elm_deque$Internal$rebalance,
+			_folkertdev$elm_deque$Internal$Deque(
+				_elm_lang$core$Native_Utils.update(
+					_p35,
+					{
+						sizeR: _p35.sizeR + 1,
+						rear: {ctor: '::', _0: elem, _1: _p35.rear}
+					})));
+	});
+var _folkertdev$elm_deque$Deque$map = function (f) {
+	return _folkertdev$elm_deque$Deque$mapAbstract(
+		_folkertdev$elm_deque$Internal$map(f));
+};
+var _folkertdev$elm_deque$Deque$filter = function (p) {
+	return _folkertdev$elm_deque$Deque$mapAbstract(
+		_folkertdev$elm_deque$Internal$filter(p));
+};

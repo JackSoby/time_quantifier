@@ -1,0 +1,149 @@
+var _gampleman$elm_visualization$Visualization_Histogram$tupleMap = F2(
+	function (f, _p0) {
+		var _p1 = _p0;
+		return {
+			ctor: '_Tuple2',
+			_0: f(_p1._0),
+			_1: f(_p1._1)
+		};
+	});
+var _gampleman$elm_visualization$Visualization_Histogram$compute = F2(
+	function (list, _p2) {
+		var _p3 = _p2;
+		var _p7 = _p3._0.value;
+		var _p4 = list;
+		if (_p4.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			var _p6 = _p4._0;
+			var computedDomain = A2(
+				_elm_lang$core$Maybe$withDefault,
+				{ctor: '_Tuple2', _0: _p6, _1: _p6},
+				_p3._0.domain(list));
+			var _p5 = A2(_gampleman$elm_visualization$Visualization_Histogram$tupleMap, _p7, computedDomain);
+			var x0 = _p5._0;
+			var x1 = _p5._1;
+			var thresholds = _elm_lang$core$Array$fromList(
+				A2(
+					_elm_lang$core$List$filter,
+					function (t) {
+						return (_elm_lang$core$Native_Utils.cmp(t, x0) > -1) && (_elm_lang$core$Native_Utils.cmp(t, x1) < 0);
+					},
+					A3(_p3._0.threshold, _p7, list, computedDomain)));
+			var thresholdsCount = _elm_lang$core$Array$length(thresholds);
+			var defaultValue = _p7(_p6);
+			var initBin = F2(
+				function (i, thresh) {
+					return {
+						x0: (_elm_lang$core$Native_Utils.cmp(i, 0) > 0) ? A2(
+							_elm_lang$core$Maybe$withDefault,
+							defaultValue,
+							A2(_elm_lang$core$Array$get, i - 1, thresholds)) : x0,
+						x1: (_elm_lang$core$Native_Utils.cmp(i, thresholdsCount) < 0) ? thresh : x1,
+						values: {ctor: '[]'},
+						length: 0
+					};
+				});
+			var fromMaybe = _elm_lang$core$Maybe$withDefault(
+				A2(initBin, 0, defaultValue));
+			var binify = F2(
+				function (item, bins) {
+					var threshIndex = A3(
+						_gampleman$elm_visualization$Visualization_Histogram_Array$bisectRight,
+						_p7(item),
+						thresholds,
+						_elm_lang$core$Maybe$Just(
+							{ctor: '_Tuple2', _0: 0, _1: thresholdsCount}));
+					var oldBin = fromMaybe(
+						A2(_elm_lang$core$Array$get, threshIndex, bins));
+					var newBin = _elm_lang$core$Native_Utils.update(
+						oldBin,
+						{
+							values: {ctor: '::', _0: item, _1: oldBin.values},
+							length: oldBin.length + 1
+						});
+					return A3(_elm_lang$core$Array$set, threshIndex, newBin, bins);
+				});
+			var bins = A2(
+				_elm_lang$core$Array$push,
+				A2(
+					initBin,
+					thresholdsCount,
+					A2(
+						_elm_lang$core$Maybe$withDefault,
+						defaultValue,
+						A2(_elm_lang$core$Array$get, thresholdsCount - 1, thresholds))),
+				A2(_elm_lang$core$Array$indexedMap, initBin, thresholds));
+			return _elm_lang$core$Array$toList(
+				A3(_elm_lang$core$List$foldl, binify, bins, list));
+		}
+	});
+var _gampleman$elm_visualization$Visualization_Histogram$steps = F4(
+	function (xs, fn, _p9, _p8) {
+		return A2(_elm_lang$core$List$map, fn, xs);
+	});
+var _gampleman$elm_visualization$Visualization_Histogram$binCount = F2(
+	function (_p10, num) {
+		var _p11 = _p10;
+		var _p13 = _p11._1;
+		var _p12 = _p11._0;
+		var tz = A3(_gampleman$elm_visualization$Visualization_List$tickStep, _p12, _p13, num);
+		return A3(
+			_gampleman$elm_visualization$Visualization_List$range,
+			_elm_lang$core$Basics$toFloat(
+				_elm_lang$core$Basics$ceiling(_p12 / tz)) * tz,
+			_elm_lang$core$Basics$toFloat(
+				_elm_lang$core$Basics$floor(_p13 / tz)) * tz,
+			tz);
+	});
+var _gampleman$elm_visualization$Visualization_Histogram$sturges = F3(
+	function (fn, list, domain) {
+		return A2(
+			_gampleman$elm_visualization$Visualization_Histogram$binCount,
+			A2(_gampleman$elm_visualization$Visualization_Histogram$tupleMap, fn, domain),
+			A2(
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				1,
+				_elm_lang$core$Basics$ceiling(
+					A2(
+						_elm_lang$core$Basics$logBase,
+						2,
+						_elm_lang$core$Basics$toFloat(
+							_elm_lang$core$List$length(list))))));
+	});
+var _gampleman$elm_visualization$Visualization_Histogram$Bin = F4(
+	function (a, b, c, d) {
+		return {x0: a, x1: b, values: c, length: d};
+	});
+var _gampleman$elm_visualization$Visualization_Histogram$H = function (a) {
+	return {ctor: 'H', _0: a};
+};
+var _gampleman$elm_visualization$Visualization_Histogram$custom = F2(
+	function (thresh, $function) {
+		return _gampleman$elm_visualization$Visualization_Histogram$H(
+			{
+				value: $function,
+				threshold: thresh,
+				domain: _gampleman$elm_visualization$Visualization_List$extentWith($function)
+			});
+	});
+var _gampleman$elm_visualization$Visualization_Histogram$generator = function (f) {
+	return A2(_gampleman$elm_visualization$Visualization_Histogram$custom, _gampleman$elm_visualization$Visualization_Histogram$sturges, f);
+};
+var _gampleman$elm_visualization$Visualization_Histogram$float = _gampleman$elm_visualization$Visualization_Histogram$generator(_elm_lang$core$Basics$identity);
+var _gampleman$elm_visualization$Visualization_Histogram$limitedBy = F2(
+	function (domain, _p14) {
+		var _p15 = _p14;
+		return _gampleman$elm_visualization$Visualization_Histogram$H(
+			_elm_lang$core$Native_Utils.update(
+				_p15._0,
+				{domain: domain}));
+	});
+var _gampleman$elm_visualization$Visualization_Histogram$withDomain = function (_p16) {
+	return _gampleman$elm_visualization$Visualization_Histogram$limitedBy(
+		_elm_lang$core$Basics$always(
+			_elm_lang$core$Maybe$Just(_p16)));
+};

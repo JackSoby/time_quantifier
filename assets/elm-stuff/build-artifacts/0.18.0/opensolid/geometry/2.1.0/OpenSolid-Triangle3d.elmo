@@ -1,0 +1,172 @@
+var _opensolid$geometry$OpenSolid_Triangle3d$vertices = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0;
+};
+var _opensolid$geometry$OpenSolid_Triangle3d$edges = function (triangle) {
+	var _p2 = _opensolid$geometry$OpenSolid_Triangle3d$vertices(triangle);
+	var p1 = _p2._0;
+	var p2 = _p2._1;
+	var p3 = _p2._2;
+	return {
+		ctor: '_Tuple3',
+		_0: A2(_opensolid$geometry$OpenSolid_LineSegment3d$from, p1, p2),
+		_1: A2(_opensolid$geometry$OpenSolid_LineSegment3d$from, p2, p3),
+		_2: A2(_opensolid$geometry$OpenSolid_LineSegment3d$from, p3, p1)
+	};
+};
+var _opensolid$geometry$OpenSolid_Triangle3d$centroid = function (triangle) {
+	var _p3 = _opensolid$geometry$OpenSolid_Triangle3d$vertices(triangle);
+	var p1 = _p3._0;
+	var p2 = _p3._1;
+	var p3 = _p3._2;
+	var firstVector = A2(_opensolid$geometry$OpenSolid_Vector3d$from, p1, p2);
+	var secondVector = A2(_opensolid$geometry$OpenSolid_Vector3d$from, p1, p3);
+	var displacement = A2(
+		_opensolid$geometry$OpenSolid_Vector3d$scaleBy,
+		1 / 3,
+		A2(_opensolid$geometry$OpenSolid_Vector3d$sum, firstVector, secondVector));
+	return A2(_opensolid$geometry$OpenSolid_Point3d$translateBy, displacement, p1);
+};
+var _opensolid$geometry$OpenSolid_Triangle3d$area = function (triangle) {
+	var _p4 = _opensolid$geometry$OpenSolid_Triangle3d$vertices(triangle);
+	var p1 = _p4._0;
+	var p2 = _p4._1;
+	var p3 = _p4._2;
+	var firstVector = A2(_opensolid$geometry$OpenSolid_Vector3d$from, p1, p2);
+	var secondVector = A2(_opensolid$geometry$OpenSolid_Vector3d$from, p1, p3);
+	return 0.5 * _opensolid$geometry$OpenSolid_Vector3d$length(
+		A2(_opensolid$geometry$OpenSolid_Vector3d$crossProduct, firstVector, secondVector));
+};
+var _opensolid$geometry$OpenSolid_Triangle3d$normalDirection = function (triangle) {
+	var _p5 = _opensolid$geometry$OpenSolid_Triangle3d$vertices(triangle);
+	var p1 = _p5._0;
+	var p2 = _p5._1;
+	var p3 = _p5._2;
+	var v1 = A2(_opensolid$geometry$OpenSolid_Vector3d$from, p1, p2);
+	var v2 = A2(_opensolid$geometry$OpenSolid_Vector3d$from, p2, p3);
+	return _opensolid$geometry$OpenSolid_Vector3d$direction(
+		A2(_opensolid$geometry$OpenSolid_Vector3d$crossProduct, v1, v2));
+};
+var _opensolid$geometry$OpenSolid_Triangle3d$projectInto = F2(
+	function (sketchPlane, triangle) {
+		var project = _opensolid$geometry$OpenSolid_Point3d$projectInto(sketchPlane);
+		var _p6 = _opensolid$geometry$OpenSolid_Triangle3d$vertices(triangle);
+		var p1 = _p6._0;
+		var p2 = _p6._1;
+		var p3 = _p6._2;
+		return _opensolid$geometry$OpenSolid_Triangle2d$fromVertices(
+			{
+				ctor: '_Tuple3',
+				_0: project(p1),
+				_1: project(p2),
+				_2: project(p3)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Triangle3d$boundingBox = function (triangle) {
+	var _p7 = _opensolid$geometry$OpenSolid_Triangle3d$vertices(triangle);
+	var p1 = _p7._0;
+	var p2 = _p7._1;
+	var p3 = _p7._2;
+	var _p8 = _opensolid$geometry$OpenSolid_Point3d$coordinates(p1);
+	var x1 = _p8._0;
+	var y1 = _p8._1;
+	var z1 = _p8._2;
+	var _p9 = _opensolid$geometry$OpenSolid_Point3d$coordinates(p2);
+	var x2 = _p9._0;
+	var y2 = _p9._1;
+	var z2 = _p9._2;
+	var _p10 = _opensolid$geometry$OpenSolid_Point3d$coordinates(p3);
+	var x3 = _p10._0;
+	var y3 = _p10._1;
+	var z3 = _p10._2;
+	return _opensolid$geometry$OpenSolid_BoundingBox3d$with(
+		{
+			minX: A2(
+				_elm_lang$core$Basics$min,
+				x1,
+				A2(_elm_lang$core$Basics$min, x2, x3)),
+			maxX: A2(
+				_elm_lang$core$Basics$max,
+				x1,
+				A2(_elm_lang$core$Basics$max, x2, x3)),
+			minY: A2(
+				_elm_lang$core$Basics$min,
+				y1,
+				A2(_elm_lang$core$Basics$min, y2, y3)),
+			maxY: A2(
+				_elm_lang$core$Basics$max,
+				y1,
+				A2(_elm_lang$core$Basics$max, y2, y3)),
+			minZ: A2(
+				_elm_lang$core$Basics$min,
+				z1,
+				A2(_elm_lang$core$Basics$min, z2, z3)),
+			maxZ: A2(
+				_elm_lang$core$Basics$max,
+				z1,
+				A2(_elm_lang$core$Basics$max, z2, z3))
+		});
+};
+var _opensolid$geometry$OpenSolid_Triangle3d$circumcircle = function (triangle) {
+	return _opensolid$geometry$OpenSolid_Circle3d$throughPoints(
+		_opensolid$geometry$OpenSolid_Triangle3d$vertices(triangle));
+};
+var _opensolid$geometry$OpenSolid_Triangle3d$fromVertices = _opensolid$geometry$OpenSolid_Geometry_Internal$Triangle3d;
+var _opensolid$geometry$OpenSolid_Triangle3d$on = F2(
+	function (sketchPlane, triangle2d) {
+		var _p11 = _opensolid$geometry$OpenSolid_Triangle2d$vertices(triangle2d);
+		var p1 = _p11._0;
+		var p2 = _p11._1;
+		var p3 = _p11._2;
+		return _opensolid$geometry$OpenSolid_Triangle3d$fromVertices(
+			{
+				ctor: '_Tuple3',
+				_0: A2(_opensolid$geometry$OpenSolid_Point3d$on, sketchPlane, p1),
+				_1: A2(_opensolid$geometry$OpenSolid_Point3d$on, sketchPlane, p2),
+				_2: A2(_opensolid$geometry$OpenSolid_Point3d$on, sketchPlane, p3)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Triangle3d$mapVertices = F2(
+	function ($function, triangle) {
+		var _p12 = _opensolid$geometry$OpenSolid_Triangle3d$vertices(triangle);
+		var p1 = _p12._0;
+		var p2 = _p12._1;
+		var p3 = _p12._2;
+		return _opensolid$geometry$OpenSolid_Triangle3d$fromVertices(
+			{
+				ctor: '_Tuple3',
+				_0: $function(p1),
+				_1: $function(p2),
+				_2: $function(p3)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Triangle3d$scaleAbout = F2(
+	function (centerPoint, scale) {
+		return _opensolid$geometry$OpenSolid_Triangle3d$mapVertices(
+			A2(_opensolid$geometry$OpenSolid_Point3d$scaleAbout, centerPoint, scale));
+	});
+var _opensolid$geometry$OpenSolid_Triangle3d$rotateAround = F2(
+	function (axis, angle) {
+		return _opensolid$geometry$OpenSolid_Triangle3d$mapVertices(
+			A2(_opensolid$geometry$OpenSolid_Point3d$rotateAround, axis, angle));
+	});
+var _opensolid$geometry$OpenSolid_Triangle3d$translateBy = function (vector) {
+	return _opensolid$geometry$OpenSolid_Triangle3d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point3d$translateBy(vector));
+};
+var _opensolid$geometry$OpenSolid_Triangle3d$mirrorAcross = function (plane) {
+	return _opensolid$geometry$OpenSolid_Triangle3d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point3d$mirrorAcross(plane));
+};
+var _opensolid$geometry$OpenSolid_Triangle3d$projectOnto = function (plane) {
+	return _opensolid$geometry$OpenSolid_Triangle3d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point3d$projectOnto(plane));
+};
+var _opensolid$geometry$OpenSolid_Triangle3d$relativeTo = function (frame) {
+	return _opensolid$geometry$OpenSolid_Triangle3d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point3d$relativeTo(frame));
+};
+var _opensolid$geometry$OpenSolid_Triangle3d$placeIn = function (frame) {
+	return _opensolid$geometry$OpenSolid_Triangle3d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point3d$placeIn(frame));
+};

@@ -1,0 +1,16 @@
+var _opensolid$geometry$OpenSolid_Bootstrap_Frame3d$zDirection = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0.zDirection;
+};
+var _opensolid$geometry$OpenSolid_Bootstrap_Frame3d$yDirection = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0.yDirection;
+};
+var _opensolid$geometry$OpenSolid_Bootstrap_Frame3d$xDirection = function (_p4) {
+	var _p5 = _p4;
+	return _p5._0.xDirection;
+};
+var _opensolid$geometry$OpenSolid_Bootstrap_Frame3d$originPoint = function (_p6) {
+	var _p7 = _p6;
+	return _p7._0.originPoint;
+};

@@ -1,0 +1,93 @@
+var _opensolid$geometry$OpenSolid_Axis2d$direction = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0.direction;
+};
+var _opensolid$geometry$OpenSolid_Axis2d$originPoint = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0.originPoint;
+};
+var _opensolid$geometry$OpenSolid_Axis2d$with = _opensolid$geometry$OpenSolid_Geometry_Internal$Axis2d;
+var _opensolid$geometry$OpenSolid_Axis2d$flip = function (axis) {
+	return _opensolid$geometry$OpenSolid_Axis2d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Axis2d$originPoint(axis),
+			direction: _opensolid$geometry$OpenSolid_Direction2d$flip(
+				_opensolid$geometry$OpenSolid_Axis2d$direction(axis))
+		});
+};
+var _opensolid$geometry$OpenSolid_Axis2d$moveTo = F2(
+	function (newOrigin, axis) {
+		return _opensolid$geometry$OpenSolid_Axis2d$with(
+			{
+				originPoint: newOrigin,
+				direction: _opensolid$geometry$OpenSolid_Axis2d$direction(axis)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Axis2d$rotateAround = F2(
+	function (centerPoint, angle) {
+		var rotateDirection = _opensolid$geometry$OpenSolid_Direction2d$rotateBy(angle);
+		var rotatePoint = A2(_opensolid$geometry$OpenSolid_Point2d$rotateAround, centerPoint, angle);
+		return function (axis) {
+			return _opensolid$geometry$OpenSolid_Axis2d$with(
+				{
+					originPoint: rotatePoint(
+						_opensolid$geometry$OpenSolid_Axis2d$originPoint(axis)),
+					direction: rotateDirection(
+						_opensolid$geometry$OpenSolid_Axis2d$direction(axis))
+				});
+		};
+	});
+var _opensolid$geometry$OpenSolid_Axis2d$translateBy = F2(
+	function (vector, axis) {
+		return _opensolid$geometry$OpenSolid_Axis2d$with(
+			{
+				originPoint: A2(
+					_opensolid$geometry$OpenSolid_Point2d$translateBy,
+					vector,
+					_opensolid$geometry$OpenSolid_Axis2d$originPoint(axis)),
+				direction: _opensolid$geometry$OpenSolid_Axis2d$direction(axis)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Axis2d$mirrorAcross = function (otherAxis) {
+	var mirrorDirection = _opensolid$geometry$OpenSolid_Direction2d$mirrorAcross(otherAxis);
+	var mirrorPoint = _opensolid$geometry$OpenSolid_Point2d$mirrorAcross(otherAxis);
+	return function (axis) {
+		return _opensolid$geometry$OpenSolid_Axis2d$with(
+			{
+				originPoint: mirrorPoint(
+					_opensolid$geometry$OpenSolid_Axis2d$originPoint(axis)),
+				direction: mirrorDirection(
+					_opensolid$geometry$OpenSolid_Axis2d$direction(axis))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Axis2d$relativeTo = function (frame) {
+	var relativeDirection = _opensolid$geometry$OpenSolid_Direction2d$relativeTo(frame);
+	var relativePoint = _opensolid$geometry$OpenSolid_Point2d$relativeTo(frame);
+	return function (axis) {
+		return _opensolid$geometry$OpenSolid_Axis2d$with(
+			{
+				originPoint: relativePoint(
+					_opensolid$geometry$OpenSolid_Axis2d$originPoint(axis)),
+				direction: relativeDirection(
+					_opensolid$geometry$OpenSolid_Axis2d$direction(axis))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Axis2d$placeIn = function (frame) {
+	var placeDirection = _opensolid$geometry$OpenSolid_Direction2d$placeIn(frame);
+	var placePoint = _opensolid$geometry$OpenSolid_Point2d$placeIn(frame);
+	return function (axis) {
+		return _opensolid$geometry$OpenSolid_Axis2d$with(
+			{
+				originPoint: placePoint(
+					_opensolid$geometry$OpenSolid_Axis2d$originPoint(axis)),
+				direction: placeDirection(
+					_opensolid$geometry$OpenSolid_Axis2d$direction(axis))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Axis2d$y = _opensolid$geometry$OpenSolid_Axis2d$with(
+	{originPoint: _opensolid$geometry$OpenSolid_Point2d$origin, direction: _opensolid$geometry$OpenSolid_Direction2d$y});
+var _opensolid$geometry$OpenSolid_Axis2d$x = _opensolid$geometry$OpenSolid_Axis2d$with(
+	{originPoint: _opensolid$geometry$OpenSolid_Point2d$origin, direction: _opensolid$geometry$OpenSolid_Direction2d$x});

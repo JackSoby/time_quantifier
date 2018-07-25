@@ -1,0 +1,249 @@
+var _opensolid$geometry$OpenSolid_SketchPlane3d$yDirection = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0.yDirection;
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$xDirection = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0.xDirection;
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$normalDirection = function (sketchPlane) {
+	var normalVector = A2(
+		_opensolid$geometry$OpenSolid_Vector3d$crossProduct,
+		_opensolid$geometry$OpenSolid_Direction3d$toVector(
+			_opensolid$geometry$OpenSolid_SketchPlane3d$xDirection(sketchPlane)),
+		_opensolid$geometry$OpenSolid_Direction3d$toVector(
+			_opensolid$geometry$OpenSolid_SketchPlane3d$yDirection(sketchPlane)));
+	return _opensolid$geometry$OpenSolid_Direction3d$unsafe(
+		_opensolid$geometry$OpenSolid_Vector3d$components(normalVector));
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$originPoint = function (_p4) {
+	var _p5 = _p4;
+	return _p5._0.originPoint;
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$xAxis = function (sketchPlane) {
+	return _opensolid$geometry$OpenSolid_Axis3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane),
+			direction: _opensolid$geometry$OpenSolid_SketchPlane3d$xDirection(sketchPlane)
+		});
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$yAxis = function (sketchPlane) {
+	return _opensolid$geometry$OpenSolid_Axis3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane),
+			direction: _opensolid$geometry$OpenSolid_SketchPlane3d$yDirection(sketchPlane)
+		});
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$normalAxis = function (sketchPlane) {
+	return _opensolid$geometry$OpenSolid_Axis3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane),
+			direction: _opensolid$geometry$OpenSolid_SketchPlane3d$normalDirection(sketchPlane)
+		});
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$plane = function (sketchPlane) {
+	return _opensolid$geometry$OpenSolid_Plane3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane),
+			normalDirection: _opensolid$geometry$OpenSolid_SketchPlane3d$normalDirection(sketchPlane)
+		});
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe = _opensolid$geometry$OpenSolid_Geometry_Internal$SketchPlane3d;
+var _opensolid$geometry$OpenSolid_SketchPlane3d$throughPoints = function (_p6) {
+	var _p7 = _p6;
+	var _p10 = _p7._2;
+	var _p9 = _p7._1;
+	var _p8 = _p7._0;
+	return A2(
+		_elm_lang$core$Maybe$andThen,
+		function (xDirection) {
+			var xDirectionVector = _opensolid$geometry$OpenSolid_Direction3d$toVector(xDirection);
+			var secondCandidate = A2(_opensolid$geometry$OpenSolid_Vector3d$from, _p9, _p10);
+			var secondSquaredLength = _opensolid$geometry$OpenSolid_Vector3d$squaredLength(secondCandidate);
+			var firstCandidate = A2(_opensolid$geometry$OpenSolid_Vector3d$from, _p8, _p10);
+			var firstSquaredLength = _opensolid$geometry$OpenSolid_Vector3d$squaredLength(firstCandidate);
+			var chosenVector = (_elm_lang$core$Native_Utils.cmp(firstSquaredLength, secondSquaredLength) < 1) ? firstCandidate : secondCandidate;
+			var normalVector = A2(_opensolid$geometry$OpenSolid_Vector3d$crossProduct, xDirectionVector, chosenVector);
+			var yVector = A2(_opensolid$geometry$OpenSolid_Vector3d$crossProduct, normalVector, xDirectionVector);
+			return A2(
+				_elm_lang$core$Maybe$map,
+				function (yDirection) {
+					return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+						{originPoint: _p8, xDirection: xDirection, yDirection: yDirection});
+				},
+				_opensolid$geometry$OpenSolid_Vector3d$direction(yVector));
+		},
+		A2(_opensolid$geometry$OpenSolid_Direction3d$from, _p8, _p9));
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$flipX = function (sketchPlane) {
+	return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane),
+			xDirection: _opensolid$geometry$OpenSolid_Direction3d$flip(
+				_opensolid$geometry$OpenSolid_SketchPlane3d$xDirection(sketchPlane)),
+			yDirection: _opensolid$geometry$OpenSolid_SketchPlane3d$yDirection(sketchPlane)
+		});
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$flipY = function (sketchPlane) {
+	return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane),
+			xDirection: _opensolid$geometry$OpenSolid_SketchPlane3d$xDirection(sketchPlane),
+			yDirection: _opensolid$geometry$OpenSolid_Direction3d$flip(
+				_opensolid$geometry$OpenSolid_SketchPlane3d$yDirection(sketchPlane))
+		});
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$moveTo = F2(
+	function (newOrigin, sketchPlane) {
+		return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+			{
+				originPoint: newOrigin,
+				xDirection: _opensolid$geometry$OpenSolid_SketchPlane3d$xDirection(sketchPlane),
+				yDirection: _opensolid$geometry$OpenSolid_SketchPlane3d$yDirection(sketchPlane)
+			});
+	});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$rotateAround = F2(
+	function (axis, angle) {
+		var rotateDirection = A2(_opensolid$geometry$OpenSolid_Direction3d$rotateAround, axis, angle);
+		var rotatePoint = A2(_opensolid$geometry$OpenSolid_Point3d$rotateAround, axis, angle);
+		return function (sketchPlane) {
+			return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+				{
+					originPoint: rotatePoint(
+						_opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane)),
+					xDirection: rotateDirection(
+						_opensolid$geometry$OpenSolid_SketchPlane3d$xDirection(sketchPlane)),
+					yDirection: rotateDirection(
+						_opensolid$geometry$OpenSolid_SketchPlane3d$yDirection(sketchPlane))
+				});
+		};
+	});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$rotateAroundOwn = F3(
+	function (axis, angle, sketchPlane) {
+		return A3(
+			_opensolid$geometry$OpenSolid_SketchPlane3d$rotateAround,
+			axis(sketchPlane),
+			angle,
+			sketchPlane);
+	});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$translateBy = F2(
+	function (vector, sketchPlane) {
+		return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+			{
+				originPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$translateBy,
+					vector,
+					_opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane)),
+				xDirection: _opensolid$geometry$OpenSolid_SketchPlane3d$xDirection(sketchPlane),
+				yDirection: _opensolid$geometry$OpenSolid_SketchPlane3d$yDirection(sketchPlane)
+			});
+	});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$offsetBy = F2(
+	function (distance, sketchPlane) {
+		var displacement = _opensolid$geometry$OpenSolid_Vector3d$with(
+			{
+				length: distance,
+				direction: _opensolid$geometry$OpenSolid_SketchPlane3d$normalDirection(sketchPlane)
+			});
+		return A2(_opensolid$geometry$OpenSolid_SketchPlane3d$translateBy, displacement, sketchPlane);
+	});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$translateAlongOwn = F3(
+	function (axis, distance, frame) {
+		var displacement = _opensolid$geometry$OpenSolid_Vector3d$with(
+			{
+				length: distance,
+				direction: _opensolid$geometry$OpenSolid_Axis3d$direction(
+					axis(frame))
+			});
+		return A2(_opensolid$geometry$OpenSolid_SketchPlane3d$translateBy, displacement, frame);
+	});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$mirrorAcross = function (plane) {
+	var mirrorDirection = _opensolid$geometry$OpenSolid_Direction3d$mirrorAcross(plane);
+	var mirrorPoint = _opensolid$geometry$OpenSolid_Point3d$mirrorAcross(plane);
+	return function (sketchPlane) {
+		return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+			{
+				originPoint: mirrorPoint(
+					_opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane)),
+				xDirection: mirrorDirection(
+					_opensolid$geometry$OpenSolid_SketchPlane3d$xDirection(sketchPlane)),
+				yDirection: mirrorDirection(
+					_opensolid$geometry$OpenSolid_SketchPlane3d$yDirection(sketchPlane))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$relativeTo = function (frame) {
+	var relativeDirection = _opensolid$geometry$OpenSolid_Direction3d$relativeTo(frame);
+	var relativePoint = _opensolid$geometry$OpenSolid_Point3d$relativeTo(frame);
+	return function (sketchPlane) {
+		return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+			{
+				originPoint: relativePoint(
+					_opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane)),
+				xDirection: relativeDirection(
+					_opensolid$geometry$OpenSolid_SketchPlane3d$xDirection(sketchPlane)),
+				yDirection: relativeDirection(
+					_opensolid$geometry$OpenSolid_SketchPlane3d$yDirection(sketchPlane))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$placeIn = function (frame) {
+	var placeDirection = _opensolid$geometry$OpenSolid_Direction3d$placeIn(frame);
+	var placePoint = _opensolid$geometry$OpenSolid_Point3d$placeIn(frame);
+	return function (sketchPlane) {
+		return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+			{
+				originPoint: placePoint(
+					_opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane)),
+				xDirection: placeDirection(
+					_opensolid$geometry$OpenSolid_SketchPlane3d$xDirection(sketchPlane)),
+				yDirection: placeDirection(
+					_opensolid$geometry$OpenSolid_SketchPlane3d$yDirection(sketchPlane))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$on = F2(
+	function (sketchPlane, frame) {
+		return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+			{
+				originPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$on,
+					sketchPlane,
+					_opensolid$geometry$OpenSolid_Frame2d$originPoint(frame)),
+				xDirection: A2(
+					_opensolid$geometry$OpenSolid_Direction3d$on,
+					sketchPlane,
+					_opensolid$geometry$OpenSolid_Frame2d$xDirection(frame)),
+				yDirection: A2(
+					_opensolid$geometry$OpenSolid_Direction3d$on,
+					sketchPlane,
+					_opensolid$geometry$OpenSolid_Frame2d$yDirection(frame))
+			});
+	});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$with = function (_p11) {
+	var _p12 = _p11;
+	var _p13 = _opensolid$geometry$OpenSolid_Direction3d$perpendicularBasis(_p12.normalDirection);
+	var xDirection = _p13._0;
+	var yDirection = _p13._1;
+	return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+		{originPoint: _p12.originPoint, xDirection: xDirection, yDirection: yDirection});
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$fromPlane = function (plane) {
+	return _opensolid$geometry$OpenSolid_SketchPlane3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Plane3d$originPoint(plane),
+			normalDirection: _opensolid$geometry$OpenSolid_Plane3d$normalDirection(plane)
+		});
+};
+var _opensolid$geometry$OpenSolid_SketchPlane3d$xz = _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+	{originPoint: _opensolid$geometry$OpenSolid_Point3d$origin, xDirection: _opensolid$geometry$OpenSolid_Direction3d$x, yDirection: _opensolid$geometry$OpenSolid_Direction3d$z});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$zx = _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+	{originPoint: _opensolid$geometry$OpenSolid_Point3d$origin, xDirection: _opensolid$geometry$OpenSolid_Direction3d$z, yDirection: _opensolid$geometry$OpenSolid_Direction3d$x});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$zy = _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+	{originPoint: _opensolid$geometry$OpenSolid_Point3d$origin, xDirection: _opensolid$geometry$OpenSolid_Direction3d$z, yDirection: _opensolid$geometry$OpenSolid_Direction3d$y});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$yz = _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+	{originPoint: _opensolid$geometry$OpenSolid_Point3d$origin, xDirection: _opensolid$geometry$OpenSolid_Direction3d$y, yDirection: _opensolid$geometry$OpenSolid_Direction3d$z});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$yx = _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+	{originPoint: _opensolid$geometry$OpenSolid_Point3d$origin, xDirection: _opensolid$geometry$OpenSolid_Direction3d$y, yDirection: _opensolid$geometry$OpenSolid_Direction3d$x});
+var _opensolid$geometry$OpenSolid_SketchPlane3d$xy = _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+	{originPoint: _opensolid$geometry$OpenSolid_Point3d$origin, xDirection: _opensolid$geometry$OpenSolid_Direction3d$x, yDirection: _opensolid$geometry$OpenSolid_Direction3d$y});

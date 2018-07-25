@@ -1,0 +1,241 @@
+var _folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$unsafeTail = function (_p0) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		{ctor: '[]'},
+		_elm_lang$core$List$tail(_p0));
+};
+var _folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$unsafeInit = function (_p1) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		{ctor: '[]'},
+		_elm_community$list_extra$List_Extra$init(_p1));
+};
+var _folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$step3 = F2(
+	function (points, _p2) {
+		var _p3 = _p2;
+		var _p7 = _p3._2;
+		var _p6 = _p3._1;
+		var helper = F3(
+			function (finalR, finalB, finalX) {
+				var scanner = F2(
+					function (_p4, prevA) {
+						var _p5 = _p4;
+						return (_p5._1 - prevA) / _p5._0;
+					});
+				var finalA = finalR / finalB;
+				var a_ = A3(
+					_elm_community$list_extra$List_Extra$scanr,
+					scanner,
+					finalA,
+					A3(
+						_elm_lang$core$List$map2,
+						F2(
+							function (v0, v1) {
+								return {ctor: '_Tuple2', _0: v0, _1: v1};
+							}),
+						_folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$unsafeInit(_p6),
+						_folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$unsafeInit(_p7)));
+				var b_ = A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(
+						_elm_lang$core$List$map2,
+						F2(
+							function (xx, aa) {
+								return (2 * xx) - aa;
+							}),
+						_folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$unsafeTail(points),
+						_folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$unsafeTail(a_)),
+					{
+						ctor: '::',
+						_0: (finalX + finalA) / 2,
+						_1: {ctor: '[]'}
+					});
+				return {ctor: '_Tuple2', _0: a_, _1: b_};
+			});
+		return A4(
+			_elm_lang$core$Maybe$map3,
+			helper,
+			_elm_community$list_extra$List_Extra$last(_p7),
+			_elm_community$list_extra$List_Extra$last(_p6),
+			_elm_community$list_extra$List_Extra$last(points));
+	});
+var _folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$step2 = function (_p8) {
+	var _p9 = _p8;
+	var _p20 = _p9._2;
+	var _p19 = _p9._1;
+	var _p18 = _p9._0;
+	var _p10 = {ctor: '_Tuple2', _0: _p19, _1: _p20};
+	if (((_p10.ctor === '_Tuple2') && (_p10._0.ctor === '::')) && (_p10._1.ctor === '::')) {
+		var scanner = F2(
+			function (_p12, _p11) {
+				var _p13 = _p12;
+				var _p16 = _p13._0;
+				var _p14 = _p11;
+				var _p15 = _p14._0;
+				return {ctor: '_Tuple2', _0: _p13._1 - (_p16 / _p15), _1: _p13._2 - ((_p16 / _p15) * _p14._1)};
+			});
+		var _p17 = _elm_lang$core$List$unzip(
+			A2(
+				_elm_lang$core$List$drop,
+				1,
+				A3(
+					_elm_lang$core$List$scanl,
+					scanner,
+					{ctor: '_Tuple2', _0: _p10._0._0, _1: _p10._1._0},
+					A4(
+						_elm_lang$core$List$map3,
+						F3(
+							function (v0, v1, v2) {
+								return {ctor: '_Tuple3', _0: v0, _1: v1, _2: v2};
+							}),
+						_p18,
+						_p19,
+						_p20))));
+		var b_ = _p17._0;
+		var r_ = _p17._1;
+		return _elm_lang$core$Maybe$Just(
+			{ctor: '_Tuple3', _0: _p18, _1: b_, _2: r_});
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$updateAt = F3(
+	function (index, fn, list) {
+		if (_elm_lang$core$Native_Utils.cmp(index, 0) < 0) {
+			return list;
+		} else {
+			var tail = A2(_elm_lang$core$List$drop, index, list);
+			var head = A2(_elm_lang$core$List$take, index, list);
+			var _p21 = tail;
+			if (_p21.ctor === '::') {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					head,
+					{
+						ctor: '::',
+						_0: fn(_p21._0),
+						_1: _p21._1
+					});
+			} else {
+				return list;
+			}
+		}
+	});
+var _folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$step1 = function (coordinates) {
+	var _p22 = coordinates;
+	if ((_p22.ctor === '::') && (_p22._1.ctor === '::')) {
+		var _p29 = _p22._1._0;
+		var _p28 = _p22._0;
+		var _p27 = _p22._1._1;
+		var _p23 = A3(
+			_elm_lang$core$List$foldl,
+			F2(
+				function (elem, _p24) {
+					var _p25 = _p24;
+					return {ctor: '_Tuple2', _0: _p25._1, _1: elem};
+				}),
+			{ctor: '_Tuple2', _0: _p28, _1: _p29},
+			_p27);
+		var butFinal = _p23._0;
+		var $final = _p23._1;
+		var r = {
+			ctor: '::',
+			_0: _p28 + (2 * _p29),
+			_1: A3(
+				_elm_lang$core$List$map2,
+				F2(
+					function (current, next) {
+						return (4 * current) + (2 * next);
+					}),
+				{ctor: '::', _0: _p29, _1: _p27},
+				_p27)
+		};
+		var n = _elm_lang$core$List$length(coordinates) - 1;
+		var a = {
+			ctor: '::',
+			_0: 0,
+			_1: A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(_elm_lang$core$List$repeat, n - 2, 1),
+				{
+					ctor: '::',
+					_0: 2,
+					_1: {ctor: '[]'}
+				})
+		};
+		var b = {
+			ctor: '::',
+			_0: 2,
+			_1: A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(_elm_lang$core$List$repeat, n - 2, 4),
+				{
+					ctor: '::',
+					_0: 7,
+					_1: {ctor: '[]'}
+				})
+		};
+		var r_ = A3(
+			_folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$updateAt,
+			n - 1,
+			function (_p26) {
+				return (8 * butFinal) + $final;
+			},
+			r);
+		return _elm_lang$core$Maybe$Just(
+			{ctor: '_Tuple3', _0: a, _1: b, _2: r_});
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$controlPoints = function (points) {
+	return A2(
+		_elm_lang$core$Maybe$andThen,
+		_folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$step3(points),
+		A2(
+			_elm_lang$core$Maybe$andThen,
+			_folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$step2,
+			_folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$step1(points)));
+};
+var _folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$naturalControlPoints = function (points) {
+	var _p30 = _elm_lang$core$List$unzip(points);
+	var xs = _p30._0;
+	var ys = _p30._1;
+	var _p31 = A3(
+		_elm_lang$core$Maybe$map2,
+		F2(
+			function (v0, v1) {
+				return {ctor: '_Tuple2', _0: v0, _1: v1};
+			}),
+		_folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$controlPoints(xs),
+		_folkertdev$one_true_path_experiment$Internal_NaturalInterpolation$controlPoints(ys));
+	if (_p31.ctor === 'Just') {
+		var pb = A3(
+			_elm_lang$core$List$map2,
+			F2(
+				function (v0, v1) {
+					return {ctor: '_Tuple2', _0: v0, _1: v1};
+				}),
+			_p31._0._0._1,
+			_p31._0._1._1);
+		var pa = A3(
+			_elm_lang$core$List$map2,
+			F2(
+				function (v0, v1) {
+					return {ctor: '_Tuple2', _0: v0, _1: v1};
+				}),
+			_p31._0._0._0,
+			_p31._0._1._0);
+		return A4(
+			_elm_lang$core$List$map3,
+			F3(
+				function (v0, v1, v2) {
+					return {ctor: '_Tuple3', _0: v0, _1: v1, _2: v2};
+				}),
+			pa,
+			pb,
+			A2(_elm_lang$core$List$drop, 1, points));
+	} else {
+		return {ctor: '[]'};
+	}
+};

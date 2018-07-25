@@ -1,0 +1,139 @@
+var _opensolid$geometry$OpenSolid_LineSegment3d$endpoints = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0;
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$interpolate = function (lineSegment) {
+	var _p2 = _opensolid$geometry$OpenSolid_LineSegment3d$endpoints(lineSegment);
+	var start = _p2._0;
+	var end = _p2._1;
+	return A2(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, start, end);
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$midpoint = function (lineSegment) {
+	return A2(_opensolid$geometry$OpenSolid_LineSegment3d$interpolate, lineSegment, 0.5);
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$vector = function (lineSegment) {
+	var _p3 = _opensolid$geometry$OpenSolid_LineSegment3d$endpoints(lineSegment);
+	var p1 = _p3._0;
+	var p2 = _p3._1;
+	return A2(_opensolid$geometry$OpenSolid_Vector3d$from, p1, p2);
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$length = function (_p4) {
+	return _opensolid$geometry$OpenSolid_Vector3d$length(
+		_opensolid$geometry$OpenSolid_LineSegment3d$vector(_p4));
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$squaredLength = function (_p5) {
+	return _opensolid$geometry$OpenSolid_Vector3d$squaredLength(
+		_opensolid$geometry$OpenSolid_LineSegment3d$vector(_p5));
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$direction = function (_p6) {
+	return _opensolid$geometry$OpenSolid_Vector3d$direction(
+		_opensolid$geometry$OpenSolid_LineSegment3d$vector(_p6));
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$normalDirection = function (_p7) {
+	return _opensolid$geometry$OpenSolid_Vector3d$direction(
+		_opensolid$geometry$OpenSolid_Vector3d$perpendicularTo(
+			_opensolid$geometry$OpenSolid_LineSegment3d$vector(_p7)));
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$projectInto = F2(
+	function (sketchPlane, lineSegment) {
+		var project = _opensolid$geometry$OpenSolid_Point3d$projectInto(sketchPlane);
+		var _p8 = _opensolid$geometry$OpenSolid_LineSegment3d$endpoints(lineSegment);
+		var p1 = _p8._0;
+		var p2 = _p8._1;
+		return _opensolid$geometry$OpenSolid_LineSegment2d$fromEndpoints(
+			{
+				ctor: '_Tuple2',
+				_0: project(p1),
+				_1: project(p2)
+			});
+	});
+var _opensolid$geometry$OpenSolid_LineSegment3d$boundingBox = function (lineSegment) {
+	var _p9 = _opensolid$geometry$OpenSolid_LineSegment3d$endpoints(lineSegment);
+	var p1 = _p9._0;
+	var p2 = _p9._1;
+	return A2(_opensolid$geometry$OpenSolid_Point3d$hull, p1, p2);
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$endPoint = function (_p10) {
+	var _p11 = _p10;
+	return _p11._0._1;
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$startPoint = function (_p12) {
+	var _p13 = _p12;
+	return _p13._0._0;
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$fromEndpoints = _opensolid$geometry$OpenSolid_Geometry_Internal$LineSegment3d;
+var _opensolid$geometry$OpenSolid_LineSegment3d$from = F2(
+	function (startPoint, endPoint) {
+		return _opensolid$geometry$OpenSolid_LineSegment3d$fromEndpoints(
+			{ctor: '_Tuple2', _0: startPoint, _1: endPoint});
+	});
+var _opensolid$geometry$OpenSolid_LineSegment3d$along = F3(
+	function (axis, start, end) {
+		return _opensolid$geometry$OpenSolid_LineSegment3d$fromEndpoints(
+			{
+				ctor: '_Tuple2',
+				_0: A2(_opensolid$geometry$OpenSolid_Point3d$along, axis, start),
+				_1: A2(_opensolid$geometry$OpenSolid_Point3d$along, axis, end)
+			});
+	});
+var _opensolid$geometry$OpenSolid_LineSegment3d$on = F2(
+	function (sketchPlane, lineSegment2d) {
+		var _p14 = _opensolid$geometry$OpenSolid_LineSegment2d$endpoints(lineSegment2d);
+		var p1 = _p14._0;
+		var p2 = _p14._1;
+		return _opensolid$geometry$OpenSolid_LineSegment3d$fromEndpoints(
+			{
+				ctor: '_Tuple2',
+				_0: A2(_opensolid$geometry$OpenSolid_Point3d$on, sketchPlane, p1),
+				_1: A2(_opensolid$geometry$OpenSolid_Point3d$on, sketchPlane, p2)
+			});
+	});
+var _opensolid$geometry$OpenSolid_LineSegment3d$reverse = function (lineSegment) {
+	var _p15 = _opensolid$geometry$OpenSolid_LineSegment3d$endpoints(lineSegment);
+	var p1 = _p15._0;
+	var p2 = _p15._1;
+	return _opensolid$geometry$OpenSolid_LineSegment3d$fromEndpoints(
+		{ctor: '_Tuple2', _0: p2, _1: p1});
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$mapEndpoints = F2(
+	function ($function, lineSegment) {
+		var _p16 = _opensolid$geometry$OpenSolid_LineSegment3d$endpoints(lineSegment);
+		var p1 = _p16._0;
+		var p2 = _p16._1;
+		return _opensolid$geometry$OpenSolid_LineSegment3d$fromEndpoints(
+			{
+				ctor: '_Tuple2',
+				_0: $function(p1),
+				_1: $function(p2)
+			});
+	});
+var _opensolid$geometry$OpenSolid_LineSegment3d$scaleAbout = F2(
+	function (point, scale) {
+		return _opensolid$geometry$OpenSolid_LineSegment3d$mapEndpoints(
+			A2(_opensolid$geometry$OpenSolid_Point3d$scaleAbout, point, scale));
+	});
+var _opensolid$geometry$OpenSolid_LineSegment3d$rotateAround = F2(
+	function (axis, angle) {
+		return _opensolid$geometry$OpenSolid_LineSegment3d$mapEndpoints(
+			A2(_opensolid$geometry$OpenSolid_Point3d$rotateAround, axis, angle));
+	});
+var _opensolid$geometry$OpenSolid_LineSegment3d$translateBy = function (vector) {
+	return _opensolid$geometry$OpenSolid_LineSegment3d$mapEndpoints(
+		_opensolid$geometry$OpenSolid_Point3d$translateBy(vector));
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$mirrorAcross = function (plane) {
+	return _opensolid$geometry$OpenSolid_LineSegment3d$mapEndpoints(
+		_opensolid$geometry$OpenSolid_Point3d$mirrorAcross(plane));
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$projectOnto = function (plane) {
+	return _opensolid$geometry$OpenSolid_LineSegment3d$mapEndpoints(
+		_opensolid$geometry$OpenSolid_Point3d$projectOnto(plane));
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$relativeTo = function (frame) {
+	return _opensolid$geometry$OpenSolid_LineSegment3d$mapEndpoints(
+		_opensolid$geometry$OpenSolid_Point3d$relativeTo(frame));
+};
+var _opensolid$geometry$OpenSolid_LineSegment3d$placeIn = function (frame) {
+	return _opensolid$geometry$OpenSolid_LineSegment3d$mapEndpoints(
+		_opensolid$geometry$OpenSolid_Point3d$placeIn(frame));
+};

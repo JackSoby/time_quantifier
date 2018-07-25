@@ -1,0 +1,58 @@
+var _gampleman$elm_visualization$Visualization_Histogram_Array$bisectRight = F3(
+	function (item, array, extent) {
+		var usafeGet = function (index) {
+			var _p0 = A2(_elm_lang$core$Array$get, index, array);
+			if (_p0.ctor === 'Just') {
+				return _p0._0;
+			} else {
+				return _elm_lang$core$Native_Utils.crashCase(
+					'Visualization.Histogram.Array',
+					{
+						start: {line: 12, column: 13},
+						end: {line: 17, column: 167}
+					},
+					_p0)('An invariant in bisectRight was breached. This is a bug, please report this to https://github.com/gampleman/elm-visualization/issues');
+			}
+		};
+		var helper = F2(
+			function (lo, hi) {
+				helper:
+				while (true) {
+					if (_elm_lang$core$Native_Utils.cmp(lo, hi) < 0) {
+						var mid = (lo + hi) >>> 1;
+						if (_elm_lang$core$Native_Utils.cmp(
+							usafeGet(mid),
+							item) > -1) {
+							var _v1 = lo,
+								_v2 = mid;
+							lo = _v1;
+							hi = _v2;
+							continue helper;
+						} else {
+							var _v3 = mid + 1,
+								_v4 = hi;
+							lo = _v3;
+							hi = _v4;
+							continue helper;
+						}
+					} else {
+						return lo;
+					}
+				}
+			});
+		var _p2 = extent;
+		if (_p2.ctor === 'Just') {
+			return A2(
+				helper,
+				A2(_elm_lang$core$Basics$max, 0, _p2._0._0),
+				A2(
+					_elm_lang$core$Basics$min,
+					_p2._0._1,
+					_elm_lang$core$Array$length(array)));
+		} else {
+			return A2(
+				helper,
+				0,
+				_elm_lang$core$Array$length(array));
+		}
+	});

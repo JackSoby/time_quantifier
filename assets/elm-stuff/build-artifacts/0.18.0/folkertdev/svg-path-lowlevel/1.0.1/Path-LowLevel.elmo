@@ -1,0 +1,358 @@
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate = function (_p0) {
+	var _p1 = _p0;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Basics$toString(_p1._0),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			',',
+			_elm_lang$core$Basics$toString(_p1._1)));
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate2 = function (_p2) {
+	var _p3 = _p2;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate(_p3._0),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			' ',
+			_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate(_p3._1)));
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate3 = function (_p4) {
+	var _p5 = _p4;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate(_p5._0),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			' ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate(_p5._1),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					' ',
+					_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate(_p5._2)))));
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCharacter = F2(
+	function (mode, character) {
+		var _p6 = mode;
+		if (_p6.ctor === 'Absolute') {
+			return _elm_lang$core$String$fromChar(
+				_elm_lang$core$Char$toUpper(character));
+		} else {
+			return _elm_lang$core$String$fromChar(
+				_elm_lang$core$Char$toLower(character));
+		}
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$isEmpty = function (command) {
+	var _p7 = command;
+	switch (_p7.ctor) {
+		case 'LineTo':
+			return _elm_lang$core$List$isEmpty(_p7._1);
+		case 'Horizontal':
+			return _elm_lang$core$List$isEmpty(_p7._1);
+		case 'Vertical':
+			return _elm_lang$core$List$isEmpty(_p7._1);
+		case 'CurveTo':
+			return _elm_lang$core$List$isEmpty(_p7._1);
+		case 'SmoothCurveTo':
+			return _elm_lang$core$List$isEmpty(_p7._1);
+		case 'QuadraticBezierCurveTo':
+			return _elm_lang$core$List$isEmpty(_p7._1);
+		case 'SmoothQuadraticBezierCurveTo':
+			return _elm_lang$core$List$isEmpty(_p7._1);
+		case 'EllipticalArc':
+			return _elm_lang$core$List$isEmpty(_p7._1);
+		default:
+			return false;
+	}
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyMoveTo = function (_p8) {
+	var _p9 = _p8;
+	var _p11 = _p9._1;
+	var _p10 = _p9._0;
+	if (_p10.ctor === 'Absolute') {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'M',
+			_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate(_p11));
+	} else {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'm',
+			_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate(_p11));
+	}
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$encodeFlags = function (_p12) {
+	var _p13 = _p12;
+	var _p14 = {ctor: '_Tuple2', _0: _p13._0, _1: _p13._1};
+	if (_p14._0.ctor === 'LargestArc') {
+		if (_p14._1.ctor === 'Clockwise') {
+			return {ctor: '_Tuple2', _0: 1, _1: 0};
+		} else {
+			return {ctor: '_Tuple2', _0: 1, _1: 1};
+		}
+	} else {
+		if (_p14._1.ctor === 'Clockwise') {
+			return {ctor: '_Tuple2', _0: 0, _1: 0};
+		} else {
+			return {ctor: '_Tuple2', _0: 0, _1: 1};
+		}
+	}
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyEllipticalArcArgument = function (_p15) {
+	var _p16 = _p15;
+	var _p17 = _folkertdev$svg_path_lowlevel$Path_LowLevel$encodeFlags(
+		{ctor: '_Tuple2', _0: _p16.arcFlag, _1: _p16.direction});
+	var arc = _p17._0;
+	var sweep = _p17._1;
+	return A2(
+		_elm_lang$core$String$join,
+		' ',
+		{
+			ctor: '::',
+			_0: _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate(_p16.radii),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Basics$toString(_p16.xAxisRotate),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Basics$toString(arc),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Basics$toString(sweep),
+						_1: {
+							ctor: '::',
+							_0: _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate(_p16.target),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyDrawTo = function (command) {
+	if (_folkertdev$svg_path_lowlevel$Path_LowLevel$isEmpty(command)) {
+		return '';
+	} else {
+		var _p18 = command;
+		switch (_p18.ctor) {
+			case 'LineTo':
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCharacter,
+						_p18._0,
+						_elm_lang$core$Native_Utils.chr('L')),
+					A2(
+						_elm_lang$core$String$join,
+						' ',
+						A2(_elm_lang$core$List$map, _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate, _p18._1)));
+			case 'Horizontal':
+				var _p19 = _p18._1;
+				return _elm_lang$core$List$isEmpty(_p19) ? '' : A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCharacter,
+						_p18._0,
+						_elm_lang$core$Native_Utils.chr('H')),
+					A2(
+						_elm_lang$core$String$join,
+						' ',
+						A2(_elm_lang$core$List$map, _elm_lang$core$Basics$toString, _p19)));
+			case 'Vertical':
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCharacter,
+						_p18._0,
+						_elm_lang$core$Native_Utils.chr('V')),
+					A2(
+						_elm_lang$core$String$join,
+						' ',
+						A2(_elm_lang$core$List$map, _elm_lang$core$Basics$toString, _p18._1)));
+			case 'CurveTo':
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCharacter,
+						_p18._0,
+						_elm_lang$core$Native_Utils.chr('C')),
+					A2(
+						_elm_lang$core$String$join,
+						' ',
+						A2(_elm_lang$core$List$map, _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate3, _p18._1)));
+			case 'SmoothCurveTo':
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCharacter,
+						_p18._0,
+						_elm_lang$core$Native_Utils.chr('S')),
+					A2(
+						_elm_lang$core$String$join,
+						' ',
+						A2(_elm_lang$core$List$map, _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate2, _p18._1)));
+			case 'QuadraticBezierCurveTo':
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCharacter,
+						_p18._0,
+						_elm_lang$core$Native_Utils.chr('Q')),
+					A2(
+						_elm_lang$core$String$join,
+						' ',
+						A2(_elm_lang$core$List$map, _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate2, _p18._1)));
+			case 'SmoothQuadraticBezierCurveTo':
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCharacter,
+						_p18._0,
+						_elm_lang$core$Native_Utils.chr('T')),
+					A2(
+						_elm_lang$core$String$join,
+						' ',
+						A2(_elm_lang$core$List$map, _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCoordinate, _p18._1)));
+			case 'EllipticalArc':
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyCharacter,
+						_p18._0,
+						_elm_lang$core$Native_Utils.chr('A')),
+					A2(
+						_elm_lang$core$String$join,
+						' ',
+						A2(_elm_lang$core$List$map, _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyEllipticalArcArgument, _p18._1)));
+			default:
+				return 'Z';
+		}
+	}
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$toStringSubPath = function (_p20) {
+	var _p21 = _p20;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyMoveTo(_p21.moveto),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			' ',
+			A2(
+				_elm_lang$core$String$join,
+				' ',
+				A2(_elm_lang$core$List$map, _folkertdev$svg_path_lowlevel$Path_LowLevel$stringifyDrawTo, _p21.drawtos))));
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$toString = function (subpaths) {
+	return A2(
+		_elm_lang$core$String$join,
+		' ',
+		A2(_elm_lang$core$List$map, _folkertdev$svg_path_lowlevel$Path_LowLevel$toStringSubPath, subpaths));
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$element = F2(
+	function (attributes, subpaths) {
+		return A2(
+			_elm_lang$svg$Svg$path,
+			{
+				ctor: '::',
+				_0: _elm_lang$svg$Svg_Attributes$d(
+					_folkertdev$svg_path_lowlevel$Path_LowLevel$toString(subpaths)),
+				_1: attributes
+			},
+			{ctor: '[]'});
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$SubPath = F2(
+	function (a, b) {
+		return {moveto: a, drawtos: b};
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$EllipticalArcArgument = F5(
+	function (a, b, c, d, e) {
+		return {radii: a, xAxisRotate: b, arcFlag: c, direction: d, target: e};
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute = {ctor: 'Absolute'};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$Relative = {ctor: 'Relative'};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$MoveTo = F2(
+	function (a, b) {
+		return {ctor: 'MoveTo', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$ClosePath = {ctor: 'ClosePath'};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$EllipticalArc = F2(
+	function (a, b) {
+		return {ctor: 'EllipticalArc', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$SmoothQuadraticBezierCurveTo = F2(
+	function (a, b) {
+		return {ctor: 'SmoothQuadraticBezierCurveTo', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$QuadraticBezierCurveTo = F2(
+	function (a, b) {
+		return {ctor: 'QuadraticBezierCurveTo', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$SmoothCurveTo = F2(
+	function (a, b) {
+		return {ctor: 'SmoothCurveTo', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$CurveTo = F2(
+	function (a, b) {
+		return {ctor: 'CurveTo', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$Vertical = F2(
+	function (a, b) {
+		return {ctor: 'Vertical', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$Horizontal = F2(
+	function (a, b) {
+		return {ctor: 'Horizontal', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$LineTo = F2(
+	function (a, b) {
+		return {ctor: 'LineTo', _0: a, _1: b};
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$LargestArc = {ctor: 'LargestArc'};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$largestArc = _folkertdev$svg_path_lowlevel$Path_LowLevel$LargestArc;
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$SmallestArc = {ctor: 'SmallestArc'};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$smallestArc = _folkertdev$svg_path_lowlevel$Path_LowLevel$SmallestArc;
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$CounterClockwise = {ctor: 'CounterClockwise'};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$counterClockwise = _folkertdev$svg_path_lowlevel$Path_LowLevel$CounterClockwise;
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$Clockwise = {ctor: 'Clockwise'};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$clockwise = _folkertdev$svg_path_lowlevel$Path_LowLevel$Clockwise;
+var _folkertdev$svg_path_lowlevel$Path_LowLevel$decodeFlags = function (_p22) {
+	var _p23 = _p22;
+	var _p24 = {ctor: '_Tuple2', _0: _p23._0, _1: _p23._1};
+	_v13_4:
+	do {
+		if (_p24.ctor === '_Tuple2') {
+			switch (_p24._0) {
+				case 1:
+					switch (_p24._1) {
+						case 0:
+							return _elm_lang$core$Maybe$Just(
+								{ctor: '_Tuple2', _0: _folkertdev$svg_path_lowlevel$Path_LowLevel$LargestArc, _1: _folkertdev$svg_path_lowlevel$Path_LowLevel$Clockwise});
+						case 1:
+							return _elm_lang$core$Maybe$Just(
+								{ctor: '_Tuple2', _0: _folkertdev$svg_path_lowlevel$Path_LowLevel$LargestArc, _1: _folkertdev$svg_path_lowlevel$Path_LowLevel$CounterClockwise});
+						default:
+							break _v13_4;
+					}
+				case 0:
+					switch (_p24._1) {
+						case 0:
+							return _elm_lang$core$Maybe$Just(
+								{ctor: '_Tuple2', _0: _folkertdev$svg_path_lowlevel$Path_LowLevel$SmallestArc, _1: _folkertdev$svg_path_lowlevel$Path_LowLevel$Clockwise});
+						case 1:
+							return _elm_lang$core$Maybe$Just(
+								{ctor: '_Tuple2', _0: _folkertdev$svg_path_lowlevel$Path_LowLevel$SmallestArc, _1: _folkertdev$svg_path_lowlevel$Path_LowLevel$CounterClockwise});
+						default:
+							break _v13_4;
+					}
+				default:
+					break _v13_4;
+			}
+		} else {
+			break _v13_4;
+		}
+	} while(false);
+	return _elm_lang$core$Maybe$Nothing;
+};

@@ -1,0 +1,119 @@
+var _gampleman$elm_visualization$Visualization_Shape$sortByInsideOut = _gampleman$elm_visualization$Visualization_Shape_Stack$sortByInsideOut;
+var _gampleman$elm_visualization$Visualization_Shape$stackOffsetWiggle = _gampleman$elm_visualization$Visualization_Shape_Stack$offsetWiggle;
+var _gampleman$elm_visualization$Visualization_Shape$stackOffsetSilhouette = _gampleman$elm_visualization$Visualization_Shape_Stack$offsetSilhouette;
+var _gampleman$elm_visualization$Visualization_Shape$stackOffsetExpand = _gampleman$elm_visualization$Visualization_Shape_Stack$offsetExpand;
+var _gampleman$elm_visualization$Visualization_Shape$stackOffsetDiverging = _gampleman$elm_visualization$Visualization_Shape_Stack$offsetDiverging;
+var _gampleman$elm_visualization$Visualization_Shape$stackOffsetNone = _gampleman$elm_visualization$Visualization_Shape_Stack$offsetNone;
+var _gampleman$elm_visualization$Visualization_Shape$stack = _gampleman$elm_visualization$Visualization_Shape_Stack$computeStack;
+var _gampleman$elm_visualization$Visualization_Shape$adapter = F2(
+	function (curveFn, _p0) {
+		var _p1 = _p0;
+		return _gampleman$elm_visualization$Visualization_Path_Conversion$subpathToVizPath(
+			curveFn(_p1._0));
+	});
+var _gampleman$elm_visualization$Visualization_Shape$linearCurve = _gampleman$elm_visualization$Visualization_Shape$adapter(_folkertdev$one_true_path_experiment$Curve$linear);
+var _gampleman$elm_visualization$Visualization_Shape$basisCurve = _gampleman$elm_visualization$Visualization_Shape$adapter(_folkertdev$one_true_path_experiment$Curve$basis);
+var _gampleman$elm_visualization$Visualization_Shape$basisCurveClosed = _gampleman$elm_visualization$Visualization_Shape$adapter(_folkertdev$one_true_path_experiment$Curve$basisClosed);
+var _gampleman$elm_visualization$Visualization_Shape$basisCurveOpen = _gampleman$elm_visualization$Visualization_Shape$adapter(_folkertdev$one_true_path_experiment$Curve$basisOpen);
+var _gampleman$elm_visualization$Visualization_Shape$bundleCurve = function (beta) {
+	return _gampleman$elm_visualization$Visualization_Shape$adapter(
+		_folkertdev$one_true_path_experiment$Curve$bundle(
+			A3(_elm_lang$core$Basics$clamp, 0, 1, beta)));
+};
+var _gampleman$elm_visualization$Visualization_Shape$cardinalCurve = function (tension) {
+	return _gampleman$elm_visualization$Visualization_Shape$adapter(
+		_folkertdev$one_true_path_experiment$Curve$cardinal(
+			A3(_elm_lang$core$Basics$clamp, 0, 1, tension)));
+};
+var _gampleman$elm_visualization$Visualization_Shape$cardinalCurveClosed = function (tension) {
+	return _gampleman$elm_visualization$Visualization_Shape$adapter(
+		_folkertdev$one_true_path_experiment$Curve$cardinalClosed(
+			A3(_elm_lang$core$Basics$clamp, 0, 1, tension)));
+};
+var _gampleman$elm_visualization$Visualization_Shape$cardinalCurveOpen = function (tension) {
+	return _gampleman$elm_visualization$Visualization_Shape$adapter(
+		_folkertdev$one_true_path_experiment$Curve$cardinalOpen(
+			A3(_elm_lang$core$Basics$clamp, 0, 1, tension)));
+};
+var _gampleman$elm_visualization$Visualization_Shape$catmullRomCurve = function (alpha) {
+	return _gampleman$elm_visualization$Visualization_Shape$adapter(
+		_folkertdev$one_true_path_experiment$Curve$catmullRom(
+			A3(_elm_lang$core$Basics$clamp, 0, 1, alpha)));
+};
+var _gampleman$elm_visualization$Visualization_Shape$catmullRomCurveClosed = function (alpha) {
+	return _gampleman$elm_visualization$Visualization_Shape$adapter(
+		_folkertdev$one_true_path_experiment$Curve$catmullRomClosed(
+			A3(_elm_lang$core$Basics$clamp, 0, 1, alpha)));
+};
+var _gampleman$elm_visualization$Visualization_Shape$catmullRomCurveOpen = function (alpha) {
+	return _gampleman$elm_visualization$Visualization_Shape$adapter(
+		_folkertdev$one_true_path_experiment$Curve$catmullRomOpen(
+			A3(_elm_lang$core$Basics$clamp, 0, 1, alpha)));
+};
+var _gampleman$elm_visualization$Visualization_Shape$monotoneInXCurve = _gampleman$elm_visualization$Visualization_Shape$adapter(_folkertdev$one_true_path_experiment$Curve$monotoneX);
+var _gampleman$elm_visualization$Visualization_Shape$monotoneInYCurve = _gampleman$elm_visualization$Visualization_Shape$adapter(_folkertdev$one_true_path_experiment$Curve$monotoneY);
+var _gampleman$elm_visualization$Visualization_Shape$naturalCurve = _gampleman$elm_visualization$Visualization_Shape$adapter(_folkertdev$one_true_path_experiment$Curve$natural);
+var _gampleman$elm_visualization$Visualization_Shape$stepCurve = function (factor) {
+	return _gampleman$elm_visualization$Visualization_Shape$adapter(
+		_folkertdev$one_true_path_experiment$Curve$step(
+			A3(_elm_lang$core$Basics$clamp, 0, 1, factor)));
+};
+var _gampleman$elm_visualization$Visualization_Shape$pie = _gampleman$elm_visualization$Visualization_Shape_Pie$pie;
+var _gampleman$elm_visualization$Visualization_Shape$defaultPieConfig = {startAngle: 0, endAngle: 2 * _elm_lang$core$Basics$pi, padAngle: 0, sortingFn: _elm_lang$core$Basics$compare, valueFn: _elm_lang$core$Basics$identity, innerRadius: 0, outerRadius: 100, cornerRadius: 0, padRadius: 0};
+var _gampleman$elm_visualization$Visualization_Shape$centroid = _gampleman$elm_visualization$Visualization_Shape_Pie$centroid;
+var _gampleman$elm_visualization$Visualization_Shape$arc = _gampleman$elm_visualization$Visualization_Shape_Pie$arc;
+var _gampleman$elm_visualization$Visualization_Shape$Arc = F7(
+	function (a, b, c, d, e, f, g) {
+		return {innerRadius: a, outerRadius: b, cornerRadius: c, startAngle: d, endAngle: e, padAngle: f, padRadius: g};
+	});
+var _gampleman$elm_visualization$Visualization_Shape$PieConfig = F9(
+	function (a, b, c, d, e, f, g, h, i) {
+		return {startAngle: a, endAngle: b, padAngle: c, sortingFn: d, valueFn: e, innerRadius: f, outerRadius: g, cornerRadius: h, padRadius: i};
+	});
+var _gampleman$elm_visualization$Visualization_Shape$StackConfig = F3(
+	function (a, b, c) {
+		return {data: a, offset: b, order: c};
+	});
+var _gampleman$elm_visualization$Visualization_Shape$StackResult = F3(
+	function (a, b, c) {
+		return {values: a, labels: b, extent: c};
+	});
+var _gampleman$elm_visualization$Visualization_Shape$Curve = function (a) {
+	return {ctor: 'Curve', _0: a};
+};
+var _gampleman$elm_visualization$Visualization_Shape$line = function (curve) {
+	return _gampleman$elm_visualization$Visualization_Shape_Generators$line(
+		function (_p2) {
+			return curve(
+				_gampleman$elm_visualization$Visualization_Shape$Curve(_p2));
+		});
+};
+var _gampleman$elm_visualization$Visualization_Shape$lineRadial = function (curve) {
+	return _gampleman$elm_visualization$Visualization_Shape_Generators$line(
+		function (_p3) {
+			return curve(
+				_gampleman$elm_visualization$Visualization_Shape$Curve(
+					A2(
+						_folkertdev$one_true_path_experiment$Curve$toPolarWithCenter,
+						{ctor: '_Tuple2', _0: 0, _1: 0},
+						_p3)));
+		});
+};
+var _gampleman$elm_visualization$Visualization_Shape$area = function (curve) {
+	return _gampleman$elm_visualization$Visualization_Shape_Generators$area(
+		function (_p4) {
+			return curve(
+				_gampleman$elm_visualization$Visualization_Shape$Curve(_p4));
+		});
+};
+var _gampleman$elm_visualization$Visualization_Shape$areaRadial = function (curve) {
+	return _gampleman$elm_visualization$Visualization_Shape_Generators$area(
+		function (_p5) {
+			return curve(
+				_gampleman$elm_visualization$Visualization_Shape$Curve(
+					A2(
+						_folkertdev$one_true_path_experiment$Curve$toPolarWithCenter,
+						{ctor: '_Tuple2', _0: 0, _1: 0},
+						_p5)));
+		});
+};

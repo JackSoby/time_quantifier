@@ -1,0 +1,81 @@
+var _opensolid$geometry$OpenSolid_Polyline3d$vertices = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0;
+};
+var _opensolid$geometry$OpenSolid_Polyline3d$segments = function (polyline) {
+	var _p2 = _opensolid$geometry$OpenSolid_Polyline3d$vertices(polyline);
+	if (_p2.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		return A3(_elm_lang$core$List$map2, _opensolid$geometry$OpenSolid_LineSegment3d$from, _p2, _p2._1);
+	}
+};
+var _opensolid$geometry$OpenSolid_Polyline3d$length = function (_p3) {
+	return _elm_lang$core$List$sum(
+		A2(
+			_elm_lang$core$List$map,
+			_opensolid$geometry$OpenSolid_LineSegment3d$length,
+			_opensolid$geometry$OpenSolid_Polyline3d$segments(_p3)));
+};
+var _opensolid$geometry$OpenSolid_Polyline3d$projectInto = function (sketchPlane) {
+	return function (_p4) {
+		return _opensolid$geometry$OpenSolid_Polyline2d$fromVertices(
+			A2(
+				_elm_lang$core$List$map,
+				_opensolid$geometry$OpenSolid_Point3d$projectInto(sketchPlane),
+				_opensolid$geometry$OpenSolid_Polyline3d$vertices(_p4)));
+	};
+};
+var _opensolid$geometry$OpenSolid_Polyline3d$boundingBox = function (polyline) {
+	return _opensolid$geometry$OpenSolid_Point3d$hullOf(
+		_opensolid$geometry$OpenSolid_Polyline3d$vertices(polyline));
+};
+var _opensolid$geometry$OpenSolid_Polyline3d$fromVertices = _opensolid$geometry$OpenSolid_Geometry_Internal$Polyline3d;
+var _opensolid$geometry$OpenSolid_Polyline3d$on = function (sketchPlane) {
+	return function (_p5) {
+		return _opensolid$geometry$OpenSolid_Polyline3d$fromVertices(
+			A2(
+				_elm_lang$core$List$map,
+				_opensolid$geometry$OpenSolid_Point3d$on(sketchPlane),
+				_opensolid$geometry$OpenSolid_Polyline2d$vertices(_p5)));
+	};
+};
+var _opensolid$geometry$OpenSolid_Polyline3d$mapVertices = function ($function) {
+	return function (_p6) {
+		return _opensolid$geometry$OpenSolid_Polyline3d$fromVertices(
+			A2(
+				_elm_lang$core$List$map,
+				$function,
+				_opensolid$geometry$OpenSolid_Polyline3d$vertices(_p6)));
+	};
+};
+var _opensolid$geometry$OpenSolid_Polyline3d$scaleAbout = F2(
+	function (point, scale) {
+		return _opensolid$geometry$OpenSolid_Polyline3d$mapVertices(
+			A2(_opensolid$geometry$OpenSolid_Point3d$scaleAbout, point, scale));
+	});
+var _opensolid$geometry$OpenSolid_Polyline3d$rotateAround = F2(
+	function (axis, angle) {
+		return _opensolid$geometry$OpenSolid_Polyline3d$mapVertices(
+			A2(_opensolid$geometry$OpenSolid_Point3d$rotateAround, axis, angle));
+	});
+var _opensolid$geometry$OpenSolid_Polyline3d$translateBy = function (vector) {
+	return _opensolid$geometry$OpenSolid_Polyline3d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point3d$translateBy(vector));
+};
+var _opensolid$geometry$OpenSolid_Polyline3d$mirrorAcross = function (plane) {
+	return _opensolid$geometry$OpenSolid_Polyline3d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point3d$mirrorAcross(plane));
+};
+var _opensolid$geometry$OpenSolid_Polyline3d$projectOnto = function (plane) {
+	return _opensolid$geometry$OpenSolid_Polyline3d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point3d$projectOnto(plane));
+};
+var _opensolid$geometry$OpenSolid_Polyline3d$relativeTo = function (frame) {
+	return _opensolid$geometry$OpenSolid_Polyline3d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point3d$relativeTo(frame));
+};
+var _opensolid$geometry$OpenSolid_Polyline3d$placeIn = function (frame) {
+	return _opensolid$geometry$OpenSolid_Polyline3d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point3d$placeIn(frame));
+};

@@ -1,0 +1,254 @@
+var _opensolid$geometry$OpenSolid_Vector2d$yComponent = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0._1;
+};
+var _opensolid$geometry$OpenSolid_Vector2d$xComponent = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0._0;
+};
+var _opensolid$geometry$OpenSolid_Vector2d$components = function (_p4) {
+	var _p5 = _p4;
+	return _p5._0;
+};
+var _opensolid$geometry$OpenSolid_Vector2d$componentIn = F2(
+	function (direction, vector) {
+		var _p6 = _opensolid$geometry$OpenSolid_Vector2d$components(vector);
+		var vx = _p6._0;
+		var vy = _p6._1;
+		var _p7 = _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$components(direction);
+		var dx = _p7._0;
+		var dy = _p7._1;
+		return (vx * dx) + (vy * dy);
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$polarComponents = function (vector) {
+	return _elm_lang$core$Basics$toPolar(
+		_opensolid$geometry$OpenSolid_Vector2d$components(vector));
+};
+var _opensolid$geometry$OpenSolid_Vector2d$squaredLength = function (vector) {
+	var _p8 = _opensolid$geometry$OpenSolid_Vector2d$components(vector);
+	var x = _p8._0;
+	var y = _p8._1;
+	return (x * x) + (y * y);
+};
+var _opensolid$geometry$OpenSolid_Vector2d$length = function (vector) {
+	return _elm_lang$core$Basics$sqrt(
+		_opensolid$geometry$OpenSolid_Vector2d$squaredLength(vector));
+};
+var _opensolid$geometry$OpenSolid_Vector2d$dotProduct = F2(
+	function (firstVector, secondVector) {
+		var _p9 = _opensolid$geometry$OpenSolid_Vector2d$components(secondVector);
+		var x2 = _p9._0;
+		var y2 = _p9._1;
+		var _p10 = _opensolid$geometry$OpenSolid_Vector2d$components(firstVector);
+		var x1 = _p10._0;
+		var y1 = _p10._1;
+		return (x1 * x2) + (y1 * y2);
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$crossProduct = F2(
+	function (firstVector, secondVector) {
+		var _p11 = _opensolid$geometry$OpenSolid_Vector2d$components(secondVector);
+		var x2 = _p11._0;
+		var y2 = _p11._1;
+		var _p12 = _opensolid$geometry$OpenSolid_Vector2d$components(firstVector);
+		var x1 = _p12._0;
+		var y1 = _p12._1;
+		return (x1 * y2) - (y1 * x2);
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$fromComponents = _opensolid$geometry$OpenSolid_Geometry_Internal$Vector2d;
+var _opensolid$geometry$OpenSolid_Vector2d$fromPolarComponents = function (components) {
+	return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+		_elm_lang$core$Basics$fromPolar(components));
+};
+var _opensolid$geometry$OpenSolid_Vector2d$from = F2(
+	function (firstPoint, secondPoint) {
+		var _p13 = _opensolid$geometry$OpenSolid_Bootstrap_Point2d$coordinates(secondPoint);
+		var x2 = _p13._0;
+		var y2 = _p13._1;
+		var _p14 = _opensolid$geometry$OpenSolid_Bootstrap_Point2d$coordinates(firstPoint);
+		var x1 = _p14._0;
+		var y1 = _p14._1;
+		return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+			{ctor: '_Tuple2', _0: x2 - x1, _1: y2 - y1});
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$with = function (_p15) {
+	var _p16 = _p15;
+	var _p18 = _p16.length;
+	var _p17 = _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$components(_p16.direction);
+	var dx = _p17._0;
+	var dy = _p17._1;
+	return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+		{ctor: '_Tuple2', _0: _p18 * dx, _1: _p18 * dy});
+};
+var _opensolid$geometry$OpenSolid_Vector2d$projectionIn = F2(
+	function (direction, vector) {
+		return _opensolid$geometry$OpenSolid_Vector2d$with(
+			{
+				direction: direction,
+				length: A2(_opensolid$geometry$OpenSolid_Vector2d$componentIn, direction, vector)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$projectOnto = F2(
+	function (axis, vector) {
+		return A2(
+			_opensolid$geometry$OpenSolid_Vector2d$projectionIn,
+			_opensolid$geometry$OpenSolid_Bootstrap_Axis2d$direction(axis),
+			vector);
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$perpendicularTo = function (vector) {
+	var _p19 = _opensolid$geometry$OpenSolid_Vector2d$components(vector);
+	var x = _p19._0;
+	var y = _p19._1;
+	return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+		{ctor: '_Tuple2', _0: 0 - y, _1: x});
+};
+var _opensolid$geometry$OpenSolid_Vector2d$interpolateFrom = F3(
+	function (v1, v2, t) {
+		var _p20 = _opensolid$geometry$OpenSolid_Vector2d$components(v2);
+		var x2 = _p20._0;
+		var y2 = _p20._1;
+		var _p21 = _opensolid$geometry$OpenSolid_Vector2d$components(v1);
+		var x1 = _p21._0;
+		var y1 = _p21._1;
+		return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+			{
+				ctor: '_Tuple2',
+				_0: A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, x1, x2, t),
+				_1: A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, y1, y2, t)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$sum = F2(
+	function (firstVector, secondVector) {
+		var _p22 = _opensolid$geometry$OpenSolid_Vector2d$components(secondVector);
+		var x2 = _p22._0;
+		var y2 = _p22._1;
+		var _p23 = _opensolid$geometry$OpenSolid_Vector2d$components(firstVector);
+		var x1 = _p23._0;
+		var y1 = _p23._1;
+		return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+			{ctor: '_Tuple2', _0: x1 + x2, _1: y1 + y2});
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$difference = F2(
+	function (firstVector, secondVector) {
+		var _p24 = _opensolid$geometry$OpenSolid_Vector2d$components(secondVector);
+		var x2 = _p24._0;
+		var y2 = _p24._1;
+		var _p25 = _opensolid$geometry$OpenSolid_Vector2d$components(firstVector);
+		var x1 = _p25._0;
+		var y1 = _p25._1;
+		return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+			{ctor: '_Tuple2', _0: x1 - x2, _1: y1 - y2});
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$equalWithin = F3(
+	function (tolerance, firstVector, secondVector) {
+		return _elm_lang$core$Native_Utils.cmp(
+			_opensolid$geometry$OpenSolid_Vector2d$squaredLength(
+				A2(_opensolid$geometry$OpenSolid_Vector2d$difference, firstVector, secondVector)),
+			tolerance * tolerance) < 1;
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$flip = function (vector) {
+	var _p26 = _opensolid$geometry$OpenSolid_Vector2d$components(vector);
+	var x = _p26._0;
+	var y = _p26._1;
+	return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+		{ctor: '_Tuple2', _0: 0 - x, _1: 0 - y});
+};
+var _opensolid$geometry$OpenSolid_Vector2d$scaleBy = F2(
+	function (scale, vector) {
+		var _p27 = _opensolid$geometry$OpenSolid_Vector2d$components(vector);
+		var x = _p27._0;
+		var y = _p27._1;
+		return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+			{ctor: '_Tuple2', _0: x * scale, _1: y * scale});
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$lengthAndDirection = function (vector) {
+	var vectorLength = _opensolid$geometry$OpenSolid_Vector2d$length(vector);
+	if (_elm_lang$core$Native_Utils.eq(vectorLength, 0.0)) {
+		return _elm_lang$core$Maybe$Nothing;
+	} else {
+		var normalizedVector = A2(_opensolid$geometry$OpenSolid_Vector2d$scaleBy, 1 / vectorLength, vector);
+		var vectorDirection = _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$unsafe(
+			_opensolid$geometry$OpenSolid_Vector2d$components(normalizedVector));
+		return _elm_lang$core$Maybe$Just(
+			{ctor: '_Tuple2', _0: vectorLength, _1: vectorDirection});
+	}
+};
+var _opensolid$geometry$OpenSolid_Vector2d$rotateBy = function (angle) {
+	var sine = _elm_lang$core$Basics$sin(angle);
+	var cosine = _elm_lang$core$Basics$cos(angle);
+	return function (vector) {
+		var _p28 = _opensolid$geometry$OpenSolid_Vector2d$components(vector);
+		var x = _p28._0;
+		var y = _p28._1;
+		return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+			{ctor: '_Tuple2', _0: (x * cosine) - (y * sine), _1: (y * cosine) + (x * sine)});
+	};
+};
+var _opensolid$geometry$OpenSolid_Vector2d$mirrorAcross = function (axis) {
+	var _p29 = _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$components(
+		_opensolid$geometry$OpenSolid_Bootstrap_Axis2d$direction(axis));
+	var dx = _p29._0;
+	var dy = _p29._1;
+	var a = 1 - ((2 * dy) * dy);
+	var b = (2 * dx) * dy;
+	var c = 1 - ((2 * dx) * dx);
+	return function (vector) {
+		var _p30 = _opensolid$geometry$OpenSolid_Vector2d$components(vector);
+		var vx = _p30._0;
+		var vy = _p30._1;
+		return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+			{ctor: '_Tuple2', _0: (a * vx) + (b * vy), _1: (c * vy) + (b * vx)});
+	};
+};
+var _opensolid$geometry$OpenSolid_Vector2d$relativeTo = F2(
+	function (frame, vector) {
+		return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+			{
+				ctor: '_Tuple2',
+				_0: A2(
+					_opensolid$geometry$OpenSolid_Vector2d$componentIn,
+					_opensolid$geometry$OpenSolid_Bootstrap_Frame2d$xDirection(frame),
+					vector),
+				_1: A2(
+					_opensolid$geometry$OpenSolid_Vector2d$componentIn,
+					_opensolid$geometry$OpenSolid_Bootstrap_Frame2d$yDirection(frame),
+					vector)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Vector2d$placeIn = function (frame) {
+	var _p31 = _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$components(
+		_opensolid$geometry$OpenSolid_Bootstrap_Frame2d$yDirection(frame));
+	var x2 = _p31._0;
+	var y2 = _p31._1;
+	var _p32 = _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$components(
+		_opensolid$geometry$OpenSolid_Bootstrap_Frame2d$xDirection(frame));
+	var x1 = _p32._0;
+	var y1 = _p32._1;
+	return function (vector) {
+		var _p33 = _opensolid$geometry$OpenSolid_Vector2d$components(vector);
+		var x = _p33._0;
+		var y = _p33._1;
+		return _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+			{ctor: '_Tuple2', _0: (x1 * x) + (x2 * y), _1: (y1 * x) + (y2 * y)});
+	};
+};
+var _opensolid$geometry$OpenSolid_Vector2d$zero = _opensolid$geometry$OpenSolid_Vector2d$fromComponents(
+	{ctor: '_Tuple2', _0: 0, _1: 0});
+var _opensolid$geometry$OpenSolid_Vector2d$direction = function (vector) {
+	if (_elm_lang$core$Native_Utils.eq(vector, _opensolid$geometry$OpenSolid_Vector2d$zero)) {
+		return _elm_lang$core$Maybe$Nothing;
+	} else {
+		var normalizedVector = A2(
+			_opensolid$geometry$OpenSolid_Vector2d$scaleBy,
+			1 / _opensolid$geometry$OpenSolid_Vector2d$length(vector),
+			vector);
+		return _elm_lang$core$Maybe$Just(
+			_opensolid$geometry$OpenSolid_Bootstrap_Direction2d$unsafe(
+				_opensolid$geometry$OpenSolid_Vector2d$components(normalizedVector)));
+	}
+};
+var _opensolid$geometry$OpenSolid_Vector2d$normalize = function (vector) {
+	return _elm_lang$core$Native_Utils.eq(vector, _opensolid$geometry$OpenSolid_Vector2d$zero) ? _opensolid$geometry$OpenSolid_Vector2d$zero : A2(
+		_opensolid$geometry$OpenSolid_Vector2d$scaleBy,
+		1 / _opensolid$geometry$OpenSolid_Vector2d$length(vector),
+		vector);
+};

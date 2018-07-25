@@ -1,0 +1,171 @@
+var _gampleman$elm_visualization$Visualization_Shape_Generators$area = F2(
+	function (curve, data) {
+		var makeShape = F2(
+			function (topline, bottomline) {
+				var _p0 = {
+					ctor: '_Tuple2',
+					_0: curve(bottomline),
+					_1: bottomline
+				};
+				if ((((_p0.ctor === '_Tuple2') && (_p0._0.ctor === '::')) && (_p0._1.ctor === '::')) && (_p0._1._0.ctor === '_Tuple2')) {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						A3(
+							_gampleman$elm_visualization$Visualization_Path$lineTo,
+							_p0._1._0._0,
+							_p0._1._0._1,
+							curve(topline)),
+						_gampleman$elm_visualization$Visualization_Path$close(_p0._0._1));
+				} else {
+					return {ctor: '[]'};
+				}
+			});
+		var makeCurves = F3(
+			function (acc, datum, _p1) {
+				var _p2 = _p1;
+				var _p3 = {ctor: '_Tuple3', _0: _p2._0, _1: datum, _2: _p2._1};
+				if (_p3._1.ctor === 'Nothing') {
+					return {ctor: '_Tuple2', _0: false, _1: _p3._2};
+				} else {
+					if (_p3._0 === false) {
+						return {
+							ctor: '_Tuple2',
+							_0: true,
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '::',
+									_0: acc(_p3._1._0),
+									_1: {ctor: '[]'}
+								},
+								_1: _p3._2
+							}
+						};
+					} else {
+						if (_p3._2.ctor === '::') {
+							return {
+								ctor: '_Tuple2',
+								_0: true,
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '::',
+										_0: acc(_p3._1._0),
+										_1: _p3._2._0
+									},
+									_1: _p3._2._1
+								}
+							};
+						} else {
+							return {
+								ctor: '_Tuple2',
+								_0: true,
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '::',
+										_0: acc(_p3._1._0),
+										_1: {ctor: '[]'}
+									},
+									_1: _p3._2
+								}
+							};
+						}
+					}
+				}
+			});
+		var topLineData = _elm_lang$core$Tuple$second(
+			A3(
+				_elm_lang$core$List$foldr,
+				makeCurves(_elm_lang$core$Tuple$first),
+				{
+					ctor: '_Tuple2',
+					_0: false,
+					_1: {ctor: '[]'}
+				},
+				data));
+		var bottomLineData = A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$List$reverse,
+			_elm_lang$core$Tuple$second(
+				A3(
+					_elm_lang$core$List$foldr,
+					makeCurves(_elm_lang$core$Tuple$second),
+					{
+						ctor: '_Tuple2',
+						_0: false,
+						_1: {ctor: '[]'}
+					},
+					data)));
+		var shapes = A3(_elm_lang$core$List$map2, makeShape, topLineData, bottomLineData);
+		return _gampleman$elm_visualization$Visualization_Path$toAttrString(
+			_elm_lang$core$List$concat(
+				A3(_elm_lang$core$List$map2, makeShape, topLineData, bottomLineData)));
+	});
+var _gampleman$elm_visualization$Visualization_Shape_Generators$line = F2(
+	function (curve, data) {
+		var makeCurves = F2(
+			function (datum, _p4) {
+				var _p5 = _p4;
+				var _p6 = {ctor: '_Tuple3', _0: _p5._0, _1: datum, _2: _p5._1};
+				if (_p6._1.ctor === 'Nothing') {
+					return {ctor: '_Tuple2', _0: false, _1: _p6._2};
+				} else {
+					if (_p6._0 === false) {
+						return {
+							ctor: '_Tuple2',
+							_0: true,
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '::',
+									_0: _p6._1._0,
+									_1: {ctor: '[]'}
+								},
+								_1: _p6._2
+							}
+						};
+					} else {
+						if (_p6._2.ctor === '::') {
+							return {
+								ctor: '_Tuple2',
+								_0: true,
+								_1: {
+									ctor: '::',
+									_0: {ctor: '::', _0: _p6._1._0, _1: _p6._2._0},
+									_1: _p6._2._1
+								}
+							};
+						} else {
+							return {
+								ctor: '_Tuple2',
+								_0: true,
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '::',
+										_0: _p6._1._0,
+										_1: {ctor: '[]'}
+									},
+									_1: _p6._2
+								}
+							};
+						}
+					}
+				}
+			});
+		return _gampleman$elm_visualization$Visualization_Path$toAttrString(
+			A2(
+				_elm_lang$core$List$concatMap,
+				curve,
+				_elm_lang$core$Tuple$second(
+					A3(
+						_elm_lang$core$List$foldr,
+						makeCurves,
+						{
+							ctor: '_Tuple2',
+							_0: false,
+							_1: {ctor: '[]'}
+						},
+						data))));
+	});

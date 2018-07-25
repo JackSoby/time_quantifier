@@ -1,0 +1,5 @@
+var _opensolid$geometry$OpenSolid_Bootstrap_Point3d$coordinates = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0;
+};
+var _opensolid$geometry$OpenSolid_Bootstrap_Point3d$fromCoordinates = _opensolid$geometry$OpenSolid_Geometry_Internal$Point3d;

@@ -1,0 +1,464 @@
+var _folkertdev$one_true_path_experiment$Segment$intersections = F2(
+	function (segment1, segment2) {
+		return {ctor: '[]'};
+	});
+var _folkertdev$one_true_path_experiment$Segment$length = function (segment) {
+	return 0;
+};
+var _folkertdev$one_true_path_experiment$Segment$signedAngle = F2(
+	function (u, v) {
+		var q = _elm_lang$core$Basics$acos(
+			A2(_Zinggi$elm_webgl_math$Vector2$dot, u, v) / (_Zinggi$elm_webgl_math$Vector2$length(u) * _Zinggi$elm_webgl_math$Vector2$length(v)));
+		var _p0 = v;
+		var vx = _p0._0;
+		var vy = _p0._1;
+		var _p1 = u;
+		var ux = _p1._0;
+		var uy = _p1._1;
+		var sign = (_elm_lang$core$Native_Utils.cmp((ux * vy) - (uy * vx), 0) < 0) ? -1 : 1;
+		return sign * _elm_lang$core$Basics$abs(q);
+	});
+var _folkertdev$one_true_path_experiment$Segment$derivativeAtFinal = function (segment) {
+	var _p2 = segment;
+	switch (_p2.ctor) {
+		case 'LineSegment':
+			return _opensolid$geometry$OpenSolid_Vector2d$components(
+				_opensolid$geometry$OpenSolid_Vector2d$normalize(
+					_opensolid$geometry$OpenSolid_LineSegment2d$vector(_p2._0)));
+		case 'Quadratic':
+			return _opensolid$geometry$OpenSolid_Vector2d$components(
+				_opensolid$geometry$OpenSolid_QuadraticSpline2d$endDerivative(_p2._0));
+		case 'Cubic':
+			return _opensolid$geometry$OpenSolid_Vector2d$components(
+				_opensolid$geometry$OpenSolid_CubicSpline2d$endDerivative(_p2._0));
+		default:
+			return {
+				ctor: '_Tuple2',
+				_0: 1,
+				_1: A2(
+					_folkertdev$one_true_path_experiment$Geometry_Ellipse$derivativeAt,
+					1,
+					_folkertdev$one_true_path_experiment$Geometry_Ellipse$endpointToCenter(_p2._0))
+			};
+	}
+};
+var _folkertdev$one_true_path_experiment$Segment$derivativeAtFirst = function (segment) {
+	var _p3 = segment;
+	switch (_p3.ctor) {
+		case 'LineSegment':
+			return _opensolid$geometry$OpenSolid_Vector2d$components(
+				_opensolid$geometry$OpenSolid_Vector2d$normalize(
+					_opensolid$geometry$OpenSolid_LineSegment2d$vector(_p3._0)));
+		case 'Quadratic':
+			return _opensolid$geometry$OpenSolid_Vector2d$components(
+				_opensolid$geometry$OpenSolid_QuadraticSpline2d$startDerivative(_p3._0));
+		case 'Cubic':
+			return _opensolid$geometry$OpenSolid_Vector2d$components(
+				_opensolid$geometry$OpenSolid_CubicSpline2d$startDerivative(_p3._0));
+		default:
+			return {
+				ctor: '_Tuple2',
+				_0: 1,
+				_1: A2(
+					_folkertdev$one_true_path_experiment$Geometry_Ellipse$derivativeAt,
+					0,
+					_folkertdev$one_true_path_experiment$Geometry_Ellipse$endpointToCenter(_p3._0))
+			};
+	}
+};
+var _folkertdev$one_true_path_experiment$Segment$angle = F2(
+	function (seg1, seg2) {
+		return A2(
+			_folkertdev$one_true_path_experiment$Segment$signedAngle,
+			_Zinggi$elm_webgl_math$Vector2$negate(
+				_folkertdev$one_true_path_experiment$Segment$derivativeAtFinal(seg1)),
+			_Zinggi$elm_webgl_math$Vector2$negate(
+				_folkertdev$one_true_path_experiment$Segment$derivativeAtFirst(seg2)));
+	});
+var _folkertdev$one_true_path_experiment$Segment$derivativeAt = F2(
+	function (t, segment) {
+		var _p4 = segment;
+		switch (_p4.ctor) {
+			case 'LineSegment':
+				return _opensolid$geometry$OpenSolid_Vector2d$components(
+					_opensolid$geometry$OpenSolid_Vector2d$normalize(
+						_opensolid$geometry$OpenSolid_LineSegment2d$vector(_p4._0)));
+			case 'Quadratic':
+				return _opensolid$geometry$OpenSolid_Vector2d$components(
+					A2(_opensolid$geometry$OpenSolid_QuadraticSpline2d$derivative, _p4._0, t));
+			case 'Cubic':
+				return _opensolid$geometry$OpenSolid_Vector2d$components(
+					A2(_opensolid$geometry$OpenSolid_CubicSpline2d$derivative, _p4._0, t));
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: 1,
+					_1: A2(
+						_folkertdev$one_true_path_experiment$Geometry_Ellipse$derivativeAt,
+						t,
+						_folkertdev$one_true_path_experiment$Geometry_Ellipse$endpointToCenter(_p4._0))
+				};
+		}
+	});
+var _folkertdev$one_true_path_experiment$Segment$at = F2(
+	function (t, segment) {
+		var _p5 = segment;
+		switch (_p5.ctor) {
+			case 'LineSegment':
+				return _opensolid$geometry$OpenSolid_Point2d$coordinates(
+					A2(_opensolid$geometry$OpenSolid_LineSegment2d$interpolate, _p5._0, t));
+			case 'Quadratic':
+				return _opensolid$geometry$OpenSolid_Point2d$coordinates(
+					A2(_opensolid$geometry$OpenSolid_QuadraticSpline2d$pointOn, _p5._0, t));
+			case 'Cubic':
+				return _opensolid$geometry$OpenSolid_Point2d$coordinates(
+					A2(_opensolid$geometry$OpenSolid_CubicSpline2d$pointOn, _p5._0, t));
+			default:
+				return A2(
+					_folkertdev$one_true_path_experiment$Geometry_Ellipse$at,
+					t,
+					_folkertdev$one_true_path_experiment$Geometry_Ellipse$endpointToCenter(_p5._0));
+		}
+	});
+var _folkertdev$one_true_path_experiment$Segment$traverse = F3(
+	function (folder, initial, elements) {
+		return _elm_lang$core$List$reverse(
+			_elm_lang$core$Tuple$second(
+				A3(
+					_elm_lang$core$List$foldl,
+					folder,
+					{
+						ctor: '_Tuple2',
+						_0: initial,
+						_1: {ctor: '[]'}
+					},
+					elements)));
+	});
+var _folkertdev$one_true_path_experiment$Segment$finalPoint = function (segment) {
+	return _opensolid$geometry$OpenSolid_Point2d$coordinates(
+		function () {
+			var _p6 = segment;
+			switch (_p6.ctor) {
+				case 'LineSegment':
+					return _opensolid$geometry$OpenSolid_LineSegment2d$endPoint(_p6._0);
+				case 'Quadratic':
+					return _opensolid$geometry$OpenSolid_QuadraticSpline2d$endPoint(_p6._0);
+				case 'Cubic':
+					return _opensolid$geometry$OpenSolid_CubicSpline2d$endPoint(_p6._0);
+				default:
+					return _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(_p6._0.end);
+			}
+		}());
+};
+var _folkertdev$one_true_path_experiment$Segment$firstPoint = function (segment) {
+	return _opensolid$geometry$OpenSolid_Point2d$coordinates(
+		function () {
+			var _p7 = segment;
+			switch (_p7.ctor) {
+				case 'LineSegment':
+					return _opensolid$geometry$OpenSolid_LineSegment2d$startPoint(_p7._0);
+				case 'Quadratic':
+					return _opensolid$geometry$OpenSolid_QuadraticSpline2d$startPoint(_p7._0);
+				case 'Cubic':
+					return _opensolid$geometry$OpenSolid_CubicSpline2d$startPoint(_p7._0);
+				default:
+					return _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(_p7._0.start);
+			}
+		}());
+};
+var _folkertdev$one_true_path_experiment$Segment$toCursorState = function (segment) {
+	var vec4map = F2(
+		function (f, _p8) {
+			var _p9 = _p8;
+			return {
+				ctor: '_Tuple4',
+				_0: f(_p9._0),
+				_1: f(_p9._1),
+				_2: f(_p9._2),
+				_3: f(_p9._3)
+			};
+		});
+	var _p10 = segment;
+	switch (_p10.ctor) {
+		case 'Cubic':
+			var _p11 = A2(
+				vec4map,
+				_opensolid$geometry$OpenSolid_Point2d$coordinates,
+				_opensolid$geometry$OpenSolid_CubicSpline2d$controlPoints(_p10._0));
+			var start = _p11._0;
+			var control = _p11._2;
+			var end = _p11._3;
+			return {
+				start: start,
+				previousControlPoint: _elm_lang$core$Maybe$Just(control),
+				cursor: end
+			};
+		case 'Quadratic':
+			var _p12 = A2(
+				_Zinggi$elm_webgl_math$Vector3$map,
+				_opensolid$geometry$OpenSolid_Point2d$coordinates,
+				_opensolid$geometry$OpenSolid_QuadraticSpline2d$controlPoints(_p10._0));
+			var start = _p12._0;
+			var control = _p12._1;
+			var end = _p12._2;
+			return {
+				start: start,
+				previousControlPoint: _elm_lang$core$Maybe$Just(control),
+				cursor: end
+			};
+		default:
+			return {
+				start: _folkertdev$one_true_path_experiment$Segment$firstPoint(segment),
+				cursor: _folkertdev$one_true_path_experiment$Segment$finalPoint(segment),
+				previousControlPoint: _elm_lang$core$Maybe$Nothing
+			};
+	}
+};
+var _folkertdev$one_true_path_experiment$Segment$toDrawTo = function (segment) {
+	var _p13 = segment;
+	switch (_p13.ctor) {
+		case 'LineSegment':
+			return _folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+				{
+					ctor: '::',
+					_0: _opensolid$geometry$OpenSolid_Point2d$coordinates(
+						_opensolid$geometry$OpenSolid_LineSegment2d$endPoint(_p13._0)),
+					_1: {ctor: '[]'}
+				});
+		case 'Quadratic':
+			var _p14 = _opensolid$geometry$OpenSolid_QuadraticSpline2d$controlPoints(_p13._0);
+			var start = _p14._0;
+			var c1 = _p14._1;
+			var end = _p14._2;
+			return _folkertdev$one_true_path_experiment$LowLevel_Command$quadraticCurveTo(
+				{
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: _opensolid$geometry$OpenSolid_Point2d$coordinates(c1),
+						_1: _opensolid$geometry$OpenSolid_Point2d$coordinates(end)
+					},
+					_1: {ctor: '[]'}
+				});
+		case 'Cubic':
+			var _p15 = _opensolid$geometry$OpenSolid_CubicSpline2d$controlPoints(_p13._0);
+			var start = _p15._0;
+			var c1 = _p15._1;
+			var c2 = _p15._2;
+			var end = _p15._3;
+			return _folkertdev$one_true_path_experiment$LowLevel_Command$cubicCurveTo(
+				{
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple3',
+						_0: _opensolid$geometry$OpenSolid_Point2d$coordinates(c1),
+						_1: _opensolid$geometry$OpenSolid_Point2d$coordinates(c2),
+						_2: _opensolid$geometry$OpenSolid_Point2d$coordinates(end)
+					},
+					_1: {ctor: '[]'}
+				});
+		default:
+			return _folkertdev$one_true_path_experiment$LowLevel_Command$EllipticalArc(
+				{
+					ctor: '::',
+					_0: {target: _p13._0.end, radii: _p13._0.radii, xAxisRotate: _p13._0.xAxisRotate * (180 / _elm_lang$core$Basics$pi), arcFlag: _p13._0.arcFlag, direction: _p13._0.direction},
+					_1: {ctor: '[]'}
+				});
+	}
+};
+var _folkertdev$one_true_path_experiment$Segment$Arc = function (a) {
+	return {ctor: 'Arc', _0: a};
+};
+var _folkertdev$one_true_path_experiment$Segment$arc = F2(
+	function (start, _p16) {
+		var _p17 = _p16;
+		return _folkertdev$one_true_path_experiment$Segment$Arc(
+			{start: start, radii: _p17.radii, xAxisRotate: _p17.xAxisRotate, direction: _p17.direction, arcFlag: _p17.arcFlag, end: _p17.target});
+	});
+var _folkertdev$one_true_path_experiment$Segment$Cubic = function (a) {
+	return {ctor: 'Cubic', _0: a};
+};
+var _folkertdev$one_true_path_experiment$Segment$cubic = F4(
+	function (start, c1, c2, end) {
+		return _folkertdev$one_true_path_experiment$Segment$Cubic(
+			_opensolid$geometry$OpenSolid_CubicSpline2d$fromControlPoints(
+				{
+					ctor: '_Tuple4',
+					_0: _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(start),
+					_1: _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(c1),
+					_2: _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(c2),
+					_3: _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(end)
+				}));
+	});
+var _folkertdev$one_true_path_experiment$Segment$Quadratic = function (a) {
+	return {ctor: 'Quadratic', _0: a};
+};
+var _folkertdev$one_true_path_experiment$Segment$quadratic = F3(
+	function (start, c1, end) {
+		return _folkertdev$one_true_path_experiment$Segment$Quadratic(
+			_opensolid$geometry$OpenSolid_QuadraticSpline2d$fromControlPoints(
+				{
+					ctor: '_Tuple3',
+					_0: _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(start),
+					_1: _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(c1),
+					_2: _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(end)
+				}));
+	});
+var _folkertdev$one_true_path_experiment$Segment$LineSegment = function (a) {
+	return {ctor: 'LineSegment', _0: a};
+};
+var _folkertdev$one_true_path_experiment$Segment$line = F2(
+	function (from, to) {
+		return _folkertdev$one_true_path_experiment$Segment$LineSegment(
+			A2(
+				_opensolid$geometry$OpenSolid_LineSegment2d$from,
+				_opensolid$geometry$OpenSolid_Point2d$fromCoordinates(from),
+				_opensolid$geometry$OpenSolid_Point2d$fromCoordinates(to)));
+	});
+var _folkertdev$one_true_path_experiment$Segment$reverse = function (segment) {
+	var _p18 = segment;
+	switch (_p18.ctor) {
+		case 'LineSegment':
+			return _folkertdev$one_true_path_experiment$Segment$LineSegment(
+				_opensolid$geometry$OpenSolid_LineSegment2d$reverse(_p18._0));
+		case 'Quadratic':
+			return _folkertdev$one_true_path_experiment$Segment$Quadratic(
+				_opensolid$geometry$OpenSolid_QuadraticSpline2d$reverse(_p18._0));
+		case 'Cubic':
+			return _folkertdev$one_true_path_experiment$Segment$Cubic(
+				_opensolid$geometry$OpenSolid_CubicSpline2d$reverse(_p18._0));
+		default:
+			return _folkertdev$one_true_path_experiment$Segment$Arc(
+				_folkertdev$one_true_path_experiment$Geometry_Ellipse$reverse(_p18._0));
+	}
+};
+var _folkertdev$one_true_path_experiment$Segment$toSegment = F2(
+	function (state, drawto) {
+		var start = _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(state.cursor);
+		var _p19 = _opensolid$geometry$OpenSolid_Point2d$coordinates(start);
+		var startX = _p19._0;
+		var startY = _p19._1;
+		var _p20 = drawto;
+		switch (_p20.ctor) {
+			case 'LineTo':
+				var coordinates = A2(_elm_lang$core$List$map, _opensolid$geometry$OpenSolid_Point2d$fromCoordinates, _p20._0);
+				return A3(
+					_elm_lang$core$List$map2,
+					F2(
+						function (f, t) {
+							return _folkertdev$one_true_path_experiment$Segment$LineSegment(
+								A2(_opensolid$geometry$OpenSolid_LineSegment2d$from, f, t));
+						}),
+					{ctor: '::', _0: start, _1: coordinates},
+					coordinates);
+			case 'Horizontal':
+				var coordinates = A2(
+					_elm_lang$core$List$map,
+					function (x) {
+						return _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(
+							{ctor: '_Tuple2', _0: x, _1: startY});
+					},
+					_p20._0);
+				return A3(
+					_elm_lang$core$List$map2,
+					F2(
+						function (f, t) {
+							return _folkertdev$one_true_path_experiment$Segment$LineSegment(
+								A2(_opensolid$geometry$OpenSolid_LineSegment2d$from, f, t));
+						}),
+					{ctor: '::', _0: start, _1: coordinates},
+					coordinates);
+			case 'Vertical':
+				var coordinates = A2(
+					_elm_lang$core$List$map,
+					function (y) {
+						return _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(
+							{ctor: '_Tuple2', _0: startX, _1: y});
+					},
+					_p20._0);
+				return A3(
+					_elm_lang$core$List$map2,
+					F2(
+						function (f, t) {
+							return _folkertdev$one_true_path_experiment$Segment$LineSegment(
+								A2(_opensolid$geometry$OpenSolid_LineSegment2d$from, f, t));
+						}),
+					{ctor: '::', _0: start, _1: coordinates},
+					coordinates);
+			case 'CurveTo':
+				var folder = F2(
+					function (_p22, _p21) {
+						var _p23 = _p22;
+						var _p25 = _p23._2;
+						var _p24 = _p21;
+						return {
+							ctor: '_Tuple2',
+							_0: _p25,
+							_1: {
+								ctor: '::',
+								_0: _folkertdev$one_true_path_experiment$Segment$Cubic(
+									_opensolid$geometry$OpenSolid_CubicSpline2d$fromControlPoints(
+										{ctor: '_Tuple4', _0: _p24._0, _1: _p23._0, _2: _p23._1, _3: _p25})),
+								_1: _p24._1
+							}
+						};
+					});
+				var coordinates = A2(
+					_elm_lang$core$List$map,
+					_Zinggi$elm_webgl_math$Vector3$map(_opensolid$geometry$OpenSolid_Point2d$fromCoordinates),
+					_p20._0);
+				return A3(_folkertdev$one_true_path_experiment$Segment$traverse, folder, start, coordinates);
+			case 'QuadraticBezierCurveTo':
+				var folder = F2(
+					function (_p27, _p26) {
+						var _p28 = _p27;
+						var _p30 = _p28._1;
+						var _p29 = _p26;
+						return {
+							ctor: '_Tuple2',
+							_0: _p30,
+							_1: {
+								ctor: '::',
+								_0: _folkertdev$one_true_path_experiment$Segment$Quadratic(
+									_opensolid$geometry$OpenSolid_QuadraticSpline2d$fromControlPoints(
+										{ctor: '_Tuple3', _0: _p29._0, _1: _p28._0, _2: _p30})),
+								_1: _p29._1
+							}
+						};
+					});
+				var coordinates = A2(
+					_elm_lang$core$List$map,
+					_Zinggi$elm_webgl_math$Vector2$map(_opensolid$geometry$OpenSolid_Point2d$fromCoordinates),
+					_p20._0);
+				return A3(_folkertdev$one_true_path_experiment$Segment$traverse, folder, start, coordinates);
+			case 'EllipticalArc':
+				var folder = F2(
+					function (args, _p31) {
+						var _p32 = _p31;
+						return {
+							ctor: '_Tuple2',
+							_0: args.target,
+							_1: {
+								ctor: '::',
+								_0: _folkertdev$one_true_path_experiment$Segment$Arc(
+									{
+										start: _p32._0,
+										end: args.target,
+										radii: args.radii,
+										xAxisRotate: _elm_lang$core$Basics$degrees(args.xAxisRotate),
+										arcFlag: args.arcFlag,
+										direction: args.direction
+									}),
+								_1: _p32._1
+							}
+						};
+					});
+				return A3(
+					_folkertdev$one_true_path_experiment$Segment$traverse,
+					folder,
+					_opensolid$geometry$OpenSolid_Point2d$coordinates(start),
+					_p20._0);
+			default:
+				return {ctor: '[]'};
+		}
+	});

@@ -1,0 +1,272 @@
+var _opensolid$geometry$OpenSolid_ArcLength$paramAtStart = function (tree) {
+	var _p0 = tree;
+	if (_p0.ctor === 'Node') {
+		return _p0._0.paramAtStart;
+	} else {
+		return _p0._0.param0;
+	}
+};
+var _opensolid$geometry$OpenSolid_ArcLength$unsafeFromParameterValue = F2(
+	function (tree, t) {
+		unsafeFromParameterValue:
+		while (true) {
+			var _p1 = tree;
+			if (_p1.ctor === 'Leaf') {
+				var _p16 = _p1._0.param7;
+				var _p15 = _p1._0.param6;
+				var _p14 = _p1._0.param5;
+				var _p13 = _p1._0.param4;
+				var _p12 = _p1._0.param3;
+				var _p11 = _p1._0.param2;
+				var _p10 = _p1._0.param1;
+				var _p9 = _p1._0.param0;
+				var _p8 = _p1._0.length7;
+				var _p7 = _p1._0.length6;
+				var _p6 = _p1._0.length5;
+				var _p5 = _p1._0.length4;
+				var _p4 = _p1._0.length3;
+				var _p3 = _p1._0.length2;
+				var _p2 = _p1._0.length1;
+				if (_elm_lang$core$Native_Utils.cmp(t, _p13) < 1) {
+					if (_elm_lang$core$Native_Utils.cmp(t, _p11) < 1) {
+						if (_elm_lang$core$Native_Utils.cmp(t, _p10) < 1) {
+							var paramFraction = (t - _p9) / (_p10 - _p9);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p1._0.length0, _p2, paramFraction);
+						} else {
+							var paramFraction = (t - _p10) / (_p11 - _p10);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p2, _p3, paramFraction);
+						}
+					} else {
+						if (_elm_lang$core$Native_Utils.cmp(t, _p12) < 1) {
+							var paramFraction = (t - _p11) / (_p12 - _p11);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p3, _p4, paramFraction);
+						} else {
+							var paramFraction = (t - _p12) / (_p13 - _p12);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p4, _p5, paramFraction);
+						}
+					}
+				} else {
+					if (_elm_lang$core$Native_Utils.cmp(t, _p15) < 1) {
+						if (_elm_lang$core$Native_Utils.cmp(t, _p14) < 1) {
+							var paramFraction = (t - _p13) / (_p14 - _p13);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p5, _p6, paramFraction);
+						} else {
+							var paramFraction = (t - _p14) / (_p15 - _p14);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p6, _p7, paramFraction);
+						}
+					} else {
+						if (_elm_lang$core$Native_Utils.cmp(t, _p16) < 1) {
+							var paramFraction = (t - _p15) / (_p16 - _p15);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p7, _p8, paramFraction);
+						} else {
+							var paramFraction = (t - _p16) / (_p1._0.param8 - _p16);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p8, _p1._0.length8, paramFraction);
+						}
+					}
+				}
+			} else {
+				var _p17 = _p1._0.rightBranch;
+				if (_elm_lang$core$Native_Utils.cmp(
+					t,
+					_opensolid$geometry$OpenSolid_ArcLength$paramAtStart(_p17)) < 0) {
+					var _v2 = _p1._0.leftBranch,
+						_v3 = t;
+					tree = _v2;
+					t = _v3;
+					continue unsafeFromParameterValue;
+				} else {
+					var _v4 = _p17,
+						_v5 = t;
+					tree = _v4;
+					t = _v5;
+					continue unsafeFromParameterValue;
+				}
+			}
+		}
+	});
+var _opensolid$geometry$OpenSolid_ArcLength$fromParameterValue = F2(
+	function (_p18, t) {
+		var _p19 = _p18;
+		return ((_elm_lang$core$Native_Utils.cmp(t, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(t, 1) < 1)) ? _elm_lang$core$Maybe$Just(
+			A2(_opensolid$geometry$OpenSolid_ArcLength$unsafeFromParameterValue, _p19._0, t)) : _elm_lang$core$Maybe$Nothing;
+	});
+var _opensolid$geometry$OpenSolid_ArcLength$lengthAtEnd = function (tree) {
+	var _p20 = tree;
+	if (_p20.ctor === 'Node') {
+		return _p20._0.lengthAtEnd;
+	} else {
+		return _p20._0.length8;
+	}
+};
+var _opensolid$geometry$OpenSolid_ArcLength$fromParameterization = function (_p21) {
+	var _p22 = _p21;
+	return _opensolid$geometry$OpenSolid_ArcLength$lengthAtEnd(_p22._0);
+};
+var _opensolid$geometry$OpenSolid_ArcLength$lengthAtStart = function (tree) {
+	var _p23 = tree;
+	if (_p23.ctor === 'Node') {
+		return _p23._0.lengthAtStart;
+	} else {
+		return _p23._0.length0;
+	}
+};
+var _opensolid$geometry$OpenSolid_ArcLength$unsafeToParameterValue = F2(
+	function (tree, s) {
+		unsafeToParameterValue:
+		while (true) {
+			var _p24 = tree;
+			if (_p24.ctor === 'Leaf') {
+				var _p39 = _p24._0.param7;
+				var _p38 = _p24._0.param6;
+				var _p37 = _p24._0.param5;
+				var _p36 = _p24._0.param4;
+				var _p35 = _p24._0.param3;
+				var _p34 = _p24._0.param2;
+				var _p33 = _p24._0.param1;
+				var _p32 = _p24._0.length7;
+				var _p31 = _p24._0.length6;
+				var _p30 = _p24._0.length5;
+				var _p29 = _p24._0.length4;
+				var _p28 = _p24._0.length3;
+				var _p27 = _p24._0.length2;
+				var _p26 = _p24._0.length1;
+				var _p25 = _p24._0.length0;
+				if (_elm_lang$core$Native_Utils.cmp(s, _p29) < 1) {
+					if (_elm_lang$core$Native_Utils.cmp(s, _p27) < 1) {
+						if (_elm_lang$core$Native_Utils.cmp(s, _p26) < 1) {
+							var lengthFraction = (s - _p25) / (_p26 - _p25);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p24._0.param0, _p33, lengthFraction);
+						} else {
+							var lengthFraction = (s - _p26) / (_p27 - _p26);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p33, _p34, lengthFraction);
+						}
+					} else {
+						if (_elm_lang$core$Native_Utils.cmp(s, _p28) < 1) {
+							var lengthFraction = (s - _p27) / (_p28 - _p27);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p34, _p35, lengthFraction);
+						} else {
+							var lengthFraction = (s - _p28) / (_p29 - _p28);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p35, _p36, lengthFraction);
+						}
+					}
+				} else {
+					if (_elm_lang$core$Native_Utils.cmp(s, _p31) < 1) {
+						if (_elm_lang$core$Native_Utils.cmp(s, _p30) < 1) {
+							var lengthFraction = (s - _p29) / (_p30 - _p29);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p36, _p37, lengthFraction);
+						} else {
+							var lengthFraction = (s - _p30) / (_p31 - _p30);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p37, _p38, lengthFraction);
+						}
+					} else {
+						if (_elm_lang$core$Native_Utils.cmp(s, _p32) < 1) {
+							var lengthFraction = (s - _p31) / (_p32 - _p31);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p38, _p39, lengthFraction);
+						} else {
+							var lengthFraction = (s - _p32) / (_p24._0.length8 - _p32);
+							return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p39, _p24._0.param8, lengthFraction);
+						}
+					}
+				}
+			} else {
+				var _p40 = _p24._0.rightBranch;
+				if (_elm_lang$core$Native_Utils.cmp(
+					s,
+					_opensolid$geometry$OpenSolid_ArcLength$lengthAtStart(_p40)) < 0) {
+					var _v11 = _p24._0.leftBranch,
+						_v12 = s;
+					tree = _v11;
+					s = _v12;
+					continue unsafeToParameterValue;
+				} else {
+					var _v13 = _p40,
+						_v14 = s;
+					tree = _v13;
+					s = _v14;
+					continue unsafeToParameterValue;
+				}
+			}
+		}
+	});
+var _opensolid$geometry$OpenSolid_ArcLength$toParameterValue = F2(
+	function (_p41, s) {
+		var _p42 = _p41;
+		var _p43 = _p42._0;
+		return ((_elm_lang$core$Native_Utils.cmp(s, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(
+			s,
+			_opensolid$geometry$OpenSolid_ArcLength$lengthAtEnd(_p43)) < 1)) ? _elm_lang$core$Maybe$Just(
+			A2(_opensolid$geometry$OpenSolid_ArcLength$unsafeToParameterValue, _p43, s)) : _elm_lang$core$Maybe$Nothing;
+	});
+var _opensolid$geometry$OpenSolid_ArcLength$segmentsPerLeaf = 8;
+var _opensolid$geometry$OpenSolid_ArcLength$Parameterization = function (a) {
+	return {ctor: 'Parameterization', _0: a};
+};
+var _opensolid$geometry$OpenSolid_ArcLength$Leaf = function (a) {
+	return {ctor: 'Leaf', _0: a};
+};
+var _opensolid$geometry$OpenSolid_ArcLength$Node = function (a) {
+	return {ctor: 'Node', _0: a};
+};
+var _opensolid$geometry$OpenSolid_ArcLength$buildTree = F5(
+	function (derivativeMagnitude, lengthAtStart, paramAtStart, paramAtEnd, height) {
+		var paramDelta = paramAtEnd - paramAtStart;
+		if (_elm_lang$core$Native_Utils.eq(height, 0)) {
+			var length0 = lengthAtStart;
+			var paramStep = 0.125 * paramDelta;
+			var offset = 6.25e-2 * paramDelta;
+			var param8 = paramAtEnd;
+			var param7 = paramAtEnd - (0.125 * paramDelta);
+			var param6 = paramAtEnd - (0.25 * paramDelta);
+			var param5 = paramAtEnd - (0.375 * paramDelta);
+			var param4 = paramAtStart + (0.5 * paramDelta);
+			var param3 = paramAtStart + (0.375 * paramDelta);
+			var param2 = paramAtStart + (0.25 * paramDelta);
+			var param1 = paramAtStart + (0.125 * paramDelta);
+			var param0 = paramAtStart;
+			var length1 = length0 + (derivativeMagnitude(param0 + offset) * paramStep);
+			var length2 = length1 + (derivativeMagnitude(param1 + offset) * paramStep);
+			var length3 = length2 + (derivativeMagnitude(param2 + offset) * paramStep);
+			var length4 = length3 + (derivativeMagnitude(param3 + offset) * paramStep);
+			var length5 = length4 + (derivativeMagnitude(param4 + offset) * paramStep);
+			var length6 = length5 + (derivativeMagnitude(param5 + offset) * paramStep);
+			var length7 = length6 + (derivativeMagnitude(param6 + offset) * paramStep);
+			var length8 = length7 + (derivativeMagnitude(param7 + offset) * paramStep);
+			return _opensolid$geometry$OpenSolid_ArcLength$Leaf(
+				{param0: param0, param1: param1, param2: param2, param3: param3, param4: param4, param5: param5, param6: param6, param7: param7, param8: param8, length0: length0, length1: length1, length2: length2, length3: length3, length4: length4, length5: length5, length6: length6, length7: length7, length8: length8});
+		} else {
+			var paramAtMid = paramAtStart + (0.5 * paramDelta);
+			var branchHeight = height - 1;
+			var leftBranch = A5(_opensolid$geometry$OpenSolid_ArcLength$buildTree, derivativeMagnitude, lengthAtStart, paramAtStart, paramAtMid, branchHeight);
+			var lengthAtLeftEnd = _opensolid$geometry$OpenSolid_ArcLength$lengthAtEnd(leftBranch);
+			var rightBranch = A5(_opensolid$geometry$OpenSolid_ArcLength$buildTree, derivativeMagnitude, lengthAtLeftEnd, paramAtMid, paramAtEnd, branchHeight);
+			return _opensolid$geometry$OpenSolid_ArcLength$Node(
+				{
+					lengthAtStart: lengthAtStart,
+					lengthAtEnd: _opensolid$geometry$OpenSolid_ArcLength$lengthAtEnd(rightBranch),
+					paramAtStart: paramAtStart,
+					leftBranch: leftBranch,
+					rightBranch: rightBranch
+				});
+		}
+	});
+var _opensolid$geometry$OpenSolid_ArcLength$parameterization = function (config) {
+	var _p44 = config;
+	var tolerance = _p44.tolerance;
+	var derivativeMagnitude = _p44.derivativeMagnitude;
+	var maxSecondDerivativeMagnitude = _p44.maxSecondDerivativeMagnitude;
+	var height = function () {
+		if (_elm_lang$core$Native_Utils.cmp(tolerance, 0) < 1) {
+			return 0;
+		} else {
+			var numSegments = maxSecondDerivativeMagnitude / (8 * tolerance);
+			var numLeaves = numSegments / _elm_lang$core$Basics$toFloat(_opensolid$geometry$OpenSolid_ArcLength$segmentsPerLeaf);
+			return A2(
+				_elm_lang$core$Basics$max,
+				0,
+				_elm_lang$core$Basics$ceiling(
+					A2(_elm_lang$core$Basics$logBase, 2, numLeaves)));
+		}
+	}();
+	return _opensolid$geometry$OpenSolid_ArcLength$Parameterization(
+		A5(_opensolid$geometry$OpenSolid_ArcLength$buildTree, derivativeMagnitude, 0, 0, 1, height));
+};

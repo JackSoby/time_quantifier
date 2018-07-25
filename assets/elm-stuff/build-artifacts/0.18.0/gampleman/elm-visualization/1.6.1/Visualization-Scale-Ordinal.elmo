@@ -1,0 +1,51 @@
+var _gampleman$elm_visualization$Visualization_Scale_Ordinal$convertHelp = F4(
+	function (d, r, used, needle) {
+		convertHelp:
+		while (true) {
+			var _p0 = {ctor: '_Tuple2', _0: d, _1: r};
+			if (_p0._0.ctor === '[]') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				if (_p0._1.ctor === '[]') {
+					var _v1 = d,
+						_v2 = _elm_lang$core$List$reverse(used),
+						_v3 = {ctor: '[]'},
+						_v4 = needle;
+					d = _v1;
+					r = _v2;
+					used = _v3;
+					needle = _v4;
+					continue convertHelp;
+				} else {
+					var _p1 = _p0._1._0;
+					if (_elm_lang$core$Native_Utils.eq(_p0._0._0, needle)) {
+						return _elm_lang$core$Maybe$Just(_p1);
+					} else {
+						var _v5 = _p0._0._1,
+							_v6 = _p0._1._1,
+							_v7 = {ctor: '::', _0: _p1, _1: used},
+							_v8 = needle;
+						d = _v5;
+						r = _v6;
+						used = _v7;
+						needle = _v8;
+						continue convertHelp;
+					}
+				}
+			}
+		}
+	});
+var _gampleman$elm_visualization$Visualization_Scale_Ordinal$convert = F3(
+	function (domain, range, val) {
+		var _p2 = range;
+		if (_p2.ctor === '[]') {
+			return _elm_lang$core$Maybe$Nothing;
+		} else {
+			return A4(
+				_gampleman$elm_visualization$Visualization_Scale_Ordinal$convertHelp,
+				domain,
+				range,
+				{ctor: '[]'},
+				val);
+		}
+	});

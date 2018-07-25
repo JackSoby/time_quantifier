@@ -1,0 +1,543 @@
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$angle = F2(
+	function (u, v) {
+		var argument = A3(
+			_elm_lang$core$Basics$clamp,
+			-1,
+			1,
+			A2(_Zinggi$elm_webgl_math$Vector2$dot, u, v) / (_Zinggi$elm_webgl_math$Vector2$length(u) * _Zinggi$elm_webgl_math$Vector2$length(v)));
+		var _p0 = ((_elm_lang$core$Native_Utils.cmp(argument, -1) < 0) || (_elm_lang$core$Native_Utils.cmp(argument, 1) > 0)) ? A2(_elm_lang$core$Debug$log, 'argument is wrong', argument) : 0;
+		var q = _elm_lang$core$Basics$acos(argument);
+		var _p1 = v;
+		var vx = _p1._0;
+		var vy = _p1._1;
+		var _p2 = u;
+		var ux = _p2._0;
+		var uy = _p2._1;
+		var sign = (_elm_lang$core$Native_Utils.cmp((ux * vy) - (uy * vx), 0) < 0) ? -1 : 1;
+		return sign * _elm_lang$core$Basics$abs(q);
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$inverseConversionMatrix = function (xAxisRotate) {
+	return {
+		ctor: '_Tuple2',
+		_0: {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Basics$cos(xAxisRotate),
+			_1: _elm_lang$core$Basics$sin(xAxisRotate)
+		},
+		_1: {
+			ctor: '_Tuple2',
+			_0: -1 * _elm_lang$core$Basics$sin(xAxisRotate),
+			_1: _elm_lang$core$Basics$cos(xAxisRotate)
+		}
+	};
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$coordinatePrime = function (_p3) {
+	var _p4 = _p3;
+	var _p9 = _p4.start;
+	var _p8 = _p4.end;
+	var _p5 = _p8;
+	var x2 = _p5._0;
+	var y2 = _p5._1;
+	var _p6 = _p9;
+	var x1 = _p6._0;
+	var y1 = _p6._1;
+	var rotate = _folkertdev$one_true_path_experiment$Geometry_Ellipse$inverseConversionMatrix(_p4.xAxisRotate);
+	var _p7 = A2(
+		_Zinggi$elm_webgl_math$Matrix2$mulVector,
+		rotate,
+		A2(
+			_Zinggi$elm_webgl_math$Vector2$divideBy,
+			2,
+			A2(_Zinggi$elm_webgl_math$Vector2$sub, _p9, _p8)));
+	var x1_ = _p7._0;
+	var y1_ = _p7._1;
+	return {ctor: '_Tuple2', _0: x1_, _1: y1_};
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$conversionMatrix = function (xAxisRotate) {
+	return {
+		ctor: '_Tuple2',
+		_0: {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Basics$cos(xAxisRotate),
+			_1: -1 * _elm_lang$core$Basics$sin(xAxisRotate)
+		},
+		_1: {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Basics$sin(xAxisRotate),
+			_1: _elm_lang$core$Basics$cos(xAxisRotate)
+		}
+	};
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$circumference = function (_p10) {
+	var _p11 = _p10;
+	var _p12 = _p11.radii;
+	var a = _p12._0;
+	var b = _p12._1;
+	var h = Math.pow(a - b, 2) / Math.pow(a + b, 2);
+	var circumference = (_elm_lang$core$Basics$pi * (a + b)) * (1 + ((3 * h) / (10 + _elm_lang$core$Basics$sqrt(4 - (3 * h)))));
+	return circumference;
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$mod2pi_ = function (x) {
+	return x - ((_elm_lang$core$Basics$toFloat(
+		_elm_lang$core$Basics$truncate(x / (2 * _elm_lang$core$Basics$pi))) * 2) * _elm_lang$core$Basics$pi);
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$mod2pi = _elm_lang$core$Basics$identity;
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$at = F2(
+	function (t, _p13) {
+		var _p14 = _p13;
+		var _p18 = _p14.xAxisRotate;
+		var _p15 = _p14.center;
+		var cx = _p15._0;
+		var cy = _p15._1;
+		var _p16 = _p14.radii;
+		var rx = _p16._0;
+		var ry = _p16._1;
+		var _p17 = {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Basics$cos(_p18),
+			_1: _elm_lang$core$Basics$sin(_p18)
+		};
+		var cosr = _p17._0;
+		var sinr = _p17._1;
+		var angle = _p14.startAngle + (t * _p14.deltaTheta);
+		var x = (((cosr * _elm_lang$core$Basics$cos(angle)) * rx) - ((sinr * _elm_lang$core$Basics$sin(angle)) * ry)) + cx;
+		var y = (((sinr * _elm_lang$core$Basics$cos(angle)) * rx) + ((cosr * _elm_lang$core$Basics$sin(angle)) * ry)) + cy;
+		return {ctor: '_Tuple2', _0: x, _1: y};
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$derivativeAt = F2(
+	function (t, parameterization) {
+		var _p19 = parameterization.radii;
+		var a = _p19._0;
+		var b = _p19._1;
+		var _p20 = A2(
+			_Zinggi$elm_webgl_math$Vector2$sub,
+			parameterization.center,
+			A2(_folkertdev$one_true_path_experiment$Geometry_Ellipse$at, t, parameterization));
+		var x1 = _p20._0;
+		var y1 = _p20._1;
+		return (Math.pow(b, 2) / Math.pow(a, 2)) * (x1 / y1);
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$tangentAt = F2(
+	function (t, parameterization) {
+		var _p21 = parameterization.radii;
+		var a = _p21._0;
+		var b = _p21._1;
+		var _p22 = A2(
+			_Zinggi$elm_webgl_math$Vector2$sub,
+			parameterization.center,
+			A2(_folkertdev$one_true_path_experiment$Geometry_Ellipse$at, t, parameterization));
+		var x1 = _p22._0;
+		var y1 = _p22._1;
+		return A2(
+			_Zinggi$elm_webgl_math$Matrix2$mulVector,
+			_folkertdev$one_true_path_experiment$Geometry_Ellipse$conversionMatrix(_elm_lang$core$Basics$pi / 2),
+			_Zinggi$elm_webgl_math$Vector2$normalize(
+				A3(
+					_Zinggi$elm_webgl_math$Vector2$map2,
+					F2(
+						function (x, y) {
+							return x * y;
+						}),
+					{
+						ctor: '_Tuple2',
+						_0: Math.pow(b, 2),
+						_1: Math.pow(a, 2)
+					},
+					{ctor: '_Tuple2', _0: x1, _1: y1})));
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$interpolateFloat = F3(
+	function (from, to, time) {
+		return from + ((to - from) * time);
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$atAngle = F2(
+	function (theta, _p23) {
+		var _p24 = _p23;
+		return A2(
+			_Zinggi$elm_webgl_math$Vector2$add,
+			_p24.center,
+			A2(
+				_Zinggi$elm_webgl_math$Matrix2$mulVector,
+				_folkertdev$one_true_path_experiment$Geometry_Ellipse$conversionMatrix(_p24.xAxisRotate),
+				A3(
+					_Zinggi$elm_webgl_math$Vector2$map2,
+					F2(
+						function (x, y) {
+							return x * y;
+						}),
+					_p24.radii,
+					{
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Basics$cos(theta),
+						_1: _elm_lang$core$Basics$sin(theta)
+					})));
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$chord = function (_p25) {
+	var _p26 = _p25;
+	return {ctor: '_Tuple2', _0: _p26.start, _1: _p26.end};
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$outlineLength = function (_p27) {
+	var _p28 = _p27;
+	return function (_p29) {
+		var _p30 = _p29;
+		return _elm_lang$core$Basics$abs(_p30._0) + _elm_lang$core$Basics$abs(_p30._1);
+	}(
+		A2(_Zinggi$elm_webgl_math$Vector2$sub, _p28.end, _p28.start));
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$chordLength = function (_p31) {
+	var _p32 = _p31;
+	return A2(_Zinggi$elm_webgl_math$Vector2$distance, _p32.start, _p32.end);
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$normalize = function (_p33) {
+	var _p34 = _p33;
+	var _p35 = _p34.xAxisRotate;
+	return _elm_lang$core$Native_Utils.update(
+		_p34,
+		{
+			startAngle: _folkertdev$one_true_path_experiment$Geometry_Ellipse$mod2pi(_p34.startAngle - _p35),
+			deltaTheta: _folkertdev$one_true_path_experiment$Geometry_Ellipse$mod2pi(_p34.deltaTheta - _p35),
+			xAxisRotate: 0
+		});
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$validateRadii = function (_p36) {
+	var _p37 = _p36;
+	var _p40 = _p37;
+	var _p38 = _p37.radii;
+	var rx = _p38._0;
+	var ry = _p38._1;
+	var _p39 = _folkertdev$one_true_path_experiment$Geometry_Ellipse$coordinatePrime(_p40);
+	var x1_ = _p39._0;
+	var y1_ = _p39._1;
+	var v = (Math.pow(x1_, 2) / Math.pow(rx, 2)) + (Math.pow(y1_, 2) / Math.pow(ry, 2));
+	return (_elm_lang$core$Native_Utils.cmp(v, 1) < 1) ? _p40 : _elm_lang$core$Native_Utils.update(
+		_p40,
+		{
+			radii: {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Basics$sqrt(v) * rx,
+				_1: _elm_lang$core$Basics$sqrt(v) * ry
+			}
+		});
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$reverse = function (_p41) {
+	var _p42 = _p41;
+	return _elm_lang$core$Native_Utils.update(
+		_p42,
+		{
+			start: _p42.end,
+			end: _p42.start,
+			direction: function () {
+				var _p43 = _p42.direction;
+				if (_p43.ctor === 'Clockwise') {
+					return _folkertdev$svg_path_lowlevel$Path_LowLevel$CounterClockwise;
+				} else {
+					return _folkertdev$svg_path_lowlevel$Path_LowLevel$Clockwise;
+				}
+			}()
+		});
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$decodeFlags = function (_p44) {
+	var _p45 = _p44;
+	var _p46 = {ctor: '_Tuple2', _0: _p45._0, _1: _p45._1};
+	_v13_4:
+	do {
+		if (_p46.ctor === '_Tuple2') {
+			switch (_p46._0) {
+				case 1:
+					switch (_p46._1) {
+						case 0:
+							return _elm_lang$core$Maybe$Just(
+								{ctor: '_Tuple2', _0: _folkertdev$svg_path_lowlevel$Path_LowLevel$LargestArc, _1: _folkertdev$svg_path_lowlevel$Path_LowLevel$Clockwise});
+						case 1:
+							return _elm_lang$core$Maybe$Just(
+								{ctor: '_Tuple2', _0: _folkertdev$svg_path_lowlevel$Path_LowLevel$LargestArc, _1: _folkertdev$svg_path_lowlevel$Path_LowLevel$CounterClockwise});
+						default:
+							break _v13_4;
+					}
+				case 0:
+					switch (_p46._1) {
+						case 0:
+							return _elm_lang$core$Maybe$Just(
+								{ctor: '_Tuple2', _0: _folkertdev$svg_path_lowlevel$Path_LowLevel$SmallestArc, _1: _folkertdev$svg_path_lowlevel$Path_LowLevel$Clockwise});
+						case 1:
+							return _elm_lang$core$Maybe$Just(
+								{ctor: '_Tuple2', _0: _folkertdev$svg_path_lowlevel$Path_LowLevel$SmallestArc, _1: _folkertdev$svg_path_lowlevel$Path_LowLevel$CounterClockwise});
+						default:
+							break _v13_4;
+					}
+				default:
+					break _v13_4;
+			}
+		} else {
+			break _v13_4;
+		}
+	} while(false);
+	return _elm_lang$core$Maybe$Nothing;
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$centerToEndpoint = function (_p47) {
+	var _p48 = _p47;
+	var _p55 = _p48.xAxisRotate;
+	var _p54 = _p48.startAngle;
+	var _p53 = _p48.radii;
+	var _p52 = _p48.deltaTheta;
+	var _p51 = _p48.center;
+	var _p49 = A2(
+		_elm_lang$core$Maybe$withDefault,
+		{ctor: '_Tuple2', _0: _folkertdev$svg_path_lowlevel$Path_LowLevel$SmallestArc, _1: _folkertdev$svg_path_lowlevel$Path_LowLevel$CounterClockwise},
+		_folkertdev$one_true_path_experiment$Geometry_Ellipse$decodeFlags(
+			{
+				ctor: '_Tuple2',
+				_0: (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$Basics$abs(_p52),
+					_elm_lang$core$Basics$pi) > 0) ? 1 : 0,
+				_1: (_elm_lang$core$Native_Utils.cmp(_p52, 0) > 0) ? 1 : 0
+			}));
+	var arcFlag = _p49._0;
+	var direction = _p49._1;
+	var _p50 = _p53;
+	var rx = _p50._0;
+	var ry = _p50._1;
+	var endAngle = _p54 + _p52;
+	var conversion = _folkertdev$one_true_path_experiment$Geometry_Ellipse$conversionMatrix(_p55);
+	var p1 = A2(
+		_Zinggi$elm_webgl_math$Vector2$add,
+		_p51,
+		A2(
+			_Zinggi$elm_webgl_math$Matrix2$mulVector,
+			conversion,
+			{
+				ctor: '_Tuple2',
+				_0: rx * _elm_lang$core$Basics$cos(_p54),
+				_1: ry * _elm_lang$core$Basics$sin(_p54)
+			}));
+	var p2 = A2(
+		_Zinggi$elm_webgl_math$Vector2$add,
+		_p51,
+		A2(
+			_Zinggi$elm_webgl_math$Matrix2$mulVector,
+			conversion,
+			{
+				ctor: '_Tuple2',
+				_0: rx * _elm_lang$core$Basics$cos(endAngle),
+				_1: ry * _elm_lang$core$Basics$sin(endAngle)
+			}));
+	return {start: p1, end: p2, radii: _p53, arcFlag: arcFlag, direction: direction, xAxisRotate: _p55};
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$encodeFlags = function (_p56) {
+	var _p57 = _p56;
+	var _p58 = {ctor: '_Tuple2', _0: _p57._0, _1: _p57._1};
+	if (_p58._0.ctor === 'LargestArc') {
+		if (_p58._1.ctor === 'Clockwise') {
+			return {ctor: '_Tuple2', _0: 1, _1: 0};
+		} else {
+			return {ctor: '_Tuple2', _0: 1, _1: 1};
+		}
+	} else {
+		if (_p58._1.ctor === 'Clockwise') {
+			return {ctor: '_Tuple2', _0: 0, _1: 0};
+		} else {
+			return {ctor: '_Tuple2', _0: 0, _1: 1};
+		}
+	}
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$tau = 2 * _elm_lang$core$Basics$pi;
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$arcLengthParameterizationCircle = F2(
+	function (_p59, s) {
+		var _p60 = _p59;
+		var _p62 = _p60.deltaTheta;
+		var ratio = _p62 / _folkertdev$one_true_path_experiment$Geometry_Ellipse$tau;
+		var _p61 = _p60.radii;
+		var rx = _p61._0;
+		var ry = _p61._1;
+		var circumference = (2 * _elm_lang$core$Basics$pi) * rx;
+		var circumferenceUsed = ratio * circumference;
+		var fraction = s / circumferenceUsed;
+		var angleAtS = _p60.startAngle + (fraction * _p62);
+		return _elm_lang$core$Maybe$Just(
+			A2(
+				_Zinggi$elm_webgl_math$Vector2$add,
+				_p60.center,
+				_elm_lang$core$Basics$fromPolar(
+					{ctor: '_Tuple2', _0: rx, _1: angleAtS})));
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$endpointToCenter = function (_p63) {
+	var _p64 = _p63;
+	var _p73 = _p64.xAxisRotate;
+	var _p72 = _p64.radii;
+	var _p71 = _p64.direction;
+	var _p70 = _p64.arcFlag;
+	var sign = function () {
+		var _p65 = {ctor: '_Tuple2', _0: _p70, _1: _p71};
+		if (_p65._0.ctor === 'LargestArc') {
+			if (_p65._1.ctor === 'Clockwise') {
+				return 1;
+			} else {
+				return -1;
+			}
+		} else {
+			if (_p65._1.ctor === 'Clockwise') {
+				return -1;
+			} else {
+				return 1;
+			}
+		}
+	}();
+	var _p66 = _folkertdev$one_true_path_experiment$Geometry_Ellipse$coordinatePrime(_p64);
+	var x1_ = _p66._0;
+	var y1_ = _p66._1;
+	var p1 = {ctor: '_Tuple2', _0: x1_, _1: y1_};
+	var _p67 = _p72;
+	var rx = _p67._0;
+	var ry = _p67._1;
+	var numerator = ((Math.pow(rx, 2) * Math.pow(ry, 2)) - (Math.pow(rx, 2) * Math.pow(y1_, 2))) - (Math.pow(ry, 2) * Math.pow(x1_, 2));
+	var denominator = (Math.pow(rx, 2) * Math.pow(y1_, 2)) + (Math.pow(ry, 2) * Math.pow(x1_, 2));
+	var root = (_elm_lang$core$Native_Utils.eq(denominator, 0) || (_elm_lang$core$Native_Utils.cmp(numerator, 0) < 0)) ? 0 : (sign * _elm_lang$core$Basics$sqrt(numerator / denominator));
+	var center_ = {ctor: '_Tuple2', _0: ((rx * y1_) / ry) * root, _1: (-1 * ((ry * x1_) / rx)) * root};
+	var center = A2(
+		_Zinggi$elm_webgl_math$Vector2$add,
+		A2(
+			_Zinggi$elm_webgl_math$Vector2$divideBy,
+			2,
+			A2(_Zinggi$elm_webgl_math$Vector2$add, _p64.start, _p64.end)),
+		A2(
+			_Zinggi$elm_webgl_math$Matrix2$mulVector,
+			_folkertdev$one_true_path_experiment$Geometry_Ellipse$conversionMatrix(_p73),
+			center_));
+	var deltaTheta = function () {
+		var second = A3(
+			_Zinggi$elm_webgl_math$Vector2$map2,
+			F2(
+				function (x, y) {
+					return x / y;
+				}),
+			A2(
+				_Zinggi$elm_webgl_math$Vector2$sub,
+				_Zinggi$elm_webgl_math$Vector2$negate(p1),
+				center_),
+			_p72);
+		var first = A3(
+			_Zinggi$elm_webgl_math$Vector2$map2,
+			F2(
+				function (x, y) {
+					return x / y;
+				}),
+			A2(_Zinggi$elm_webgl_math$Vector2$sub, p1, center_),
+			_p72);
+		var _p68 = {ctor: '_Tuple2', _0: _p70, _1: _p71};
+		if (_p68._0.ctor === 'LargestArc') {
+			if (_p68._1.ctor === 'Clockwise') {
+				return A2(_folkertdev$one_true_path_experiment$Geometry_Ellipse$angle, first, second) - (2 * _elm_lang$core$Basics$pi);
+			} else {
+				return A2(_folkertdev$one_true_path_experiment$Geometry_Ellipse$angle, first, second) + (2 * _elm_lang$core$Basics$pi);
+			}
+		} else {
+			if (_p68._1.ctor === 'Clockwise') {
+				return A2(_folkertdev$one_true_path_experiment$Geometry_Ellipse$angle, first, second);
+			} else {
+				return A2(_folkertdev$one_true_path_experiment$Geometry_Ellipse$angle, first, second);
+			}
+		}
+	}();
+	var startAngle = function () {
+		var _p69 = _folkertdev$one_true_path_experiment$Geometry_Ellipse$encodeFlags(
+			{ctor: '_Tuple2', _0: _p70, _1: _p71});
+		var fs = _p69._1;
+		var temp = A2(
+			_folkertdev$one_true_path_experiment$Geometry_Ellipse$angle,
+			{ctor: '_Tuple2', _0: 1, _1: 0},
+			A3(
+				_elm_lang$core$Basics$flip,
+				_Zinggi$elm_webgl_math$Vector2$map2(
+					F2(
+						function (x, y) {
+							return x / y;
+						})),
+				_p72,
+				A2(_Zinggi$elm_webgl_math$Vector2$sub, p1, center_)));
+		return _folkertdev$one_true_path_experiment$Geometry_Ellipse$mod2pi_(
+			(_elm_lang$core$Native_Utils.eq(fs, 0) && (_elm_lang$core$Native_Utils.cmp(deltaTheta, 0) > 0)) ? (temp - _folkertdev$one_true_path_experiment$Geometry_Ellipse$tau) : ((_elm_lang$core$Native_Utils.eq(fs, 1) && (_elm_lang$core$Native_Utils.cmp(deltaTheta, 0) < 0)) ? (temp + _folkertdev$one_true_path_experiment$Geometry_Ellipse$tau) : temp));
+	}();
+	var result = {center: center, xAxisRotate: _p73, startAngle: startAngle, deltaTheta: deltaTheta, radii: _p72};
+	return result;
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$splitEllipse = F2(
+	function (t, parameterization) {
+		var middlePoint = A2(
+			_folkertdev$one_true_path_experiment$Geometry_Ellipse$at,
+			t,
+			_folkertdev$one_true_path_experiment$Geometry_Ellipse$endpointToCenter(parameterization));
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				parameterization,
+				{end: middlePoint}),
+			_1: _elm_lang$core$Native_Utils.update(
+				parameterization,
+				{start: middlePoint})
+		};
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$chunks = F2(
+	function (itersLeft, _p74) {
+		var _p75 = _p74;
+		var _p77 = _p75;
+		if (_elm_lang$core$Native_Utils.cmp(itersLeft, 0) < 1) {
+			return {
+				ctor: '::',
+				_0: _p77,
+				_1: {ctor: '[]'}
+			};
+		} else {
+			var chord = A2(_Zinggi$elm_webgl_math$Vector2$distance, _p75.start, _p75.end);
+			var _p76 = A2(_folkertdev$one_true_path_experiment$Geometry_Ellipse$splitEllipse, 0.5, _p77);
+			var left = _p76._0;
+			var right = _p76._1;
+			var outline = A2(_Zinggi$elm_webgl_math$Vector2$distance, left.start, left.end) + A2(_Zinggi$elm_webgl_math$Vector2$distance, right.start, right.end);
+			var average = (chord + outline) / 2;
+			return (_elm_lang$core$Native_Utils.cmp((average - chord) / average, 1.0e-3) > 0) ? A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(_folkertdev$one_true_path_experiment$Geometry_Ellipse$chunks, itersLeft - 1, left),
+				A2(_folkertdev$one_true_path_experiment$Geometry_Ellipse$chunks, itersLeft - 1, right)) : {
+				ctor: '::',
+				_0: left,
+				_1: {
+					ctor: '::',
+					_0: right,
+					_1: {ctor: '[]'}
+				}
+			};
+		}
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$approximateArcLength = function (_p78) {
+	var _p79 = _p78;
+	return _elm_lang$core$Native_Utils.eq(_p79.start, _p79.end) ? 0 : _elm_lang$core$List$sum(
+		A2(
+			_elm_lang$core$List$map,
+			function (_p80) {
+				var _p81 = _p80;
+				return A2(_Zinggi$elm_webgl_math$Vector2$distance, _p81.start, _p81.end);
+			},
+			A2(_folkertdev$one_true_path_experiment$Geometry_Ellipse$chunks, 10, _p79)));
+};
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$arcLengthParameterizationEllipse = F2(
+	function (_p82, s) {
+		var _p83 = _p82;
+		var config = {
+			split: _folkertdev$one_true_path_experiment$Geometry_Ellipse$splitEllipse,
+			upperBound: _folkertdev$one_true_path_experiment$Geometry_Ellipse$outlineLength,
+			lowerBound: _folkertdev$one_true_path_experiment$Geometry_Ellipse$chordLength,
+			percentageError: 1.0e-2,
+			baseCase: function (_p84) {
+				var _p85 = _p84;
+				return A3(_folkertdev$one_true_path_experiment$Geometry_Line$lengthParameterization, _p85.start, _p85.end, s);
+			},
+			length: _folkertdev$one_true_path_experiment$Geometry_Ellipse$approximateArcLength
+		};
+		return A3(_folkertdev$one_true_path_experiment$Geometry_Approximate$approximate, config, _p83, s);
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$EndpointParameterization = F6(
+	function (a, b, c, d, e, f) {
+		return {start: a, end: b, radii: c, xAxisRotate: d, arcFlag: e, direction: f};
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Ellipse$CenterParameterization = F5(
+	function (a, b, c, d, e) {
+		return {center: a, radii: b, startAngle: c, deltaTheta: d, xAxisRotate: e};
+	});

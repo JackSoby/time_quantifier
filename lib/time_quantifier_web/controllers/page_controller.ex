@@ -9,15 +9,7 @@ defmodule TimeQuantifierWeb.PageController do
     changeset = Auth.change_user(%User{})
     maybe_user = Guardian.Plug.current_resource(conn)
 
-    message =
-      if maybe_user != nil do
-        "Someone is logged in"
-      else
-        "No one is logged in"
-      end
-
     conn
-    |> put_flash(:info, message)
     |> render(
       "index.html",
       changeset: changeset,
