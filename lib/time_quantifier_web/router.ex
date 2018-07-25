@@ -14,22 +14,26 @@ defmodule TimeQuantifierWeb.Router do
   end
 
   pipeline :auth do
-    plug TimeQuantifier.Auth.Pipeline
+    plug(TimeQuantifier.Auth.Pipeline)
   end
+
   pipeline :ensure_auth do
-    plug Guardian.Plug.EnsureAuthenticated
+    plug(Guardian.Plug.EnsureAuthenticated)
   end
+
   # Maybe logged in scope
   scope "/", TimeQuantifierWeb do
-    pipe_through [:browser, :auth]
-    get "/", PageController, :index
-    post "/", PageController, :login
-    post "/logout", PageController, :logout
+    pipe_through([:browser, :auth])
+    get("/", PageController, :index)
+    get("/home", HomeController, :index)
+    post("/", PageController, :login)
+    post("/logout", PageController, :logout)
   end
+
   # Definitely logged in scope
   scope "/", TimeQuantifierWeb do
-    pipe_through [:browser, :auth, :ensure_auth]
-    get "/secret", PageController, :secret
+    pipe_through([:browser, :auth, :ensure_auth])
+    get("/secret", PageController, :secret)
   end
 
   # Other scopes may use custom stacks.
