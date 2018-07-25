@@ -1,0 +1,809 @@
+var _opensolid$geometry$OpenSolid_Geometry_Encode$boundingBox3d = function (boundingBox) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'minX',
+				_1: _elm_lang$core$Json_Encode$float(
+					_opensolid$geometry$OpenSolid_BoundingBox3d$minX(boundingBox))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'maxX',
+					_1: _elm_lang$core$Json_Encode$float(
+						_opensolid$geometry$OpenSolid_BoundingBox3d$maxX(boundingBox))
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'minY',
+						_1: _elm_lang$core$Json_Encode$float(
+							_opensolid$geometry$OpenSolid_BoundingBox3d$minY(boundingBox))
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'maxY',
+							_1: _elm_lang$core$Json_Encode$float(
+								_opensolid$geometry$OpenSolid_BoundingBox3d$maxY(boundingBox))
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'minZ',
+								_1: _elm_lang$core$Json_Encode$float(
+									_opensolid$geometry$OpenSolid_BoundingBox3d$minZ(boundingBox))
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'maxZ',
+									_1: _elm_lang$core$Json_Encode$float(
+										_opensolid$geometry$OpenSolid_BoundingBox3d$maxZ(boundingBox))
+								},
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$boundingBox2d = function (boundingBox) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'minX',
+				_1: _elm_lang$core$Json_Encode$float(
+					_opensolid$geometry$OpenSolid_BoundingBox2d$minX(boundingBox))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'maxX',
+					_1: _elm_lang$core$Json_Encode$float(
+						_opensolid$geometry$OpenSolid_BoundingBox2d$maxX(boundingBox))
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'minY',
+						_1: _elm_lang$core$Json_Encode$float(
+							_opensolid$geometry$OpenSolid_BoundingBox2d$minY(boundingBox))
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'maxY',
+							_1: _elm_lang$core$Json_Encode$float(
+								_opensolid$geometry$OpenSolid_BoundingBox2d$maxY(boundingBox))
+						},
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$interval = function (interval_) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'minValue',
+				_1: _elm_lang$core$Json_Encode$float(
+					_opensolid$geometry$OpenSolid_Interval$minValue(interval_))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'maxValue',
+					_1: _elm_lang$core$Json_Encode$float(
+						_opensolid$geometry$OpenSolid_Interval$maxValue(interval_))
+				},
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$point3d = function (point) {
+	var _p0 = _opensolid$geometry$OpenSolid_Point3d$coordinates(point);
+	var x = _p0._0;
+	var y = _p0._1;
+	var z = _p0._2;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Encode$float(x),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Json_Encode$float(y),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Json_Encode$float(z),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$lineSegment3d = function (lineSegment) {
+	var _p1 = _opensolid$geometry$OpenSolid_LineSegment3d$endpoints(lineSegment);
+	var startPoint = _p1._0;
+	var endPoint = _p1._1;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(startPoint),
+			_1: {
+				ctor: '::',
+				_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(endPoint),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$triangle3d = function (triangle) {
+	var _p2 = _opensolid$geometry$OpenSolid_Triangle3d$vertices(triangle);
+	var v1 = _p2._0;
+	var v2 = _p2._1;
+	var v3 = _p2._2;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(v1),
+			_1: {
+				ctor: '::',
+				_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(v2),
+				_1: {
+					ctor: '::',
+					_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(v3),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$polyline3d = function (polyline) {
+	return _elm_lang$core$Json_Encode$list(
+		A2(
+			_elm_lang$core$List$map,
+			_opensolid$geometry$OpenSolid_Geometry_Encode$point3d,
+			_opensolid$geometry$OpenSolid_Polyline3d$vertices(polyline)));
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$sphere3d = function (sphere) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'centerPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(
+					_opensolid$geometry$OpenSolid_Sphere3d$centerPoint(sphere))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'radius',
+					_1: _elm_lang$core$Json_Encode$float(
+						_opensolid$geometry$OpenSolid_Sphere3d$radius(sphere))
+				},
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$quadraticSpline3d = function (spline) {
+	var _p3 = _opensolid$geometry$OpenSolid_QuadraticSpline3d$controlPoints(spline);
+	var p1 = _p3._0;
+	var p2 = _p3._1;
+	var p3 = _p3._2;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(p1),
+			_1: {
+				ctor: '::',
+				_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(p2),
+				_1: {
+					ctor: '::',
+					_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(p3),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$cubicSpline3d = function (spline) {
+	var _p4 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+	var p1 = _p4._0;
+	var p2 = _p4._1;
+	var p3 = _p4._2;
+	var p4 = _p4._3;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(p1),
+			_1: {
+				ctor: '::',
+				_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(p2),
+				_1: {
+					ctor: '::',
+					_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(p3),
+					_1: {
+						ctor: '::',
+						_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(p4),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$point2d = function (point) {
+	var _p5 = _opensolid$geometry$OpenSolid_Point2d$coordinates(point);
+	var x = _p5._0;
+	var y = _p5._1;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Encode$float(x),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Json_Encode$float(y),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$lineSegment2d = function (lineSegment) {
+	var _p6 = _opensolid$geometry$OpenSolid_LineSegment2d$endpoints(lineSegment);
+	var startPoint = _p6._0;
+	var endPoint = _p6._1;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(startPoint),
+			_1: {
+				ctor: '::',
+				_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(endPoint),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$triangle2d = function (triangle) {
+	var _p7 = _opensolid$geometry$OpenSolid_Triangle2d$vertices(triangle);
+	var v1 = _p7._0;
+	var v2 = _p7._1;
+	var v3 = _p7._2;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(v1),
+			_1: {
+				ctor: '::',
+				_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(v2),
+				_1: {
+					ctor: '::',
+					_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(v3),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$polyline2d = function (polyline) {
+	return _elm_lang$core$Json_Encode$list(
+		A2(
+			_elm_lang$core$List$map,
+			_opensolid$geometry$OpenSolid_Geometry_Encode$point2d,
+			_opensolid$geometry$OpenSolid_Polyline2d$vertices(polyline)));
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$polygon2d = function (polygon) {
+	return _elm_lang$core$Json_Encode$list(
+		A2(
+			_elm_lang$core$List$map,
+			_opensolid$geometry$OpenSolid_Geometry_Encode$point2d,
+			_opensolid$geometry$OpenSolid_Polygon2d$vertices(polygon)));
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$circle2d = function (circle) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'centerPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(
+					_opensolid$geometry$OpenSolid_Circle2d$centerPoint(circle))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'radius',
+					_1: _elm_lang$core$Json_Encode$float(
+						_opensolid$geometry$OpenSolid_Circle2d$radius(circle))
+				},
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$arc2d = function (arc) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'centerPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(
+					_opensolid$geometry$OpenSolid_Arc2d$centerPoint(arc))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'startPoint',
+					_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(
+						_opensolid$geometry$OpenSolid_Arc2d$startPoint(arc))
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'sweptAngle',
+						_1: _elm_lang$core$Json_Encode$float(
+							_opensolid$geometry$OpenSolid_Arc2d$sweptAngle(arc))
+					},
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$quadraticSpline2d = function (spline) {
+	var _p8 = _opensolid$geometry$OpenSolid_QuadraticSpline2d$controlPoints(spline);
+	var p1 = _p8._0;
+	var p2 = _p8._1;
+	var p3 = _p8._2;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(p1),
+			_1: {
+				ctor: '::',
+				_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(p2),
+				_1: {
+					ctor: '::',
+					_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(p3),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$cubicSpline2d = function (spline) {
+	var _p9 = _opensolid$geometry$OpenSolid_CubicSpline2d$controlPoints(spline);
+	var p1 = _p9._0;
+	var p2 = _p9._1;
+	var p3 = _p9._2;
+	var p4 = _p9._3;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(p1),
+			_1: {
+				ctor: '::',
+				_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(p2),
+				_1: {
+					ctor: '::',
+					_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(p3),
+					_1: {
+						ctor: '::',
+						_0: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(p4),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$direction3d = function (direction) {
+	var _p10 = _opensolid$geometry$OpenSolid_Direction3d$components(direction);
+	var x = _p10._0;
+	var y = _p10._1;
+	var z = _p10._2;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Encode$float(x),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Json_Encode$float(y),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Json_Encode$float(z),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$axis3d = function (axis) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'originPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(
+					_opensolid$geometry$OpenSolid_Axis3d$originPoint(axis))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'direction',
+					_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction3d(
+						_opensolid$geometry$OpenSolid_Axis3d$direction(axis))
+				},
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$arc3d = function (arc) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'axis',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$axis3d(
+					_opensolid$geometry$OpenSolid_Arc3d$axis(arc))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'startPoint',
+					_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(
+						_opensolid$geometry$OpenSolid_Arc3d$startPoint(arc))
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'sweptAngle',
+						_1: _elm_lang$core$Json_Encode$float(
+							_opensolid$geometry$OpenSolid_Arc3d$sweptAngle(arc))
+					},
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$plane3d = function (plane) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'originPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(
+					_opensolid$geometry$OpenSolid_Plane3d$originPoint(plane))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'normalDirection',
+					_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction3d(
+						_opensolid$geometry$OpenSolid_Plane3d$normalDirection(plane))
+				},
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$frame3d = function (frame) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'originPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(
+					_opensolid$geometry$OpenSolid_Frame3d$originPoint(frame))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'xDirection',
+					_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction3d(
+						_opensolid$geometry$OpenSolid_Frame3d$xDirection(frame))
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'yDirection',
+						_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction3d(
+							_opensolid$geometry$OpenSolid_Frame3d$yDirection(frame))
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'zDirection',
+							_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction3d(
+								_opensolid$geometry$OpenSolid_Frame3d$zDirection(frame))
+						},
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$sketchPlane3d = function (sketchPlane) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'originPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(
+					_opensolid$geometry$OpenSolid_SketchPlane3d$originPoint(sketchPlane))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'xDirection',
+					_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction3d(
+						_opensolid$geometry$OpenSolid_SketchPlane3d$xDirection(sketchPlane))
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'yDirection',
+						_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction3d(
+							_opensolid$geometry$OpenSolid_SketchPlane3d$yDirection(sketchPlane))
+					},
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$circle3d = function (circle) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'centerPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point3d(
+					_opensolid$geometry$OpenSolid_Circle3d$centerPoint(circle))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'axialDirection',
+					_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction3d(
+						_opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle))
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'radius',
+						_1: _elm_lang$core$Json_Encode$float(
+							_opensolid$geometry$OpenSolid_Circle3d$radius(circle))
+					},
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$direction2d = function (direction) {
+	var _p11 = _opensolid$geometry$OpenSolid_Direction2d$components(direction);
+	var x = _p11._0;
+	var y = _p11._1;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Encode$float(x),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Json_Encode$float(y),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$axis2d = function (axis) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'originPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(
+					_opensolid$geometry$OpenSolid_Axis2d$originPoint(axis))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'direction',
+					_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction2d(
+						_opensolid$geometry$OpenSolid_Axis2d$direction(axis))
+				},
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$frame2d = function (frame) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'originPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(
+					_opensolid$geometry$OpenSolid_Frame2d$originPoint(frame))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'xDirection',
+					_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction2d(
+						_opensolid$geometry$OpenSolid_Frame2d$xDirection(frame))
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'yDirection',
+						_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction2d(
+							_opensolid$geometry$OpenSolid_Frame2d$yDirection(frame))
+					},
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$ellipse2d = function (ellipse) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'centerPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(
+					_opensolid$geometry$OpenSolid_Ellipse2d$centerPoint(ellipse))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'xDirection',
+					_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction2d(
+						_opensolid$geometry$OpenSolid_Ellipse2d$xDirection(ellipse))
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'xRadius',
+						_1: _elm_lang$core$Json_Encode$float(
+							_opensolid$geometry$OpenSolid_Ellipse2d$xRadius(ellipse))
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'yRadius',
+							_1: _elm_lang$core$Json_Encode$float(
+								_opensolid$geometry$OpenSolid_Ellipse2d$yRadius(ellipse))
+						},
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$ellipticalArc2d = function (arc) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'centerPoint',
+				_1: _opensolid$geometry$OpenSolid_Geometry_Encode$point2d(
+					_opensolid$geometry$OpenSolid_EllipticalArc2d$centerPoint(arc))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'xDirection',
+					_1: _opensolid$geometry$OpenSolid_Geometry_Encode$direction2d(
+						_opensolid$geometry$OpenSolid_EllipticalArc2d$xDirection(arc))
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'xRadius',
+						_1: _elm_lang$core$Json_Encode$float(
+							_opensolid$geometry$OpenSolid_EllipticalArc2d$xRadius(arc))
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'yRadius',
+							_1: _elm_lang$core$Json_Encode$float(
+								_opensolid$geometry$OpenSolid_EllipticalArc2d$yRadius(arc))
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'startAngle',
+								_1: _elm_lang$core$Json_Encode$float(
+									_opensolid$geometry$OpenSolid_EllipticalArc2d$startAngle(arc))
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'sweptAngle',
+									_1: _elm_lang$core$Json_Encode$float(
+										_opensolid$geometry$OpenSolid_EllipticalArc2d$sweptAngle(arc))
+								},
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$vector3d = function (vector) {
+	var _p12 = _opensolid$geometry$OpenSolid_Vector3d$components(vector);
+	var x = _p12._0;
+	var y = _p12._1;
+	var z = _p12._2;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Encode$float(x),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Json_Encode$float(y),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Json_Encode$float(z),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _opensolid$geometry$OpenSolid_Geometry_Encode$vector2d = function (vector) {
+	var _p13 = _opensolid$geometry$OpenSolid_Vector2d$components(vector);
+	var x = _p13._0;
+	var y = _p13._1;
+	return _elm_lang$core$Json_Encode$list(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Encode$float(x),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Json_Encode$float(y),
+				_1: {ctor: '[]'}
+			}
+		});
+};

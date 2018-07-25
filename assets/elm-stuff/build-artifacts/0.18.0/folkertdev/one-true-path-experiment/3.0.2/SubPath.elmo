@@ -1,0 +1,499 @@
+var _folkertdev$one_true_path_experiment$SubPath$unsafeConcatenate = F2(
+	function (a, b) {
+		return _elm_lang$core$Native_Utils.update(
+			a,
+			{
+				drawtos: A2(_folkertdev$elm_deque$Deque$append, a.drawtos, b.drawtos)
+			});
+	});
+var _folkertdev$one_true_path_experiment$SubPath$pushBack = F2(
+	function (drawto, data) {
+		return _elm_lang$core$Native_Utils.update(
+			data,
+			{
+				drawtos: A2(_folkertdev$elm_deque$Deque$pushBack, drawto, data.drawtos)
+			});
+	});
+var _folkertdev$one_true_path_experiment$SubPath$firstPoint = function (_p0) {
+	var _p1 = _p0;
+	var _p2 = _p1.moveto;
+	return _p2._0;
+};
+var _folkertdev$one_true_path_experiment$SubPath$toLowLevel = function (subpath) {
+	var _p3 = subpath;
+	if (_p3.ctor === 'Empty') {
+		return _elm_lang$core$Maybe$Nothing;
+	} else {
+		return _elm_lang$core$Maybe$Just(
+			{
+				moveto: _folkertdev$one_true_path_experiment$LowLevel_Command$toLowLevelMoveTo(_p3._0.moveto),
+				drawtos: A2(
+					_elm_lang$core$List$map,
+					_folkertdev$one_true_path_experiment$LowLevel_Command$toLowLevelDrawTo,
+					_folkertdev$elm_deque$Deque$toList(_p3._0.drawtos))
+			});
+	}
+};
+var _folkertdev$one_true_path_experiment$SubPath$compressHelper = function (drawtos) {
+	var folder = F2(
+		function (instruction, _p4) {
+			var _p5 = _p4;
+			var _p8 = _p5._0;
+			var _p7 = _p5._1;
+			var _p6 = A2(_folkertdev$one_true_path_experiment$LowLevel_Command$merge, _p8, instruction);
+			if (_p6.ctor === 'Ok') {
+				return {ctor: '_Tuple2', _0: _p6._0, _1: _p7};
+			} else {
+				return {
+					ctor: '_Tuple2',
+					_0: instruction,
+					_1: {ctor: '::', _0: _p8, _1: _p7}
+				};
+			}
+		});
+	var _p9 = _folkertdev$elm_deque$Deque$toList(drawtos);
+	if (_p9.ctor === '[]') {
+		return _folkertdev$elm_deque$Deque$empty;
+	} else {
+		return _folkertdev$elm_deque$Deque$fromList(
+			_elm_lang$core$List$reverse(
+				A2(
+					_elm_lang$core$Basics$uncurry,
+					F2(
+						function (x, y) {
+							return {ctor: '::', _0: x, _1: y};
+						}),
+					A3(
+						_elm_lang$core$List$foldl,
+						folder,
+						{
+							ctor: '_Tuple2',
+							_0: _p9._0,
+							_1: {ctor: '[]'}
+						},
+						_p9._1))));
+	}
+};
+var _folkertdev$one_true_path_experiment$SubPath$toSegments = function (subpath) {
+	var _p10 = subpath;
+	if (_p10.ctor === 'Empty') {
+		return {ctor: '[]'};
+	} else {
+		var _p11 = _p10._0.moveto;
+		var _p15 = _p11._0;
+		var folder = F2(
+			function (drawto, _p12) {
+				var _p13 = _p12;
+				var _p14 = _p13._0;
+				var newSegments = A2(_folkertdev$one_true_path_experiment$Segment$toSegment, _p14, drawto);
+				var finalNewSegment = A2(
+					_elm_lang$core$Maybe$withDefault,
+					_p14,
+					A2(
+						_elm_lang$core$Maybe$map,
+						_folkertdev$one_true_path_experiment$Segment$toCursorState,
+						_elm_community$list_extra$List_Extra$last(newSegments)));
+				return {
+					ctor: '_Tuple2',
+					_0: finalNewSegment,
+					_1: A2(_elm_lang$core$Basics_ops['++'], _p13._1, newSegments)
+				};
+			});
+		var cursorState = {start: _p15, cursor: _p15, previousControlPoint: _elm_lang$core$Maybe$Nothing};
+		return _elm_lang$core$Tuple$second(
+			A3(
+				_elm_lang$core$List$foldl,
+				folder,
+				{
+					ctor: '_Tuple2',
+					_0: cursorState,
+					_1: {ctor: '[]'}
+				},
+				_folkertdev$elm_deque$Deque$toList(_p10._0.drawtos)));
+	}
+};
+var _folkertdev$one_true_path_experiment$SubPath$finalCursorState = function (_p16) {
+	var _p17 = _p16;
+	var _p18 = _p17.moveto;
+	var start = _p18._0;
+	var initial = {start: start, cursor: start, previousControlPoint: _elm_lang$core$Maybe$Nothing};
+	return A3(_folkertdev$elm_deque$Deque$foldl, _folkertdev$one_true_path_experiment$LowLevel_Command$updateCursorState, initial, _p17.drawtos);
+};
+var _folkertdev$one_true_path_experiment$SubPath$finalPoint = function (_p19) {
+	return function (_) {
+		return _.cursor;
+	}(
+		_folkertdev$one_true_path_experiment$SubPath$finalCursorState(_p19));
+};
+var _folkertdev$one_true_path_experiment$SubPath$mapCoordinateInstructions = F2(
+	function (f, _p20) {
+		var _p21 = _p20;
+		var _p22 = _p21.moveto;
+		return {
+			moveto: _folkertdev$one_true_path_experiment$LowLevel_Command$MoveTo(
+				f(_p22._0)),
+			drawtos: A2(
+				_folkertdev$elm_deque$Deque$map,
+				_folkertdev$one_true_path_experiment$LowLevel_Command$mapCoordinateDrawTo(f),
+				_p21.drawtos)
+		};
+	});
+var _folkertdev$one_true_path_experiment$SubPath$mapWithCursorState = F2(
+	function (mapDrawTo, subpath) {
+		var _p23 = subpath;
+		if (_p23.ctor === 'Empty') {
+			return {ctor: '[]'};
+		} else {
+			var folder = F2(
+				function (drawto, _p24) {
+					var _p25 = _p24;
+					var _p26 = _p25._0;
+					var $new = A2(
+						_folkertdev$one_true_path_experiment$LowLevel_Command$updateCursorState,
+						drawto,
+						{start: _p26.start, cursor: _p26.cursor, previousControlPoint: _elm_lang$core$Maybe$Nothing});
+					return {
+						ctor: '_Tuple2',
+						_0: $new,
+						_1: {
+							ctor: '::',
+							_0: A2(mapDrawTo, _p26, drawto),
+							_1: _p25._1
+						}
+					};
+				});
+			var _p27 = _p23._0.moveto;
+			var start = _p27._0;
+			return _elm_lang$core$List$reverse(
+				_elm_lang$core$Tuple$second(
+					A3(
+						_folkertdev$elm_deque$Deque$foldl,
+						folder,
+						{
+							ctor: '_Tuple2',
+							_0: {start: start, cursor: start, previousControlPoint: _elm_lang$core$Maybe$Nothing},
+							_1: {ctor: '[]'}
+						},
+						_p23._0.drawtos)));
+		}
+	});
+var _folkertdev$one_true_path_experiment$SubPath$toString = function (subpath) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		'',
+		A2(
+			_elm_lang$core$Maybe$map,
+			function (_p28) {
+				return _folkertdev$svg_path_lowlevel$Path_LowLevel$toString(
+					_elm_lang$core$List$singleton(_p28));
+			},
+			_folkertdev$one_true_path_experiment$SubPath$toLowLevel(subpath)));
+};
+var _folkertdev$one_true_path_experiment$SubPath$element = F2(
+	function (path, attributes) {
+		return A2(
+			_elm_lang$svg$Svg$path,
+			{
+				ctor: '::',
+				_0: _elm_lang$svg$Svg_Attributes$d(
+					_folkertdev$one_true_path_experiment$SubPath$toString(path)),
+				_1: attributes
+			},
+			{ctor: '[]'});
+	});
+var _folkertdev$one_true_path_experiment$SubPath$unwrap = function (subpath) {
+	var _p29 = subpath;
+	if (_p29.ctor === 'Empty') {
+		return _elm_lang$core$Maybe$Nothing;
+	} else {
+		var _p30 = _p29._0;
+		return _elm_lang$core$Maybe$Just(
+			_elm_lang$core$Native_Utils.update(
+				_p30,
+				{
+					drawtos: _folkertdev$elm_deque$Deque$toList(_p30.drawtos)
+				}));
+	}
+};
+var _folkertdev$one_true_path_experiment$SubPath$Instructions = F2(
+	function (a, b) {
+		return {moveto: a, drawtos: b};
+	});
+var _folkertdev$one_true_path_experiment$SubPath$Empty = {ctor: 'Empty'};
+var _folkertdev$one_true_path_experiment$SubPath$empty = _folkertdev$one_true_path_experiment$SubPath$Empty;
+var _folkertdev$one_true_path_experiment$SubPath$map = F2(
+	function (f, subpath) {
+		var _p31 = subpath;
+		if (_p31.ctor === 'Empty') {
+			return _folkertdev$one_true_path_experiment$SubPath$Empty;
+		} else {
+			return f(_p31._0);
+		}
+	});
+var _folkertdev$one_true_path_experiment$SubPath$map2 = F3(
+	function (f, sub1, sub2) {
+		var _p32 = {ctor: '_Tuple2', _0: sub1, _1: sub2};
+		if (_p32._0.ctor === 'Empty') {
+			if (_p32._1.ctor === 'Empty') {
+				return _folkertdev$one_true_path_experiment$SubPath$Empty;
+			} else {
+				return _p32._1;
+			}
+		} else {
+			if (_p32._1.ctor === 'Empty') {
+				return _p32._0;
+			} else {
+				return A2(f, _p32._0._0, _p32._1._0);
+			}
+		}
+	});
+var _folkertdev$one_true_path_experiment$SubPath$SubPath = function (a) {
+	return {ctor: 'SubPath', _0: a};
+};
+var _folkertdev$one_true_path_experiment$SubPath$subpath = F2(
+	function (moveto, drawtos) {
+		return _folkertdev$one_true_path_experiment$SubPath$SubPath(
+			{
+				moveto: moveto,
+				drawtos: _folkertdev$elm_deque$Deque$fromList(drawtos)
+			});
+	});
+var _folkertdev$one_true_path_experiment$SubPath$fromSegments = function (segments) {
+	var _p33 = segments;
+	if (_p33.ctor === '[]') {
+		return _folkertdev$one_true_path_experiment$SubPath$Empty;
+	} else {
+		return A2(
+			_folkertdev$one_true_path_experiment$SubPath$subpath,
+			_folkertdev$one_true_path_experiment$LowLevel_Command$moveTo(
+				_folkertdev$one_true_path_experiment$Segment$firstPoint(_p33._0)),
+			A2(_elm_lang$core$List$map, _folkertdev$one_true_path_experiment$Segment$toDrawTo, segments));
+	}
+};
+var _folkertdev$one_true_path_experiment$SubPath$reverse = function () {
+	var reverseMap = function (f) {
+		return A2(
+			_elm_lang$core$List$foldl,
+			F2(
+				function (elem, accum) {
+					return {
+						ctor: '::',
+						_0: f(elem),
+						_1: accum
+					};
+				}),
+			{ctor: '[]'});
+	};
+	return function (_p34) {
+		return _folkertdev$one_true_path_experiment$SubPath$fromSegments(
+			A2(
+				reverseMap,
+				_folkertdev$one_true_path_experiment$Segment$reverse,
+				_folkertdev$one_true_path_experiment$SubPath$toSegments(_p34)));
+	};
+}();
+var _folkertdev$one_true_path_experiment$SubPath$fromLowLevel = function (_p35) {
+	var _p36 = _p35;
+	var _p37 = _p36.moveto;
+	var _p38 = _p37._1;
+	var initialCursorState = {start: _p38, cursor: _p38, previousControlPoint: _elm_lang$core$Maybe$Nothing};
+	return A2(
+		_folkertdev$one_true_path_experiment$SubPath$subpath,
+		_folkertdev$one_true_path_experiment$LowLevel_Command$MoveTo(_p38),
+		_elm_lang$core$Tuple$second(
+			A2(_folkertdev$one_true_path_experiment$LowLevel_Command$fromLowLevelDrawTos, _p36.drawtos, initialCursorState)));
+};
+var _folkertdev$one_true_path_experiment$SubPath$continue = function () {
+	var helper = F2(
+		function (right, left) {
+			var distance = A2(
+				_Zinggi$elm_webgl_math$Vector2$sub,
+				_folkertdev$one_true_path_experiment$SubPath$finalPoint(left),
+				_folkertdev$one_true_path_experiment$SubPath$firstPoint(right));
+			return _folkertdev$one_true_path_experiment$SubPath$SubPath(
+				A2(
+					_folkertdev$one_true_path_experiment$SubPath$unsafeConcatenate,
+					left,
+					A2(
+						_folkertdev$one_true_path_experiment$SubPath$mapCoordinateInstructions,
+						_Zinggi$elm_webgl_math$Vector2$add(distance),
+						right)));
+		});
+	return _folkertdev$one_true_path_experiment$SubPath$map2(helper);
+}();
+var _folkertdev$one_true_path_experiment$SubPath$connect = function () {
+	var helper = F2(
+		function (right, left) {
+			return _folkertdev$one_true_path_experiment$SubPath$SubPath(
+				A2(
+					_folkertdev$one_true_path_experiment$SubPath$unsafeConcatenate,
+					A2(
+						_folkertdev$one_true_path_experiment$SubPath$pushBack,
+						_folkertdev$one_true_path_experiment$LowLevel_Command$lineTo(
+							{
+								ctor: '::',
+								_0: _folkertdev$one_true_path_experiment$SubPath$firstPoint(right),
+								_1: {ctor: '[]'}
+							}),
+						left),
+					right));
+		});
+	return _folkertdev$one_true_path_experiment$SubPath$map2(helper);
+}();
+var _folkertdev$one_true_path_experiment$SubPath$close = function (subpath) {
+	var _p39 = subpath;
+	if (_p39.ctor === 'Empty') {
+		return _folkertdev$one_true_path_experiment$SubPath$Empty;
+	} else {
+		var _p41 = _p39._0.drawtos;
+		var _p40 = _folkertdev$elm_deque$Deque$popBack(_p41);
+		if (((_p40.ctor === '_Tuple2') && (_p40._0.ctor === 'Just')) && (_p40._0._0.ctor === 'ClosePath')) {
+			return subpath;
+		} else {
+			return _folkertdev$one_true_path_experiment$SubPath$SubPath(
+				{
+					moveto: _p39._0.moveto,
+					drawtos: A2(_folkertdev$elm_deque$Deque$pushBack, _folkertdev$one_true_path_experiment$LowLevel_Command$closePath, _p41)
+				});
+		}
+	}
+};
+var _folkertdev$one_true_path_experiment$SubPath$mapCoordinate = F2(
+	function (f, subpath) {
+		var _p42 = subpath;
+		if (_p42.ctor === 'SubPath') {
+			var _p43 = _p42._0.moveto;
+			return _folkertdev$one_true_path_experiment$SubPath$SubPath(
+				{
+					moveto: _folkertdev$one_true_path_experiment$LowLevel_Command$MoveTo(
+						f(_p43._0)),
+					drawtos: A2(
+						_folkertdev$elm_deque$Deque$map,
+						_folkertdev$one_true_path_experiment$LowLevel_Command$mapCoordinateDrawTo(f),
+						_p42._0.drawtos)
+				});
+		} else {
+			return _folkertdev$one_true_path_experiment$SubPath$Empty;
+		}
+	});
+var _folkertdev$one_true_path_experiment$SubPath$translate = F2(
+	function (vec, subpath) {
+		return A2(
+			_folkertdev$one_true_path_experiment$SubPath$mapCoordinate,
+			_Zinggi$elm_webgl_math$Vector2$add(vec),
+			subpath);
+	});
+var _folkertdev$one_true_path_experiment$SubPath$rotate = F2(
+	function (angle, subpath) {
+		var _p44 = subpath;
+		if (_p44.ctor === 'Empty') {
+			return _folkertdev$one_true_path_experiment$SubPath$Empty;
+		} else {
+			var rotate = F2(
+				function (angle, point) {
+					return function (_p45) {
+						var _p46 = _p45;
+						return {ctor: '_Tuple2', _0: _p46._0, _1: _p46._1};
+					}(
+						A2(
+							_Zinggi$elm_webgl_math$Matrix4$transform,
+							A2(
+								_Zinggi$elm_webgl_math$Matrix4$makeRotate,
+								angle,
+								{ctor: '_Tuple3', _0: 0, _1: 0, _2: 1}),
+							A3(_elm_lang$core$Basics$flip, _Zinggi$elm_webgl_math$Vector3$fromV2, 0, point)));
+				});
+			var cleanFloat = function (v) {
+				return function (v) {
+					return v * 1.0e-12;
+				}(
+					_elm_lang$core$Basics$toFloat(
+						_elm_lang$core$Basics$round(v * 1.0e12)));
+			};
+			var cleanVec2 = function (_p47) {
+				var _p48 = _p47;
+				return {
+					ctor: '_Tuple2',
+					_0: cleanFloat(_p48._0),
+					_1: cleanFloat(_p48._1)
+				};
+			};
+			var _p49 = _p44._0.moveto;
+			var firstPoint = _p49._0;
+			var transform = function (point) {
+				return A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					firstPoint,
+					cleanVec2(
+						A2(
+							rotate,
+							angle,
+							A3(_elm_lang$core$Basics$flip, _Zinggi$elm_webgl_math$Vector2$sub, firstPoint, point))));
+			};
+			return A2(_folkertdev$one_true_path_experiment$SubPath$mapCoordinate, transform, subpath);
+		}
+	});
+var _folkertdev$one_true_path_experiment$SubPath$continueSmooth = F2(
+	function (right, left) {
+		var _p50 = _elm_community$list_extra$List_Extra$last(
+			_folkertdev$one_true_path_experiment$SubPath$toSegments(left));
+		if (_p50.ctor === 'Nothing') {
+			return right;
+		} else {
+			var _p51 = _elm_lang$core$List$head(
+				_folkertdev$one_true_path_experiment$SubPath$toSegments(right));
+			if (_p51.ctor === 'Nothing') {
+				return left;
+			} else {
+				var angle = _elm_lang$core$Basics$negate(
+					A2(_folkertdev$one_true_path_experiment$Segment$angle, _p50._0, _p51._0));
+				return A2(
+					_folkertdev$one_true_path_experiment$SubPath$continue,
+					A2(_folkertdev$one_true_path_experiment$SubPath$rotate, angle, right),
+					left);
+			}
+		}
+	});
+var _folkertdev$one_true_path_experiment$SubPath$scale = F2(
+	function (vec, subpath) {
+		var _p52 = subpath;
+		if (_p52.ctor === 'Empty') {
+			return _folkertdev$one_true_path_experiment$SubPath$Empty;
+		} else {
+			var _p53 = _p52._0.moveto;
+			var firstPoint = _p53._0;
+			var transform = function (point) {
+				return A2(
+					_Zinggi$elm_webgl_math$Vector2$add,
+					firstPoint,
+					function (_p54) {
+						var _p55 = _p54;
+						return {ctor: '_Tuple2', _0: _p55._0, _1: _p55._1};
+					}(
+						A2(
+							_Zinggi$elm_webgl_math$Matrix4$transform,
+							_Zinggi$elm_webgl_math$Matrix4$makeScale(
+								A2(_Zinggi$elm_webgl_math$Vector3$fromV2, vec, 0)),
+							A3(
+								_elm_lang$core$Basics$flip,
+								_Zinggi$elm_webgl_math$Vector3$fromV2,
+								0,
+								A3(_elm_lang$core$Basics$flip, _Zinggi$elm_webgl_math$Vector2$sub, firstPoint, point)))));
+			};
+			return A2(_folkertdev$one_true_path_experiment$SubPath$mapCoordinate, transform, subpath);
+		}
+	});
+var _folkertdev$one_true_path_experiment$SubPath$compress = function (subpath) {
+	var _p56 = subpath;
+	if (_p56.ctor === 'Empty') {
+		return _folkertdev$one_true_path_experiment$SubPath$Empty;
+	} else {
+		var _p57 = _p56._0;
+		return _folkertdev$one_true_path_experiment$SubPath$SubPath(
+			_elm_lang$core$Native_Utils.update(
+				_p57,
+				{
+					drawtos: _folkertdev$one_true_path_experiment$SubPath$compressHelper(_p57.drawtos)
+				}));
+	}
+};

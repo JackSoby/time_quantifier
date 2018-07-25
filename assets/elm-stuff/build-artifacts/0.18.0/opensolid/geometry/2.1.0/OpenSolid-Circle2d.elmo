@@ -1,0 +1,145 @@
+var _opensolid$geometry$OpenSolid_Circle2d$toArc = function (_p0) {
+	var _p1 = _p0;
+	var _p3 = _p1._0.centerPoint;
+	var _p2 = _opensolid$geometry$OpenSolid_Point2d$coordinates(_p3);
+	var x0 = _p2._0;
+	var y0 = _p2._1;
+	return _opensolid$geometry$OpenSolid_Bootstrap_Arc2d$with(
+		{
+			centerPoint: _p3,
+			startPoint: _opensolid$geometry$OpenSolid_Point2d$fromCoordinates(
+				{ctor: '_Tuple2', _0: x0 + _p1._0.radius, _1: y0}),
+			sweptAngle: 2 * _elm_lang$core$Basics$pi
+		});
+};
+var _opensolid$geometry$OpenSolid_Circle2d$radius = function (_p4) {
+	var _p5 = _p4;
+	return _p5._0.radius;
+};
+var _opensolid$geometry$OpenSolid_Circle2d$diameter = function (circle) {
+	return 2 * _opensolid$geometry$OpenSolid_Circle2d$radius(circle);
+};
+var _opensolid$geometry$OpenSolid_Circle2d$area = function (circle) {
+	var r = _opensolid$geometry$OpenSolid_Circle2d$radius(circle);
+	return (_elm_lang$core$Basics$pi * r) * r;
+};
+var _opensolid$geometry$OpenSolid_Circle2d$circumference = function (circle) {
+	return (2 * _elm_lang$core$Basics$pi) * _opensolid$geometry$OpenSolid_Circle2d$radius(circle);
+};
+var _opensolid$geometry$OpenSolid_Circle2d$centerPoint = function (_p6) {
+	var _p7 = _p6;
+	return _p7._0.centerPoint;
+};
+var _opensolid$geometry$OpenSolid_Circle2d$contains = F2(
+	function (point, circle) {
+		var r = _opensolid$geometry$OpenSolid_Circle2d$radius(circle);
+		return _elm_lang$core$Native_Utils.cmp(
+			A2(
+				_opensolid$geometry$OpenSolid_Point2d$squaredDistanceFrom,
+				_opensolid$geometry$OpenSolid_Circle2d$centerPoint(circle),
+				point),
+			r * r) < 1;
+	});
+var _opensolid$geometry$OpenSolid_Circle2d$boundingBox = function (circle) {
+	var r = _opensolid$geometry$OpenSolid_Circle2d$radius(circle);
+	var _p8 = _opensolid$geometry$OpenSolid_Point2d$coordinates(
+		_opensolid$geometry$OpenSolid_Circle2d$centerPoint(circle));
+	var x = _p8._0;
+	var y = _p8._1;
+	return _opensolid$geometry$OpenSolid_BoundingBox2d$with(
+		{minX: x - r, maxX: x + r, minY: y - r, maxY: y + r});
+};
+var _opensolid$geometry$OpenSolid_Circle2d$with = function (properties) {
+	return _opensolid$geometry$OpenSolid_Geometry_Internal$Circle2d(
+		_elm_lang$core$Native_Utils.update(
+			properties,
+			{
+				radius: _elm_lang$core$Basics$abs(properties.radius)
+			}));
+};
+var _opensolid$geometry$OpenSolid_Circle2d$unit = _opensolid$geometry$OpenSolid_Circle2d$with(
+	{centerPoint: _opensolid$geometry$OpenSolid_Point2d$origin, radius: 1});
+var _opensolid$geometry$OpenSolid_Circle2d$throughPoints = function (points) {
+	return A2(
+		_elm_lang$core$Maybe$map,
+		function (p0) {
+			var _p9 = points;
+			var p1 = _p9._0;
+			var p2 = _p9._1;
+			var p3 = _p9._2;
+			var r1 = A2(_opensolid$geometry$OpenSolid_Point2d$distanceFrom, p0, p1);
+			var r2 = A2(_opensolid$geometry$OpenSolid_Point2d$distanceFrom, p0, p2);
+			var r3 = A2(_opensolid$geometry$OpenSolid_Point2d$distanceFrom, p0, p3);
+			return _opensolid$geometry$OpenSolid_Circle2d$with(
+				{centerPoint: p0, radius: ((r1 + r2) + r3) / 3});
+		},
+		_opensolid$geometry$OpenSolid_Point2d$circumcenter(points));
+};
+var _opensolid$geometry$OpenSolid_Circle2d$scaleAbout = F2(
+	function (point, scale) {
+		var scalePoint = A2(_opensolid$geometry$OpenSolid_Point2d$scaleAbout, point, scale);
+		return function (circle) {
+			return _opensolid$geometry$OpenSolid_Circle2d$with(
+				{
+					centerPoint: scalePoint(
+						_opensolid$geometry$OpenSolid_Circle2d$centerPoint(circle)),
+					radius: scale * _opensolid$geometry$OpenSolid_Circle2d$radius(circle)
+				});
+		};
+	});
+var _opensolid$geometry$OpenSolid_Circle2d$rotateAround = F2(
+	function (point, angle) {
+		var rotatePoint = A2(_opensolid$geometry$OpenSolid_Point2d$rotateAround, point, angle);
+		return function (circle) {
+			return _opensolid$geometry$OpenSolid_Circle2d$with(
+				{
+					centerPoint: rotatePoint(
+						_opensolid$geometry$OpenSolid_Circle2d$centerPoint(circle)),
+					radius: _opensolid$geometry$OpenSolid_Circle2d$radius(circle)
+				});
+		};
+	});
+var _opensolid$geometry$OpenSolid_Circle2d$translateBy = function (displacement) {
+	var translatePoint = _opensolid$geometry$OpenSolid_Point2d$translateBy(displacement);
+	return function (circle) {
+		return _opensolid$geometry$OpenSolid_Circle2d$with(
+			{
+				centerPoint: translatePoint(
+					_opensolid$geometry$OpenSolid_Circle2d$centerPoint(circle)),
+				radius: _opensolid$geometry$OpenSolid_Circle2d$radius(circle)
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Circle2d$mirrorAcross = function (axis) {
+	var mirrorPoint = _opensolid$geometry$OpenSolid_Point2d$mirrorAcross(axis);
+	return function (circle) {
+		return _opensolid$geometry$OpenSolid_Circle2d$with(
+			{
+				centerPoint: mirrorPoint(
+					_opensolid$geometry$OpenSolid_Circle2d$centerPoint(circle)),
+				radius: _opensolid$geometry$OpenSolid_Circle2d$radius(circle)
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Circle2d$relativeTo = function (frame) {
+	var relativePoint = _opensolid$geometry$OpenSolid_Point2d$relativeTo(frame);
+	return function (circle) {
+		return _opensolid$geometry$OpenSolid_Circle2d$with(
+			{
+				centerPoint: relativePoint(
+					_opensolid$geometry$OpenSolid_Circle2d$centerPoint(circle)),
+				radius: _opensolid$geometry$OpenSolid_Circle2d$radius(circle)
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Circle2d$placeIn = function (frame) {
+	var placePoint = _opensolid$geometry$OpenSolid_Point2d$placeIn(frame);
+	return function (circle) {
+		return _opensolid$geometry$OpenSolid_Circle2d$with(
+			{
+				centerPoint: placePoint(
+					_opensolid$geometry$OpenSolid_Circle2d$centerPoint(circle)),
+				radius: _opensolid$geometry$OpenSolid_Circle2d$radius(circle)
+			});
+	};
+};

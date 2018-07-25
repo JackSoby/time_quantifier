@@ -1,0 +1,16 @@
+var _folkertdev$one_true_path_experiment$Geometry_Line$length = F2(
+	function (start, end) {
+		return A2(_Zinggi$elm_webgl_math$Vector2$distance, start, end);
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Line$lengthParameterization = F3(
+	function (start, end, s) {
+		var size = A2(_folkertdev$one_true_path_experiment$Geometry_Line$length, start, end);
+		return (_elm_lang$core$Native_Utils.cmp(s, size) > 0) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+			A2(
+				_Zinggi$elm_webgl_math$Vector2$add,
+				start,
+				A2(
+					_Zinggi$elm_webgl_math$Vector2$scale,
+					s / size,
+					A2(_Zinggi$elm_webgl_math$Vector2$sub, end, start))));
+	});

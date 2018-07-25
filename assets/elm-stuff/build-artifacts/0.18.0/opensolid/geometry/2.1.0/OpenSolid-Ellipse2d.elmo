@@ -1,0 +1,106 @@
+var _opensolid$geometry$OpenSolid_Ellipse2d$transformBy = F2(
+	function (axesTransformation, _p0) {
+		var _p1 = _p0;
+		var _p2 = _p1._0;
+		return _opensolid$geometry$OpenSolid_Geometry_Internal$Ellipse2d(
+			_elm_lang$core$Native_Utils.update(
+				_p2,
+				{
+					axes: axesTransformation(_p2.axes)
+				}));
+	});
+var _opensolid$geometry$OpenSolid_Ellipse2d$rotateAround = F2(
+	function (point, angle) {
+		return _opensolid$geometry$OpenSolid_Ellipse2d$transformBy(
+			A2(_opensolid$geometry$OpenSolid_Frame2d$rotateAround, point, angle));
+	});
+var _opensolid$geometry$OpenSolid_Ellipse2d$translateBy = function (displacement) {
+	return _opensolid$geometry$OpenSolid_Ellipse2d$transformBy(
+		_opensolid$geometry$OpenSolid_Frame2d$translateBy(displacement));
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$mirrorAcross = function (axis) {
+	return _opensolid$geometry$OpenSolid_Ellipse2d$transformBy(
+		_opensolid$geometry$OpenSolid_Frame2d$mirrorAcross(axis));
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$relativeTo = function (frame) {
+	return _opensolid$geometry$OpenSolid_Ellipse2d$transformBy(
+		_opensolid$geometry$OpenSolid_Frame2d$relativeTo(frame));
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$placeIn = function (frame) {
+	return _opensolid$geometry$OpenSolid_Ellipse2d$transformBy(
+		_opensolid$geometry$OpenSolid_Frame2d$placeIn(frame));
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$yRadius = function (_p3) {
+	var _p4 = _p3;
+	return _p4._0.yRadius;
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$xRadius = function (_p5) {
+	var _p6 = _p5;
+	return _p6._0.xRadius;
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$area = function (ellipse) {
+	return (_elm_lang$core$Basics$pi * _opensolid$geometry$OpenSolid_Ellipse2d$xRadius(ellipse)) * _opensolid$geometry$OpenSolid_Ellipse2d$yRadius(ellipse);
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$axes = function (_p7) {
+	var _p8 = _p7;
+	return _p8._0.axes;
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$xAxis = function (ellipse) {
+	return _opensolid$geometry$OpenSolid_Frame2d$xAxis(
+		_opensolid$geometry$OpenSolid_Ellipse2d$axes(ellipse));
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$yAxis = function (ellipse) {
+	return _opensolid$geometry$OpenSolid_Frame2d$yAxis(
+		_opensolid$geometry$OpenSolid_Ellipse2d$axes(ellipse));
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$xDirection = function (ellipse) {
+	return _opensolid$geometry$OpenSolid_Frame2d$xDirection(
+		_opensolid$geometry$OpenSolid_Ellipse2d$axes(ellipse));
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$yDirection = function (ellipse) {
+	return _opensolid$geometry$OpenSolid_Frame2d$yDirection(
+		_opensolid$geometry$OpenSolid_Ellipse2d$axes(ellipse));
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$centerPoint = function (ellipse) {
+	return _opensolid$geometry$OpenSolid_Frame2d$originPoint(
+		_opensolid$geometry$OpenSolid_Ellipse2d$axes(ellipse));
+};
+var _opensolid$geometry$OpenSolid_Ellipse2d$scaleAbout = F3(
+	function (point, scale, ellipse) {
+		var newCenterPoint = A3(
+			_opensolid$geometry$OpenSolid_Point2d$scaleAbout,
+			point,
+			scale,
+			_opensolid$geometry$OpenSolid_Ellipse2d$centerPoint(ellipse));
+		var newAxes = (_elm_lang$core$Native_Utils.cmp(scale, 0) > -1) ? _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+			{
+				originPoint: newCenterPoint,
+				xDirection: _opensolid$geometry$OpenSolid_Ellipse2d$xDirection(ellipse),
+				yDirection: _opensolid$geometry$OpenSolid_Ellipse2d$yDirection(ellipse)
+			}) : _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+			{
+				originPoint: newCenterPoint,
+				xDirection: _opensolid$geometry$OpenSolid_Direction2d$flip(
+					_opensolid$geometry$OpenSolid_Ellipse2d$xDirection(ellipse)),
+				yDirection: _opensolid$geometry$OpenSolid_Direction2d$flip(
+					_opensolid$geometry$OpenSolid_Ellipse2d$yDirection(ellipse))
+			});
+		return _opensolid$geometry$OpenSolid_Geometry_Internal$Ellipse2d(
+			{
+				axes: newAxes,
+				xRadius: _elm_lang$core$Basics$abs(
+					scale * _opensolid$geometry$OpenSolid_Ellipse2d$xRadius(ellipse)),
+				yRadius: _elm_lang$core$Basics$abs(
+					scale * _opensolid$geometry$OpenSolid_Ellipse2d$yRadius(ellipse))
+			});
+	});
+var _opensolid$geometry$OpenSolid_Ellipse2d$with = function (_p9) {
+	var _p10 = _p9;
+	return _opensolid$geometry$OpenSolid_Geometry_Internal$Ellipse2d(
+		{
+			axes: _opensolid$geometry$OpenSolid_Frame2d$with(
+				{originPoint: _p10.centerPoint, xDirection: _p10.xDirection}),
+			xRadius: _elm_lang$core$Basics$abs(_p10.xRadius),
+			yRadius: _elm_lang$core$Basics$abs(_p10.yRadius)
+		});
+};

@@ -1,0 +1,231 @@
+var _opensolid$geometry$OpenSolid_Circle3d$radius = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0.radius;
+};
+var _opensolid$geometry$OpenSolid_Circle3d$diameter = function (circle) {
+	return 2 * _opensolid$geometry$OpenSolid_Circle3d$radius(circle);
+};
+var _opensolid$geometry$OpenSolid_Circle3d$area = function (circle) {
+	var r = _opensolid$geometry$OpenSolid_Circle3d$radius(circle);
+	return (_elm_lang$core$Basics$pi * r) * r;
+};
+var _opensolid$geometry$OpenSolid_Circle3d$circumference = function (circle) {
+	return (2 * _elm_lang$core$Basics$pi) * _opensolid$geometry$OpenSolid_Circle3d$radius(circle);
+};
+var _opensolid$geometry$OpenSolid_Circle3d$axialDirection = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0.axialDirection;
+};
+var _opensolid$geometry$OpenSolid_Circle3d$centerPoint = function (_p4) {
+	var _p5 = _p4;
+	return _p5._0.centerPoint;
+};
+var _opensolid$geometry$OpenSolid_Circle3d$axis = function (circle) {
+	return _opensolid$geometry$OpenSolid_Axis3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Circle3d$centerPoint(circle),
+			direction: _opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle)
+		});
+};
+var _opensolid$geometry$OpenSolid_Circle3d$plane = function (circle) {
+	return _opensolid$geometry$OpenSolid_Plane3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Circle3d$centerPoint(circle),
+			normalDirection: _opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle)
+		});
+};
+var _opensolid$geometry$OpenSolid_Circle3d$projectInto = F2(
+	function (sketchPlane, circle) {
+		var xRadius = _opensolid$geometry$OpenSolid_Circle3d$radius(circle);
+		var projectedCenter = A2(
+			_opensolid$geometry$OpenSolid_Point3d$projectInto,
+			sketchPlane,
+			_opensolid$geometry$OpenSolid_Circle3d$centerPoint(circle));
+		var projectedAxialDirection = A2(
+			_opensolid$geometry$OpenSolid_Vector3d$projectInto,
+			sketchPlane,
+			_opensolid$geometry$OpenSolid_Direction3d$toVector(
+				_opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle)));
+		var _p6 = _opensolid$geometry$OpenSolid_Vector2d$direction(projectedAxialDirection);
+		if (_p6.ctor === 'Just') {
+			var normalDirection = _opensolid$geometry$OpenSolid_SketchPlane3d$normalDirection(sketchPlane);
+			var yRatio = _elm_lang$core$Basics$abs(
+				A2(
+					_opensolid$geometry$OpenSolid_Direction3d$componentIn,
+					normalDirection,
+					_opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle)));
+			var yRadius = yRatio * xRadius;
+			var xDirection = _opensolid$geometry$OpenSolid_Direction2d$rotateClockwise(_p6._0);
+			var axes = _opensolid$geometry$OpenSolid_Frame2d$with(
+				{originPoint: projectedCenter, xDirection: xDirection});
+			return _opensolid$geometry$OpenSolid_Geometry_Internal$Ellipse2d(
+				{axes: axes, xRadius: xRadius, yRadius: yRadius});
+		} else {
+			return _opensolid$geometry$OpenSolid_Geometry_Internal$Ellipse2d(
+				{
+					axes: _opensolid$geometry$OpenSolid_Frame2d$atPoint(projectedCenter),
+					xRadius: xRadius,
+					yRadius: xRadius
+				});
+		}
+	});
+var _opensolid$geometry$OpenSolid_Circle3d$boundingBox = function (circle) {
+	var _p7 = _opensolid$geometry$OpenSolid_Point3d$coordinates(
+		_opensolid$geometry$OpenSolid_Circle3d$centerPoint(circle));
+	var cx = _p7._0;
+	var cy = _p7._1;
+	var cz = _p7._2;
+	var r = _opensolid$geometry$OpenSolid_Circle3d$radius(circle);
+	var _p8 = _opensolid$geometry$OpenSolid_Direction3d$components(
+		_opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle));
+	var nx = _p8._0;
+	var ny = _p8._1;
+	var nz = _p8._2;
+	var nx2 = nx * nx;
+	var ny2 = ny * ny;
+	var dz = r * _elm_lang$core$Basics$sqrt(nx2 + ny2);
+	var nz2 = nz * nz;
+	var dx = r * _elm_lang$core$Basics$sqrt(ny2 + nz2);
+	var dy = r * _elm_lang$core$Basics$sqrt(nx2 + nz2);
+	return _opensolid$geometry$OpenSolid_BoundingBox3d$with(
+		{minX: cx - dx, maxX: cx + dx, minY: cy - dy, maxY: cy + dy, minZ: cz - dz, maxZ: cz + dz});
+};
+var _opensolid$geometry$OpenSolid_Circle3d$with = function (_p9) {
+	var _p10 = _p9;
+	return _opensolid$geometry$OpenSolid_Geometry_Internal$Circle3d(
+		{
+			centerPoint: _p10.centerPoint,
+			axialDirection: _p10.axialDirection,
+			radius: _elm_lang$core$Basics$abs(_p10.radius)
+		});
+};
+var _opensolid$geometry$OpenSolid_Circle3d$around = F2(
+	function (axis, point) {
+		var centerPoint = A2(_opensolid$geometry$OpenSolid_Point3d$projectOntoAxis, axis, point);
+		return _opensolid$geometry$OpenSolid_Circle3d$with(
+			{
+				centerPoint: centerPoint,
+				axialDirection: _opensolid$geometry$OpenSolid_Axis3d$direction(axis),
+				radius: A2(_opensolid$geometry$OpenSolid_Point3d$distanceFrom, centerPoint, point)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Circle3d$on = F2(
+	function (sketchPlane, circle) {
+		return _opensolid$geometry$OpenSolid_Circle3d$with(
+			{
+				centerPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$on,
+					sketchPlane,
+					_opensolid$geometry$OpenSolid_Circle2d$centerPoint(circle)),
+				axialDirection: _opensolid$geometry$OpenSolid_SketchPlane3d$normalDirection(sketchPlane),
+				radius: _opensolid$geometry$OpenSolid_Circle2d$radius(circle)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Circle3d$throughPoints = function (points) {
+	return A3(
+		_elm_lang$core$Maybe$map2,
+		F2(
+			function (centerPoint, plane) {
+				var _p11 = points;
+				var p1 = _p11._0;
+				var p2 = _p11._1;
+				var p3 = _p11._2;
+				var r1 = A2(_opensolid$geometry$OpenSolid_Point3d$distanceFrom, centerPoint, p1);
+				var r2 = A2(_opensolid$geometry$OpenSolid_Point3d$distanceFrom, centerPoint, p2);
+				var r3 = A2(_opensolid$geometry$OpenSolid_Point3d$distanceFrom, centerPoint, p3);
+				return _opensolid$geometry$OpenSolid_Circle3d$with(
+					{
+						centerPoint: centerPoint,
+						axialDirection: _opensolid$geometry$OpenSolid_Plane3d$normalDirection(plane),
+						radius: ((r1 + r2) + r3) / 3
+					});
+			}),
+		_opensolid$geometry$OpenSolid_Point3d$circumcenter(points),
+		_opensolid$geometry$OpenSolid_Plane3d$throughPoints(points));
+};
+var _opensolid$geometry$OpenSolid_Circle3d$scaleAbout = F3(
+	function (point, scale, circle) {
+		return _opensolid$geometry$OpenSolid_Circle3d$with(
+			{
+				centerPoint: A3(
+					_opensolid$geometry$OpenSolid_Point3d$scaleAbout,
+					point,
+					scale,
+					_opensolid$geometry$OpenSolid_Circle3d$centerPoint(circle)),
+				radius: _elm_lang$core$Basics$abs(
+					scale * _opensolid$geometry$OpenSolid_Circle3d$radius(circle)),
+				axialDirection: (_elm_lang$core$Native_Utils.cmp(scale, 0) > -1) ? _opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle) : _opensolid$geometry$OpenSolid_Direction3d$flip(
+					_opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle))
+			});
+	});
+var _opensolid$geometry$OpenSolid_Circle3d$rotateAround = F2(
+	function (axis, angle) {
+		var rotateDirection = A2(_opensolid$geometry$OpenSolid_Direction3d$rotateAround, axis, angle);
+		var rotatePoint = A2(_opensolid$geometry$OpenSolid_Point3d$rotateAround, axis, angle);
+		return function (circle) {
+			return _opensolid$geometry$OpenSolid_Circle3d$with(
+				{
+					centerPoint: rotatePoint(
+						_opensolid$geometry$OpenSolid_Circle3d$centerPoint(circle)),
+					radius: _opensolid$geometry$OpenSolid_Circle3d$radius(circle),
+					axialDirection: rotateDirection(
+						_opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle))
+				});
+		};
+	});
+var _opensolid$geometry$OpenSolid_Circle3d$translateBy = F2(
+	function (displacement, circle) {
+		return _opensolid$geometry$OpenSolid_Circle3d$with(
+			{
+				centerPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$translateBy,
+					displacement,
+					_opensolid$geometry$OpenSolid_Circle3d$centerPoint(circle)),
+				radius: _opensolid$geometry$OpenSolid_Circle3d$radius(circle),
+				axialDirection: _opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Circle3d$mirrorAcross = function (plane) {
+	var mirrorDirection = _opensolid$geometry$OpenSolid_Direction3d$mirrorAcross(plane);
+	var mirrorPoint = _opensolid$geometry$OpenSolid_Point3d$mirrorAcross(plane);
+	return function (circle) {
+		return _opensolid$geometry$OpenSolid_Circle3d$with(
+			{
+				centerPoint: mirrorPoint(
+					_opensolid$geometry$OpenSolid_Circle3d$centerPoint(circle)),
+				radius: _opensolid$geometry$OpenSolid_Circle3d$radius(circle),
+				axialDirection: mirrorDirection(
+					_opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Circle3d$relativeTo = F2(
+	function (frame, circle) {
+		return _opensolid$geometry$OpenSolid_Circle3d$with(
+			{
+				centerPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$relativeTo,
+					frame,
+					_opensolid$geometry$OpenSolid_Circle3d$centerPoint(circle)),
+				radius: _opensolid$geometry$OpenSolid_Circle3d$radius(circle),
+				axialDirection: A2(
+					_opensolid$geometry$OpenSolid_Direction3d$relativeTo,
+					frame,
+					_opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle))
+			});
+	});
+var _opensolid$geometry$OpenSolid_Circle3d$placeIn = F2(
+	function (frame, circle) {
+		return _opensolid$geometry$OpenSolid_Circle3d$with(
+			{
+				centerPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$placeIn,
+					frame,
+					_opensolid$geometry$OpenSolid_Circle3d$centerPoint(circle)),
+				radius: _opensolid$geometry$OpenSolid_Circle3d$radius(circle),
+				axialDirection: A2(
+					_opensolid$geometry$OpenSolid_Direction3d$placeIn,
+					frame,
+					_opensolid$geometry$OpenSolid_Circle3d$axialDirection(circle))
+			});
+	});

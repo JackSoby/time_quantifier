@@ -1,0 +1,144 @@
+var _opensolid$geometry$OpenSolid_Triangle2d$vertices = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0;
+};
+var _opensolid$geometry$OpenSolid_Triangle2d$edges = function (triangle) {
+	var _p2 = _opensolid$geometry$OpenSolid_Triangle2d$vertices(triangle);
+	var p1 = _p2._0;
+	var p2 = _p2._1;
+	var p3 = _p2._2;
+	return {
+		ctor: '_Tuple3',
+		_0: _opensolid$geometry$OpenSolid_LineSegment2d$fromEndpoints(
+			{ctor: '_Tuple2', _0: p1, _1: p2}),
+		_1: _opensolid$geometry$OpenSolid_LineSegment2d$fromEndpoints(
+			{ctor: '_Tuple2', _0: p2, _1: p3}),
+		_2: _opensolid$geometry$OpenSolid_LineSegment2d$fromEndpoints(
+			{ctor: '_Tuple2', _0: p3, _1: p1})
+	};
+};
+var _opensolid$geometry$OpenSolid_Triangle2d$centroid = function (triangle) {
+	var _p3 = _opensolid$geometry$OpenSolid_Triangle2d$vertices(triangle);
+	var p1 = _p3._0;
+	var p2 = _p3._1;
+	var p3 = _p3._2;
+	var firstVector = A2(_opensolid$geometry$OpenSolid_Vector2d$from, p1, p2);
+	var secondVector = A2(_opensolid$geometry$OpenSolid_Vector2d$from, p1, p3);
+	var displacement = A2(
+		_opensolid$geometry$OpenSolid_Vector2d$scaleBy,
+		1.0 / 3.0,
+		A2(_opensolid$geometry$OpenSolid_Vector2d$sum, firstVector, secondVector));
+	return A2(_opensolid$geometry$OpenSolid_Point2d$translateBy, displacement, p1);
+};
+var _opensolid$geometry$OpenSolid_Triangle2d$contains = F2(
+	function (point, triangle) {
+		var crossProduct = F2(
+			function (startVertex, endVertex) {
+				var segmentVector = A2(_opensolid$geometry$OpenSolid_Vector2d$from, startVertex, endVertex);
+				var vectorToPoint = A2(_opensolid$geometry$OpenSolid_Vector2d$from, startVertex, point);
+				return A2(_opensolid$geometry$OpenSolid_Vector2d$crossProduct, segmentVector, vectorToPoint);
+			});
+		var _p4 = _opensolid$geometry$OpenSolid_Triangle2d$vertices(triangle);
+		var p1 = _p4._0;
+		var p2 = _p4._1;
+		var p3 = _p4._2;
+		var firstProduct = A2(crossProduct, p1, p2);
+		var secondProduct = A2(crossProduct, p2, p3);
+		var thirdProduct = A2(crossProduct, p3, p1);
+		return ((_elm_lang$core$Native_Utils.cmp(firstProduct, 0) > -1) && ((_elm_lang$core$Native_Utils.cmp(secondProduct, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(thirdProduct, 0) > -1))) || ((_elm_lang$core$Native_Utils.cmp(firstProduct, 0) < 1) && ((_elm_lang$core$Native_Utils.cmp(secondProduct, 0) < 1) && (_elm_lang$core$Native_Utils.cmp(thirdProduct, 0) < 1)));
+	});
+var _opensolid$geometry$OpenSolid_Triangle2d$counterclockwiseArea = function (triangle) {
+	var _p5 = _opensolid$geometry$OpenSolid_Triangle2d$vertices(triangle);
+	var p1 = _p5._0;
+	var p2 = _p5._1;
+	var p3 = _p5._2;
+	var firstVector = A2(_opensolid$geometry$OpenSolid_Vector2d$from, p1, p2);
+	var secondVector = A2(_opensolid$geometry$OpenSolid_Vector2d$from, p1, p3);
+	return 0.5 * A2(_opensolid$geometry$OpenSolid_Vector2d$crossProduct, firstVector, secondVector);
+};
+var _opensolid$geometry$OpenSolid_Triangle2d$area = function (_p6) {
+	return _elm_lang$core$Basics$abs(
+		_opensolid$geometry$OpenSolid_Triangle2d$counterclockwiseArea(_p6));
+};
+var _opensolid$geometry$OpenSolid_Triangle2d$clockwiseArea = function (triangle) {
+	return 0 - _opensolid$geometry$OpenSolid_Triangle2d$counterclockwiseArea(triangle);
+};
+var _opensolid$geometry$OpenSolid_Triangle2d$boundingBox = function (triangle) {
+	var _p7 = _opensolid$geometry$OpenSolid_Triangle2d$vertices(triangle);
+	var p1 = _p7._0;
+	var p2 = _p7._1;
+	var p3 = _p7._2;
+	var _p8 = _opensolid$geometry$OpenSolid_Point2d$coordinates(p1);
+	var x1 = _p8._0;
+	var y1 = _p8._1;
+	var _p9 = _opensolid$geometry$OpenSolid_Point2d$coordinates(p2);
+	var x2 = _p9._0;
+	var y2 = _p9._1;
+	var _p10 = _opensolid$geometry$OpenSolid_Point2d$coordinates(p3);
+	var x3 = _p10._0;
+	var y3 = _p10._1;
+	return _opensolid$geometry$OpenSolid_BoundingBox2d$with(
+		{
+			minX: A2(
+				_elm_lang$core$Basics$min,
+				x1,
+				A2(_elm_lang$core$Basics$min, x2, x3)),
+			maxX: A2(
+				_elm_lang$core$Basics$max,
+				x1,
+				A2(_elm_lang$core$Basics$max, x2, x3)),
+			minY: A2(
+				_elm_lang$core$Basics$min,
+				y1,
+				A2(_elm_lang$core$Basics$min, y2, y3)),
+			maxY: A2(
+				_elm_lang$core$Basics$max,
+				y1,
+				A2(_elm_lang$core$Basics$max, y2, y3))
+		});
+};
+var _opensolid$geometry$OpenSolid_Triangle2d$circumcircle = function (triangle) {
+	return _opensolid$geometry$OpenSolid_Circle2d$throughPoints(
+		_opensolid$geometry$OpenSolid_Triangle2d$vertices(triangle));
+};
+var _opensolid$geometry$OpenSolid_Triangle2d$fromVertices = _opensolid$geometry$OpenSolid_Geometry_Internal$Triangle2d;
+var _opensolid$geometry$OpenSolid_Triangle2d$mapVertices = F2(
+	function ($function, triangle) {
+		var _p11 = _opensolid$geometry$OpenSolid_Triangle2d$vertices(triangle);
+		var p1 = _p11._0;
+		var p2 = _p11._1;
+		var p3 = _p11._2;
+		return _opensolid$geometry$OpenSolid_Triangle2d$fromVertices(
+			{
+				ctor: '_Tuple3',
+				_0: $function(p1),
+				_1: $function(p2),
+				_2: $function(p3)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Triangle2d$scaleAbout = F2(
+	function (point, scale) {
+		return _opensolid$geometry$OpenSolid_Triangle2d$mapVertices(
+			A2(_opensolid$geometry$OpenSolid_Point2d$scaleAbout, point, scale));
+	});
+var _opensolid$geometry$OpenSolid_Triangle2d$rotateAround = F2(
+	function (centerPoint, angle) {
+		return _opensolid$geometry$OpenSolid_Triangle2d$mapVertices(
+			A2(_opensolid$geometry$OpenSolid_Point2d$rotateAround, centerPoint, angle));
+	});
+var _opensolid$geometry$OpenSolid_Triangle2d$translateBy = function (vector) {
+	return _opensolid$geometry$OpenSolid_Triangle2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$translateBy(vector));
+};
+var _opensolid$geometry$OpenSolid_Triangle2d$mirrorAcross = function (axis) {
+	return _opensolid$geometry$OpenSolid_Triangle2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$mirrorAcross(axis));
+};
+var _opensolid$geometry$OpenSolid_Triangle2d$relativeTo = function (frame) {
+	return _opensolid$geometry$OpenSolid_Triangle2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$relativeTo(frame));
+};
+var _opensolid$geometry$OpenSolid_Triangle2d$placeIn = function (frame) {
+	return _opensolid$geometry$OpenSolid_Triangle2d$mapVertices(
+		_opensolid$geometry$OpenSolid_Point2d$placeIn(frame));
+};

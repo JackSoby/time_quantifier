@@ -1,0 +1,376 @@
+var _opensolid$geometry$OpenSolid_CubicSpline3d$parameterValueToArcLength = F2(
+	function (_p0, t) {
+		var _p1 = _p0;
+		return A2(_opensolid$geometry$OpenSolid_ArcLength$fromParameterValue, _p1._1, t);
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$arcLengthToParameterValue = F2(
+	function (_p2, s) {
+		var _p3 = _p2;
+		return A2(_opensolid$geometry$OpenSolid_ArcLength$toParameterValue, _p3._1, s);
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$arcLength = function (_p4) {
+	var _p5 = _p4;
+	return _opensolid$geometry$OpenSolid_ArcLength$fromParameterization(_p5._1);
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$endPoint = function (_p6) {
+	var _p7 = _p6;
+	return _p7._0._3;
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$startPoint = function (_p8) {
+	var _p9 = _p8;
+	return _p9._0._0;
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints = function (_p10) {
+	var _p11 = _p10;
+	return _p11._0;
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$startDerivative = function (spline) {
+	var _p12 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+	var p1 = _p12._0;
+	var p2 = _p12._1;
+	return A2(
+		_opensolid$geometry$OpenSolid_Vector3d$scaleBy,
+		3,
+		A2(_opensolid$geometry$OpenSolid_Vector3d$from, p1, p2));
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$endDerivative = function (spline) {
+	var _p13 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+	var p3 = _p13._2;
+	var p4 = _p13._3;
+	return A2(
+		_opensolid$geometry$OpenSolid_Vector3d$scaleBy,
+		3,
+		A2(_opensolid$geometry$OpenSolid_Vector3d$from, p3, p4));
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$pointOn = F2(
+	function (spline, t) {
+		var _p14 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+		var p1 = _p14._0;
+		var p2 = _p14._1;
+		var p3 = _p14._2;
+		var p4 = _p14._3;
+		var q1 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, p1, p2, t);
+		var q2 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, p2, p3, t);
+		var r1 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, q1, q2, t);
+		var q3 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, p3, p4, t);
+		var r2 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, q2, q3, t);
+		return A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, r1, r2, t);
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$pointAlong = F2(
+	function (_p15, s) {
+		var _p16 = _p15;
+		return A2(
+			_elm_lang$core$Maybe$map,
+			_opensolid$geometry$OpenSolid_CubicSpline3d$pointOn(_p16._0),
+			A2(_opensolid$geometry$OpenSolid_ArcLength$toParameterValue, _p16._1, s));
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$derivative = F2(
+	function (spline, t) {
+		var _p17 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+		var p1 = _p17._0;
+		var p2 = _p17._1;
+		var p3 = _p17._2;
+		var p4 = _p17._3;
+		var _p18 = _opensolid$geometry$OpenSolid_Point3d$coordinates(p1);
+		var x1 = _p18._0;
+		var y1 = _p18._1;
+		var z1 = _p18._2;
+		var _p19 = _opensolid$geometry$OpenSolid_Point3d$coordinates(p2);
+		var x2 = _p19._0;
+		var y2 = _p19._1;
+		var z2 = _p19._2;
+		var vx1 = x2 - x1;
+		var vy1 = y2 - y1;
+		var vz1 = z2 - z1;
+		var _p20 = _opensolid$geometry$OpenSolid_Point3d$coordinates(p3);
+		var x3 = _p20._0;
+		var y3 = _p20._1;
+		var z3 = _p20._2;
+		var vx2 = x3 - x2;
+		var vy2 = y3 - y2;
+		var vz2 = z3 - z2;
+		var _p21 = _opensolid$geometry$OpenSolid_Point3d$coordinates(p4);
+		var x4 = _p21._0;
+		var y4 = _p21._1;
+		var z4 = _p21._2;
+		var vx3 = x4 - x3;
+		var vy3 = y4 - y3;
+		var vz3 = z4 - z3;
+		if (_elm_lang$core$Native_Utils.cmp(t, 0.5) < 1) {
+			var wz2 = vz2 + (t * (vz3 - vz2));
+			var wy2 = vy2 + (t * (vy3 - vy2));
+			var wx2 = vx2 + (t * (vx3 - vx2));
+			var wz1 = vz1 + (t * (vz2 - vz1));
+			var wy1 = vy1 + (t * (vy2 - vy1));
+			var wx1 = vx1 + (t * (vx2 - vx1));
+			return _opensolid$geometry$OpenSolid_Vector3d$fromComponents(
+				{ctor: '_Tuple3', _0: 3 * (wx1 + (t * (wx2 - wx1))), _1: 3 * (wy1 + (t * (wy2 - wy1))), _2: 3 * (wz1 + (t * (wz2 - wz1)))});
+		} else {
+			var u = 1 - t;
+			var wx1 = vx2 + (u * (vx1 - vx2));
+			var wy1 = vy2 + (u * (vy1 - vy2));
+			var wz1 = vz2 + (u * (vz1 - vz2));
+			var wx2 = vx3 + (u * (vx2 - vx3));
+			var wy2 = vy3 + (u * (vy2 - vy3));
+			var wz2 = vz3 + (u * (vz2 - vz3));
+			return _opensolid$geometry$OpenSolid_Vector3d$fromComponents(
+				{ctor: '_Tuple3', _0: 3 * (wx2 + (u * (wx1 - wx2))), _1: 3 * (wy2 + (u * (wy1 - wy2))), _2: 3 * (wz2 + (u * (wz1 - wz2)))});
+		}
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$tangentAlong = F2(
+	function (_p22, s) {
+		var _p23 = _p22;
+		return A2(
+			_elm_lang$core$Maybe$andThen,
+			_opensolid$geometry$OpenSolid_Vector3d$direction,
+			A2(
+				_elm_lang$core$Maybe$map,
+				_opensolid$geometry$OpenSolid_CubicSpline3d$derivative(_p23._0),
+				A2(_opensolid$geometry$OpenSolid_ArcLength$toParameterValue, _p23._1, s)));
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$derivativeMagnitude = function (spline) {
+	var _p24 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+	var p1 = _p24._0;
+	var p2 = _p24._1;
+	var p3 = _p24._2;
+	var p4 = _p24._3;
+	var _p25 = _opensolid$geometry$OpenSolid_Point3d$coordinates(p1);
+	var x1 = _p25._0;
+	var y1 = _p25._1;
+	var z1 = _p25._2;
+	var _p26 = _opensolid$geometry$OpenSolid_Point3d$coordinates(p2);
+	var x2 = _p26._0;
+	var y2 = _p26._1;
+	var z2 = _p26._2;
+	var x12 = x2 - x1;
+	var y12 = y2 - y1;
+	var z12 = z2 - z1;
+	var _p27 = _opensolid$geometry$OpenSolid_Point3d$coordinates(p3);
+	var x3 = _p27._0;
+	var y3 = _p27._1;
+	var z3 = _p27._2;
+	var x23 = x3 - x2;
+	var x123 = x23 - x12;
+	var y23 = y3 - y2;
+	var y123 = y23 - y12;
+	var z23 = z3 - z2;
+	var z123 = z23 - z12;
+	var _p28 = _opensolid$geometry$OpenSolid_Point3d$coordinates(p4);
+	var x4 = _p28._0;
+	var y4 = _p28._1;
+	var z4 = _p28._2;
+	var x34 = x4 - x3;
+	var x234 = x34 - x23;
+	var y34 = y4 - y3;
+	var y234 = y34 - y23;
+	var z34 = z4 - z3;
+	var z234 = z34 - z23;
+	return function (t) {
+		var z24 = z23 + (t * z234);
+		var y24 = y23 + (t * y234);
+		var x24 = x23 + (t * x234);
+		var z13 = z12 + (t * z123);
+		var z14 = z13 + (t * (z24 - z13));
+		var y13 = y12 + (t * y123);
+		var y14 = y13 + (t * (y24 - y13));
+		var x13 = x12 + (t * x123);
+		var x14 = x13 + (t * (x24 - x13));
+		return 3 * _elm_lang$core$Basics$sqrt(((x14 * x14) + (y14 * y14)) + (z14 * z14));
+	};
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$evaluate = F2(
+	function (spline, t) {
+		var _p29 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+		var p1 = _p29._0;
+		var p2 = _p29._1;
+		var p3 = _p29._2;
+		var p4 = _p29._3;
+		var q1 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, p1, p2, t);
+		var q2 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, p2, p3, t);
+		var r1 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, q1, q2, t);
+		var q3 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, p3, p4, t);
+		var r2 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, q2, q3, t);
+		return {
+			ctor: '_Tuple2',
+			_0: A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, r1, r2, t),
+			_1: A2(
+				_opensolid$geometry$OpenSolid_Vector3d$scaleBy,
+				3,
+				A2(_opensolid$geometry$OpenSolid_Vector3d$from, r1, r2))
+		};
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$projectInto = F2(
+	function (sketchPlane, spline) {
+		var project = _opensolid$geometry$OpenSolid_Point3d$projectInto(sketchPlane);
+		var _p30 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+		var p1 = _p30._0;
+		var p2 = _p30._1;
+		var p3 = _p30._2;
+		var p4 = _p30._3;
+		return _opensolid$geometry$OpenSolid_CubicSpline2d$fromControlPoints(
+			{
+				ctor: '_Tuple4',
+				_0: project(p1),
+				_1: project(p2),
+				_2: project(p3),
+				_3: project(p4)
+			});
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$maxSecondDerivativeMagnitude = function (spline) {
+	var _p31 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+	var p1 = _p31._0;
+	var p2 = _p31._1;
+	var p3 = _p31._2;
+	var p4 = _p31._3;
+	var u1 = A2(_opensolid$geometry$OpenSolid_Vector3d$from, p1, p2);
+	var u2 = A2(_opensolid$geometry$OpenSolid_Vector3d$from, p2, p3);
+	var v1 = A2(_opensolid$geometry$OpenSolid_Vector3d$difference, u2, u1);
+	var u3 = A2(_opensolid$geometry$OpenSolid_Vector3d$from, p3, p4);
+	var v2 = A2(_opensolid$geometry$OpenSolid_Vector3d$difference, u3, u2);
+	return 6 * A2(
+		_elm_lang$core$Basics$max,
+		_opensolid$geometry$OpenSolid_Vector3d$length(v1),
+		_opensolid$geometry$OpenSolid_Vector3d$length(v2));
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$fromControlPoints = _opensolid$geometry$OpenSolid_Geometry_Internal$CubicSpline3d;
+var _opensolid$geometry$OpenSolid_CubicSpline3d$hermite = F2(
+	function (start, end) {
+		var _p32 = end;
+		var endPoint = _p32._0;
+		var endDerivative = _p32._1;
+		var endControlPoint = A2(
+			_opensolid$geometry$OpenSolid_Point3d$translateBy,
+			A2(_opensolid$geometry$OpenSolid_Vector3d$scaleBy, -1 / 3, endDerivative),
+			endPoint);
+		var _p33 = start;
+		var startPoint = _p33._0;
+		var startDerivative = _p33._1;
+		var startControlPoint = A2(
+			_opensolid$geometry$OpenSolid_Point3d$translateBy,
+			A2(_opensolid$geometry$OpenSolid_Vector3d$scaleBy, 1 / 3, startDerivative),
+			startPoint);
+		return _opensolid$geometry$OpenSolid_CubicSpline3d$fromControlPoints(
+			{ctor: '_Tuple4', _0: startPoint, _1: startControlPoint, _2: endControlPoint, _3: endPoint});
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$on = F2(
+	function (sketchPlane, spline) {
+		var place = _opensolid$geometry$OpenSolid_Point3d$on(sketchPlane);
+		var _p34 = _opensolid$geometry$OpenSolid_CubicSpline2d$controlPoints(spline);
+		var p1 = _p34._0;
+		var p2 = _p34._1;
+		var p3 = _p34._2;
+		var p4 = _p34._3;
+		return _opensolid$geometry$OpenSolid_CubicSpline3d$fromControlPoints(
+			{
+				ctor: '_Tuple4',
+				_0: place(p1),
+				_1: place(p2),
+				_2: place(p3),
+				_3: place(p4)
+			});
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$fromQuadraticSpline = function (quadraticSpline) {
+	var _p35 = _opensolid$geometry$OpenSolid_QuadraticSpline3d$controlPoints(quadraticSpline);
+	var p1 = _p35._0;
+	var p2 = _p35._1;
+	var p3 = _p35._2;
+	return _opensolid$geometry$OpenSolid_CubicSpline3d$fromControlPoints(
+		{
+			ctor: '_Tuple4',
+			_0: p1,
+			_1: A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, p1, p2, 2 / 3),
+			_2: A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, p3, p2, 2 / 3),
+			_3: p3
+		});
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$mapControlPoints = F2(
+	function ($function, spline) {
+		var _p36 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+		var p1 = _p36._0;
+		var p2 = _p36._1;
+		var p3 = _p36._2;
+		var p4 = _p36._3;
+		return _opensolid$geometry$OpenSolid_CubicSpline3d$fromControlPoints(
+			{
+				ctor: '_Tuple4',
+				_0: $function(p1),
+				_1: $function(p2),
+				_2: $function(p3),
+				_3: $function(p4)
+			});
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$scaleAbout = F2(
+	function (point, scale) {
+		return _opensolid$geometry$OpenSolid_CubicSpline3d$mapControlPoints(
+			A2(_opensolid$geometry$OpenSolid_Point3d$scaleAbout, point, scale));
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$rotateAround = F2(
+	function (axis, angle) {
+		return _opensolid$geometry$OpenSolid_CubicSpline3d$mapControlPoints(
+			A2(_opensolid$geometry$OpenSolid_Point3d$rotateAround, axis, angle));
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$translateBy = function (displacement) {
+	return _opensolid$geometry$OpenSolid_CubicSpline3d$mapControlPoints(
+		_opensolid$geometry$OpenSolid_Point3d$translateBy(displacement));
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$mirrorAcross = function (plane) {
+	return _opensolid$geometry$OpenSolid_CubicSpline3d$mapControlPoints(
+		_opensolid$geometry$OpenSolid_Point3d$mirrorAcross(plane));
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$projectOnto = function (plane) {
+	return _opensolid$geometry$OpenSolid_CubicSpline3d$mapControlPoints(
+		_opensolid$geometry$OpenSolid_Point3d$projectOnto(plane));
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$relativeTo = function (frame) {
+	return _opensolid$geometry$OpenSolid_CubicSpline3d$mapControlPoints(
+		_opensolid$geometry$OpenSolid_Point3d$relativeTo(frame));
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$placeIn = function (frame) {
+	return _opensolid$geometry$OpenSolid_CubicSpline3d$mapControlPoints(
+		_opensolid$geometry$OpenSolid_Point3d$placeIn(frame));
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$reverse = function (spline) {
+	var _p37 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+	var p1 = _p37._0;
+	var p2 = _p37._1;
+	var p3 = _p37._2;
+	var p4 = _p37._3;
+	return _opensolid$geometry$OpenSolid_CubicSpline3d$fromControlPoints(
+		{ctor: '_Tuple4', _0: p4, _1: p3, _2: p2, _3: p1});
+};
+var _opensolid$geometry$OpenSolid_CubicSpline3d$splitAt = F2(
+	function (t, spline) {
+		var _p38 = _opensolid$geometry$OpenSolid_CubicSpline3d$controlPoints(spline);
+		var p1 = _p38._0;
+		var p2 = _p38._1;
+		var p3 = _p38._2;
+		var p4 = _p38._3;
+		var q1 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, p1, p2, t);
+		var q2 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, p2, p3, t);
+		var r1 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, q1, q2, t);
+		var q3 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, p3, p4, t);
+		var r2 = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, q2, q3, t);
+		var s = A3(_opensolid$geometry$OpenSolid_Point3d$interpolateFrom, r1, r2, t);
+		return {
+			ctor: '_Tuple2',
+			_0: _opensolid$geometry$OpenSolid_CubicSpline3d$fromControlPoints(
+				{ctor: '_Tuple4', _0: p1, _1: q1, _2: r1, _3: s}),
+			_1: _opensolid$geometry$OpenSolid_CubicSpline3d$fromControlPoints(
+				{ctor: '_Tuple4', _0: s, _1: r2, _2: q3, _3: p4})
+		};
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$bisect = _opensolid$geometry$OpenSolid_CubicSpline3d$splitAt(0.5);
+var _opensolid$geometry$OpenSolid_CubicSpline3d$ArcLengthParameterized = F2(
+	function (a, b) {
+		return {ctor: 'ArcLengthParameterized', _0: a, _1: b};
+	});
+var _opensolid$geometry$OpenSolid_CubicSpline3d$arcLengthParameterized = F2(
+	function (tolerance, spline) {
+		var parameterization = _opensolid$geometry$OpenSolid_ArcLength$parameterization(
+			{
+				tolerance: tolerance,
+				derivativeMagnitude: _opensolid$geometry$OpenSolid_CubicSpline3d$derivativeMagnitude(spline),
+				maxSecondDerivativeMagnitude: _opensolid$geometry$OpenSolid_CubicSpline3d$maxSecondDerivativeMagnitude(spline)
+			});
+		return A2(_opensolid$geometry$OpenSolid_CubicSpline3d$ArcLengthParameterized, spline, parameterization);
+	});

@@ -1,0 +1,313 @@
+var _folkertdev$elm_deque$BoundedDeque$reachedMaxSize = function (_p0) {
+	var _p1 = _p0;
+	return _elm_lang$core$Native_Utils.eq(_p1._0.sizeF + _p1._0.sizeR, _p1._0.maxSize);
+};
+var _folkertdev$elm_deque$BoundedDeque$emptyAbstract = function (maxSize) {
+	return {
+		sizeF: 0,
+		front: {ctor: '[]'},
+		sizeR: 0,
+		rear: {ctor: '[]'},
+		maxSize: maxSize
+	};
+};
+var _folkertdev$elm_deque$BoundedDeque$toDeque = function (_p2) {
+	var _p3 = _p2;
+	return _folkertdev$elm_deque$Internal$Deque(
+		_folkertdev$elm_deque$Internal$rebalance(
+			{front: _p3._0.front, rear: _p3._0.rear, sizeF: _p3._0.sizeF, sizeR: _p3._0.sizeR}));
+};
+var _folkertdev$elm_deque$BoundedDeque$unwrap = function (_p4) {
+	var _p5 = _p4;
+	return _p5._0;
+};
+var _folkertdev$elm_deque$BoundedDeque$getMaxSize = function (_p6) {
+	return function (_) {
+		return _.maxSize;
+	}(
+		_folkertdev$elm_deque$BoundedDeque$unwrap(_p6));
+};
+var _folkertdev$elm_deque$BoundedDeque$isEmpty = function (_p7) {
+	return _folkertdev$elm_deque$Internal$isEmpty(
+		_folkertdev$elm_deque$BoundedDeque$unwrap(_p7));
+};
+var _folkertdev$elm_deque$BoundedDeque$member = function (elem) {
+	return function (_p8) {
+		return A2(
+			_folkertdev$elm_deque$Internal$member,
+			elem,
+			_folkertdev$elm_deque$BoundedDeque$unwrap(_p8));
+	};
+};
+var _folkertdev$elm_deque$BoundedDeque$length = function (_p9) {
+	return _folkertdev$elm_deque$Internal$length(
+		_folkertdev$elm_deque$BoundedDeque$unwrap(_p9));
+};
+var _folkertdev$elm_deque$BoundedDeque$foldl = F2(
+	function (f, initial) {
+		return function (_p10) {
+			return A3(
+				_folkertdev$elm_deque$Internal$foldl,
+				f,
+				initial,
+				_folkertdev$elm_deque$BoundedDeque$unwrap(_p10));
+		};
+	});
+var _folkertdev$elm_deque$BoundedDeque$foldr = F2(
+	function (f, initial) {
+		return function (_p11) {
+			return A3(
+				_folkertdev$elm_deque$Internal$foldr,
+				f,
+				initial,
+				_folkertdev$elm_deque$BoundedDeque$unwrap(_p11));
+		};
+	});
+var _folkertdev$elm_deque$BoundedDeque$first = function (_p12) {
+	return _folkertdev$elm_deque$Internal$first(
+		_folkertdev$elm_deque$BoundedDeque$unwrap(_p12));
+};
+var _folkertdev$elm_deque$BoundedDeque$last = function (_p13) {
+	return _folkertdev$elm_deque$Internal$last(
+		_folkertdev$elm_deque$BoundedDeque$unwrap(_p13));
+};
+var _folkertdev$elm_deque$BoundedDeque$takeFront = function (i) {
+	return function (_p14) {
+		return A2(
+			_folkertdev$elm_deque$Internal$takeFront,
+			i,
+			_folkertdev$elm_deque$BoundedDeque$unwrap(_p14));
+	};
+};
+var _folkertdev$elm_deque$BoundedDeque$takeBack = function (i) {
+	return function (_p15) {
+		return A2(
+			_folkertdev$elm_deque$Internal$takeBack,
+			i,
+			_folkertdev$elm_deque$BoundedDeque$unwrap(_p15));
+	};
+};
+var _folkertdev$elm_deque$BoundedDeque$toList = function (_p16) {
+	return _folkertdev$elm_deque$Internal$toList(
+		_folkertdev$elm_deque$BoundedDeque$unwrap(_p16));
+};
+var _folkertdev$elm_deque$BoundedDeque$BoundedDeque = function (a) {
+	return {ctor: 'BoundedDeque', _0: a};
+};
+var _folkertdev$elm_deque$BoundedDeque$mapAbstract = F2(
+	function (f, _p17) {
+		var _p18 = _p17;
+		return _folkertdev$elm_deque$BoundedDeque$BoundedDeque(
+			f(_p18._0));
+	});
+var _folkertdev$elm_deque$BoundedDeque$map = function (f) {
+	return _folkertdev$elm_deque$BoundedDeque$mapAbstract(
+		_folkertdev$elm_deque$Internal$map(f));
+};
+var _folkertdev$elm_deque$BoundedDeque$filter = function (p) {
+	return _folkertdev$elm_deque$BoundedDeque$mapAbstract(
+		_folkertdev$elm_deque$Internal$filter(p));
+};
+var _folkertdev$elm_deque$BoundedDeque$empty = function (size) {
+	return _folkertdev$elm_deque$BoundedDeque$BoundedDeque(
+		_folkertdev$elm_deque$BoundedDeque$emptyAbstract(size));
+};
+var _folkertdev$elm_deque$BoundedDeque$append = F2(
+	function (_p20, _p19) {
+		var _p21 = _p20;
+		var _p24 = _p21._0;
+		var _p22 = _p19;
+		var _p23 = _p22._0;
+		return _folkertdev$elm_deque$BoundedDeque$isEmpty(_p21) ? _folkertdev$elm_deque$BoundedDeque$BoundedDeque(
+			_elm_lang$core$Native_Utils.update(
+				_p23,
+				{
+					maxSize: A2(
+						F2(
+							function (x, y) {
+								return x + y;
+							}),
+						_p24.maxSize,
+						_p23.maxSize)
+				})) : (_folkertdev$elm_deque$BoundedDeque$isEmpty(_p22) ? _folkertdev$elm_deque$BoundedDeque$BoundedDeque(
+			_elm_lang$core$Native_Utils.update(
+				_p24,
+				{
+					maxSize: A2(
+						F2(
+							function (x, y) {
+								return x + y;
+							}),
+						_p24.maxSize,
+						_p23.maxSize)
+				})) : _folkertdev$elm_deque$BoundedDeque$BoundedDeque(
+			{
+				sizeF: _p24.sizeF + _p24.sizeR,
+				front: A2(
+					_elm_lang$core$Basics_ops['++'],
+					_p24.front,
+					_elm_lang$core$List$reverse(_p24.rear)),
+				sizeR: _p23.sizeF + _p23.sizeR,
+				rear: _elm_lang$core$List$reverse(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p23.front,
+						_elm_lang$core$List$reverse(_p23.rear))),
+				maxSize: A2(
+					F2(
+						function (x, y) {
+							return x + y;
+						}),
+					_p24.maxSize,
+					_p23.maxSize)
+			}));
+	});
+var _folkertdev$elm_deque$BoundedDeque$popFront = function (_p25) {
+	var _p26 = _p25;
+	var _p27 = _p26._0;
+	return A2(
+		_elm_lang$core$Tuple$mapSecond,
+		_folkertdev$elm_deque$BoundedDeque$BoundedDeque,
+		A2(
+			_folkertdev$elm_deque$Internal$popFront,
+			_folkertdev$elm_deque$BoundedDeque$emptyAbstract(_p27.maxSize),
+			_p27));
+};
+var _folkertdev$elm_deque$BoundedDeque$pushBack = F2(
+	function (elem, _p28) {
+		var _p29 = _p28;
+		var _p31 = _p29;
+		if (_elm_lang$core$Native_Utils.eq(_p29._0.maxSize, 0)) {
+			return _p31;
+		} else {
+			var _p30 = _folkertdev$elm_deque$BoundedDeque$reachedMaxSize(_p31) ? _elm_lang$core$Tuple$second(
+				_folkertdev$elm_deque$BoundedDeque$popFront(_p31)) : _p31;
+			var newBoundedDeque = _p30._0;
+			return A2(
+				_folkertdev$elm_deque$BoundedDeque$mapAbstract,
+				_folkertdev$elm_deque$Internal$rebalance,
+				_folkertdev$elm_deque$BoundedDeque$BoundedDeque(
+					_elm_lang$core$Native_Utils.update(
+						newBoundedDeque,
+						{
+							sizeR: newBoundedDeque.sizeR + 1,
+							rear: {ctor: '::', _0: elem, _1: newBoundedDeque.rear}
+						})));
+		}
+	});
+var _folkertdev$elm_deque$BoundedDeque$popBack = function (_p32) {
+	var _p33 = _p32;
+	var _p34 = _p33._0;
+	return A2(
+		_elm_lang$core$Tuple$mapSecond,
+		_folkertdev$elm_deque$BoundedDeque$BoundedDeque,
+		A2(
+			_folkertdev$elm_deque$Internal$popBack,
+			_folkertdev$elm_deque$BoundedDeque$emptyAbstract(_p34.maxSize),
+			_p34));
+};
+var _folkertdev$elm_deque$BoundedDeque$pushFront = F2(
+	function (elem, _p35) {
+		var _p36 = _p35;
+		var _p38 = _p36;
+		if (_elm_lang$core$Native_Utils.eq(_p36._0.maxSize, 0)) {
+			return _p38;
+		} else {
+			var _p37 = _folkertdev$elm_deque$BoundedDeque$reachedMaxSize(_p38) ? _elm_lang$core$Tuple$second(
+				_folkertdev$elm_deque$BoundedDeque$popBack(_p38)) : _p38;
+			var newBoundedDeque = _p37._0;
+			return A2(
+				_folkertdev$elm_deque$BoundedDeque$mapAbstract,
+				_folkertdev$elm_deque$Internal$rebalance,
+				_folkertdev$elm_deque$BoundedDeque$BoundedDeque(
+					_elm_lang$core$Native_Utils.update(
+						newBoundedDeque,
+						{
+							sizeF: newBoundedDeque.sizeF + 1,
+							front: {ctor: '::', _0: elem, _1: newBoundedDeque.front}
+						})));
+		}
+	});
+var _folkertdev$elm_deque$BoundedDeque$singleton = F2(
+	function (maxSize, elem) {
+		return A2(
+			_folkertdev$elm_deque$BoundedDeque$pushFront,
+			elem,
+			_folkertdev$elm_deque$BoundedDeque$empty(maxSize));
+	});
+var _folkertdev$elm_deque$BoundedDeque$fromList = F2(
+	function (maxSize, elements) {
+		return _folkertdev$elm_deque$BoundedDeque$BoundedDeque(
+			A2(
+				_folkertdev$elm_deque$Internal$fromList,
+				_folkertdev$elm_deque$BoundedDeque$emptyAbstract(maxSize),
+				A2(_elm_lang$core$List$take, maxSize, elements)));
+	});
+var _folkertdev$elm_deque$BoundedDeque$fromDeque = F2(
+	function (maxSize, _p39) {
+		var _p40 = _p39;
+		var _p42 = _p40._0.sizeR;
+		var _p41 = _p40._0.sizeF;
+		var delta = maxSize - (_p41 + _p42);
+		return (_elm_lang$core$Native_Utils.cmp(delta, 0) < 0) ? A2(
+			_folkertdev$elm_deque$BoundedDeque$fromList,
+			maxSize,
+			_folkertdev$elm_deque$Internal$toList(_p40._0)) : _folkertdev$elm_deque$BoundedDeque$BoundedDeque(
+			_folkertdev$elm_deque$Internal$rebalance(
+				{front: _p40._0.front, rear: _p40._0.rear, sizeF: _p41, sizeR: _p42, maxSize: maxSize}));
+	});
+var _folkertdev$elm_deque$BoundedDeque$resize = F2(
+	function (calculateMaxSize, _p43) {
+		var _p44 = _p43;
+		var _p45 = _p44._0;
+		var newMaxSize = calculateMaxSize(_p45.maxSize);
+		return (_elm_lang$core$Native_Utils.cmp(_p45.sizeF + _p45.sizeR, newMaxSize) < 1) ? _folkertdev$elm_deque$BoundedDeque$BoundedDeque(
+			_elm_lang$core$Native_Utils.update(
+				_p45,
+				{maxSize: newMaxSize})) : A2(
+			_folkertdev$elm_deque$BoundedDeque$fromList,
+			newMaxSize,
+			_folkertdev$elm_deque$BoundedDeque$toList(
+				_folkertdev$elm_deque$BoundedDeque$BoundedDeque(_p45)));
+	});
+var _folkertdev$elm_deque$BoundedDeque$map2 = F3(
+	function (f, a, b) {
+		return A2(
+			_folkertdev$elm_deque$BoundedDeque$fromList,
+			A2(
+				_elm_lang$core$Basics$max,
+				_folkertdev$elm_deque$BoundedDeque$getMaxSize(a),
+				_folkertdev$elm_deque$BoundedDeque$getMaxSize(b)),
+			A3(
+				_elm_lang$core$List$map2,
+				f,
+				_folkertdev$elm_deque$BoundedDeque$toList(a),
+				_folkertdev$elm_deque$BoundedDeque$toList(b)));
+	});
+var _folkertdev$elm_deque$BoundedDeque$andMap = _folkertdev$elm_deque$BoundedDeque$map2(
+	F2(
+		function (x, y) {
+			return y(x);
+		}));
+var _folkertdev$elm_deque$BoundedDeque$partition = F2(
+	function (p, _p46) {
+		var _p47 = _p46;
+		var _p50 = _p47._0;
+		var _p48 = A2(_elm_lang$core$List$partition, p, _p50.rear);
+		var l2 = _p48._0;
+		var r2 = _p48._1;
+		var _p49 = A2(_elm_lang$core$List$partition, p, _p50.front);
+		var l1 = _p49._0;
+		var r1 = _p49._1;
+		return {
+			ctor: '_Tuple2',
+			_0: A2(
+				_folkertdev$elm_deque$BoundedDeque$fromList,
+				_p50.maxSize,
+				A2(_elm_lang$core$Basics_ops['++'], l1, l2)),
+			_1: A2(
+				_folkertdev$elm_deque$BoundedDeque$fromList,
+				_p50.maxSize,
+				A2(_elm_lang$core$Basics_ops['++'], r1, r2))
+		};
+	});

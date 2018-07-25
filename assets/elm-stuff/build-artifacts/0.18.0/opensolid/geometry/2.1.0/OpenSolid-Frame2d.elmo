@@ -1,0 +1,173 @@
+var _opensolid$geometry$OpenSolid_Frame2d$yDirection = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0.yDirection;
+};
+var _opensolid$geometry$OpenSolid_Frame2d$xDirection = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0.xDirection;
+};
+var _opensolid$geometry$OpenSolid_Frame2d$isRightHanded = function (frame) {
+	var yVector = _opensolid$geometry$OpenSolid_Direction2d$toVector(
+		_opensolid$geometry$OpenSolid_Frame2d$yDirection(frame));
+	var xVector = _opensolid$geometry$OpenSolid_Direction2d$toVector(
+		_opensolid$geometry$OpenSolid_Frame2d$xDirection(frame));
+	return _elm_lang$core$Native_Utils.cmp(
+		A2(_opensolid$geometry$OpenSolid_Vector2d$crossProduct, xVector, yVector),
+		0) > 0;
+};
+var _opensolid$geometry$OpenSolid_Frame2d$originPoint = function (_p4) {
+	var _p5 = _p4;
+	return _p5._0.originPoint;
+};
+var _opensolid$geometry$OpenSolid_Frame2d$xAxis = function (frame) {
+	return _opensolid$geometry$OpenSolid_Axis2d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame2d$originPoint(frame),
+			direction: _opensolid$geometry$OpenSolid_Frame2d$xDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame2d$yAxis = function (frame) {
+	return _opensolid$geometry$OpenSolid_Axis2d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame2d$originPoint(frame),
+			direction: _opensolid$geometry$OpenSolid_Frame2d$yDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame2d$unsafe = _opensolid$geometry$OpenSolid_Geometry_Internal$Frame2d;
+var _opensolid$geometry$OpenSolid_Frame2d$atPoint = function (point) {
+	return _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+		{originPoint: point, xDirection: _opensolid$geometry$OpenSolid_Direction2d$x, yDirection: _opensolid$geometry$OpenSolid_Direction2d$y});
+};
+var _opensolid$geometry$OpenSolid_Frame2d$flipX = function (frame) {
+	return _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame2d$originPoint(frame),
+			xDirection: _opensolid$geometry$OpenSolid_Direction2d$flip(
+				_opensolid$geometry$OpenSolid_Frame2d$xDirection(frame)),
+			yDirection: _opensolid$geometry$OpenSolid_Frame2d$yDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame2d$flipY = function (frame) {
+	return _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame2d$originPoint(frame),
+			xDirection: _opensolid$geometry$OpenSolid_Frame2d$xDirection(frame),
+			yDirection: _opensolid$geometry$OpenSolid_Direction2d$flip(
+				_opensolid$geometry$OpenSolid_Frame2d$yDirection(frame))
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame2d$moveTo = F2(
+	function (newOrigin, frame) {
+		return _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+			{
+				originPoint: newOrigin,
+				xDirection: _opensolid$geometry$OpenSolid_Frame2d$xDirection(frame),
+				yDirection: _opensolid$geometry$OpenSolid_Frame2d$yDirection(frame)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Frame2d$rotateBy = F2(
+	function (angle, frame) {
+		var rotateDirection = _opensolid$geometry$OpenSolid_Direction2d$rotateBy(angle);
+		return _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+			{
+				originPoint: _opensolid$geometry$OpenSolid_Frame2d$originPoint(frame),
+				xDirection: rotateDirection(
+					_opensolid$geometry$OpenSolid_Frame2d$xDirection(frame)),
+				yDirection: rotateDirection(
+					_opensolid$geometry$OpenSolid_Frame2d$yDirection(frame))
+			});
+	});
+var _opensolid$geometry$OpenSolid_Frame2d$rotateAround = F2(
+	function (centerPoint, angle) {
+		var rotateDirection = _opensolid$geometry$OpenSolid_Direction2d$rotateBy(angle);
+		var rotatePoint = A2(_opensolid$geometry$OpenSolid_Point2d$rotateAround, centerPoint, angle);
+		return function (frame) {
+			return _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+				{
+					originPoint: rotatePoint(
+						_opensolid$geometry$OpenSolid_Frame2d$originPoint(frame)),
+					xDirection: rotateDirection(
+						_opensolid$geometry$OpenSolid_Frame2d$xDirection(frame)),
+					yDirection: rotateDirection(
+						_opensolid$geometry$OpenSolid_Frame2d$yDirection(frame))
+				});
+		};
+	});
+var _opensolid$geometry$OpenSolid_Frame2d$translateBy = F2(
+	function (vector, frame) {
+		return _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+			{
+				originPoint: A2(
+					_opensolid$geometry$OpenSolid_Point2d$translateBy,
+					vector,
+					_opensolid$geometry$OpenSolid_Frame2d$originPoint(frame)),
+				xDirection: _opensolid$geometry$OpenSolid_Frame2d$xDirection(frame),
+				yDirection: _opensolid$geometry$OpenSolid_Frame2d$yDirection(frame)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Frame2d$translateAlongOwn = F3(
+	function (axis, distance, frame) {
+		var displacement = _opensolid$geometry$OpenSolid_Vector2d$with(
+			{
+				length: distance,
+				direction: _opensolid$geometry$OpenSolid_Axis2d$direction(
+					axis(frame))
+			});
+		return A2(_opensolid$geometry$OpenSolid_Frame2d$translateBy, displacement, frame);
+	});
+var _opensolid$geometry$OpenSolid_Frame2d$mirrorAcross = function (axis) {
+	var mirrorDirection = _opensolid$geometry$OpenSolid_Direction2d$mirrorAcross(axis);
+	var mirrorPoint = _opensolid$geometry$OpenSolid_Point2d$mirrorAcross(axis);
+	return function (frame) {
+		return _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+			{
+				originPoint: mirrorPoint(
+					_opensolid$geometry$OpenSolid_Frame2d$originPoint(frame)),
+				xDirection: mirrorDirection(
+					_opensolid$geometry$OpenSolid_Frame2d$xDirection(frame)),
+				yDirection: mirrorDirection(
+					_opensolid$geometry$OpenSolid_Frame2d$yDirection(frame))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Frame2d$relativeTo = function (otherFrame) {
+	var relativeDirection = _opensolid$geometry$OpenSolid_Direction2d$relativeTo(otherFrame);
+	var relativePoint = _opensolid$geometry$OpenSolid_Point2d$relativeTo(otherFrame);
+	return function (frame) {
+		return _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+			{
+				originPoint: relativePoint(
+					_opensolid$geometry$OpenSolid_Frame2d$originPoint(frame)),
+				xDirection: relativeDirection(
+					_opensolid$geometry$OpenSolid_Frame2d$xDirection(frame)),
+				yDirection: relativeDirection(
+					_opensolid$geometry$OpenSolid_Frame2d$yDirection(frame))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Frame2d$placeIn = function (otherFrame) {
+	var placeDirection = _opensolid$geometry$OpenSolid_Direction2d$placeIn(otherFrame);
+	var placePoint = _opensolid$geometry$OpenSolid_Point2d$placeIn(otherFrame);
+	return function (frame) {
+		return _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+			{
+				originPoint: placePoint(
+					_opensolid$geometry$OpenSolid_Frame2d$originPoint(frame)),
+				xDirection: placeDirection(
+					_opensolid$geometry$OpenSolid_Frame2d$xDirection(frame)),
+				yDirection: placeDirection(
+					_opensolid$geometry$OpenSolid_Frame2d$yDirection(frame))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Frame2d$with = function (_p6) {
+	var _p7 = _p6;
+	var _p8 = _p7.xDirection;
+	return _opensolid$geometry$OpenSolid_Frame2d$unsafe(
+		{
+			originPoint: _p7.originPoint,
+			xDirection: _p8,
+			yDirection: _opensolid$geometry$OpenSolid_Direction2d$perpendicularTo(_p8)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame2d$xy = _opensolid$geometry$OpenSolid_Frame2d$atPoint(_opensolid$geometry$OpenSolid_Point2d$origin);

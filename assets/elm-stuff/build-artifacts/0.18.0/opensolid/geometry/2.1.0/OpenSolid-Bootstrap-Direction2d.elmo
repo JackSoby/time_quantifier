@@ -1,0 +1,19 @@
+var _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$components = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0;
+};
+var _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$unsafe = _opensolid$geometry$OpenSolid_Geometry_Internal$Direction2d;
+var _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$flip = function (direction) {
+	var _p2 = _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$components(direction);
+	var x = _p2._0;
+	var y = _p2._1;
+	return _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$unsafe(
+		{ctor: '_Tuple2', _0: 0 - x, _1: 0 - y});
+};
+var _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$perpendicularTo = function (direction) {
+	var _p3 = _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$components(direction);
+	var x = _p3._0;
+	var y = _p3._1;
+	return _opensolid$geometry$OpenSolid_Bootstrap_Direction2d$unsafe(
+		{ctor: '_Tuple2', _0: 0 - y, _1: x});
+};

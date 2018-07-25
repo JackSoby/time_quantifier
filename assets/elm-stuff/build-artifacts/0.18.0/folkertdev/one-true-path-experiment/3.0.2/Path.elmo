@@ -1,0 +1,66 @@
+var _folkertdev$one_true_path_experiment$Path$toLowLevel = _elm_lang$core$List$filterMap(_folkertdev$one_true_path_experiment$SubPath$toLowLevel);
+var _folkertdev$one_true_path_experiment$Path$fromLowLevel = function (lowlevels) {
+	var _p0 = lowlevels;
+	if (_p0.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		var _p1 = _p0._0.moveto;
+		var _p8 = _p1._1;
+		var folder = F2(
+			function (_p3, _p2) {
+				var _p4 = _p3;
+				var _p5 = _p2;
+				var _p6 = A2(_folkertdev$one_true_path_experiment$LowLevel_Command$fromLowLevelMoveTo, _p4.moveto, _p5._0);
+				var stateAfterMoveTo = _p6._0;
+				var newMoveTo = _p6._1;
+				var _p7 = A2(_folkertdev$one_true_path_experiment$LowLevel_Command$fromLowLevelDrawTos, _p4.drawtos, stateAfterMoveTo);
+				var stateAfterDrawtos = _p7._0;
+				var newDrawTos = _p7._1;
+				return {
+					ctor: '_Tuple2',
+					_0: stateAfterDrawtos,
+					_1: {
+						ctor: '::',
+						_0: A2(_folkertdev$one_true_path_experiment$SubPath$subpath, newMoveTo, newDrawTos),
+						_1: _p5._1
+					}
+				};
+			});
+		var initialCursorState = {start: _p8, cursor: _p8, previousControlPoint: _elm_lang$core$Maybe$Nothing};
+		return _elm_lang$core$List$reverse(
+			_elm_lang$core$Tuple$second(
+				A3(
+					_elm_lang$core$List$foldl,
+					folder,
+					{
+						ctor: '_Tuple2',
+						_0: initialCursorState,
+						_1: {ctor: '[]'}
+					},
+					lowlevels)));
+	}
+};
+var _folkertdev$one_true_path_experiment$Path$parse = function (_p9) {
+	return A2(
+		_elm_lang$core$Result$map,
+		_folkertdev$one_true_path_experiment$Path$fromLowLevel,
+		_folkertdev$svg_path_lowlevel$Path_LowLevel_Parser$parse(_p9));
+};
+var _folkertdev$one_true_path_experiment$Path$toString = function (_p10) {
+	return A2(
+		_elm_lang$core$String$join,
+		' ',
+		A2(_elm_lang$core$List$map, _folkertdev$one_true_path_experiment$SubPath$toString, _p10));
+};
+var _folkertdev$one_true_path_experiment$Path$element = F2(
+	function (path, attributes) {
+		return A2(
+			_elm_lang$svg$Svg$path,
+			{
+				ctor: '::',
+				_0: _elm_lang$svg$Svg_Attributes$d(
+					_folkertdev$one_true_path_experiment$Path$toString(path)),
+				_1: attributes
+			},
+			{ctor: '[]'});
+	});

@@ -1,0 +1,166 @@
+var _opensolid$geometry$OpenSolid_Sphere3d$radius = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0.radius;
+};
+var _opensolid$geometry$OpenSolid_Sphere3d$diameter = function (sphere) {
+	return 2 * _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere);
+};
+var _opensolid$geometry$OpenSolid_Sphere3d$circumference = function (sphere) {
+	return (2 * _elm_lang$core$Basics$pi) * _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere);
+};
+var _opensolid$geometry$OpenSolid_Sphere3d$surfaceArea = function (sphere) {
+	var r = _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere);
+	return ((4 * _elm_lang$core$Basics$pi) * r) * r;
+};
+var _opensolid$geometry$OpenSolid_Sphere3d$volume = function (sphere) {
+	var r = _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere);
+	return ((((4 / 3) * _elm_lang$core$Basics$pi) * r) * r) * r;
+};
+var _opensolid$geometry$OpenSolid_Sphere3d$centerPoint = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0.centerPoint;
+};
+var _opensolid$geometry$OpenSolid_Sphere3d$boundingBox = function (sphere) {
+	var _p4 = _opensolid$geometry$OpenSolid_Point3d$coordinates(
+		_opensolid$geometry$OpenSolid_Sphere3d$centerPoint(sphere));
+	var cx = _p4._0;
+	var cy = _p4._1;
+	var cz = _p4._2;
+	var r = _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere);
+	return _opensolid$geometry$OpenSolid_BoundingBox3d$with(
+		{minX: cx - r, maxX: cx + r, minY: cy - r, maxY: cy + r, minZ: cz - r, maxZ: cz + r});
+};
+var _opensolid$geometry$OpenSolid_Sphere3d$contains = F2(
+	function (point, sphere) {
+		var r = _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere);
+		return _elm_lang$core$Native_Utils.cmp(
+			A2(
+				_opensolid$geometry$OpenSolid_Point3d$squaredDistanceFrom,
+				_opensolid$geometry$OpenSolid_Sphere3d$centerPoint(sphere),
+				point),
+			r * r) < 1;
+	});
+var _opensolid$geometry$OpenSolid_Sphere3d$projectOnto = F2(
+	function (plane, sphere) {
+		return _opensolid$geometry$OpenSolid_Circle3d$with(
+			{
+				centerPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$projectOnto,
+					plane,
+					_opensolid$geometry$OpenSolid_Sphere3d$centerPoint(sphere)),
+				axialDirection: _opensolid$geometry$OpenSolid_Plane3d$normalDirection(plane),
+				radius: _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Sphere3d$projectInto = F2(
+	function (sketchPlane, sphere) {
+		return _opensolid$geometry$OpenSolid_Circle2d$with(
+			{
+				centerPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$projectInto,
+					sketchPlane,
+					_opensolid$geometry$OpenSolid_Sphere3d$centerPoint(sphere)),
+				radius: _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Sphere3d$with = function (properties) {
+	return _opensolid$geometry$OpenSolid_Geometry_Internal$Sphere3d(
+		_elm_lang$core$Native_Utils.update(
+			properties,
+			{
+				radius: _elm_lang$core$Basics$abs(properties.radius)
+			}));
+};
+var _opensolid$geometry$OpenSolid_Sphere3d$throughPoints = function (_p5) {
+	var _p6 = _p5;
+	var _p7 = _p6._3;
+	return A2(
+		_elm_lang$core$Maybe$andThen,
+		function (circle) {
+			var r = _opensolid$geometry$OpenSolid_Circle3d$radius(circle);
+			var normalAxis = _opensolid$geometry$OpenSolid_Circle3d$axis(circle);
+			var x = A2(_opensolid$geometry$OpenSolid_Point3d$distanceFromAxis, normalAxis, _p7);
+			var y = A2(_opensolid$geometry$OpenSolid_Point3d$signedDistanceAlong, normalAxis, _p7);
+			if (!_elm_lang$core$Native_Utils.eq(y, 0)) {
+				var d = (((r * r) - (x * x)) - (y * y)) / (-2 * y);
+				return _elm_lang$core$Maybe$Just(
+					_opensolid$geometry$OpenSolid_Sphere3d$with(
+						{
+							centerPoint: A2(_opensolid$geometry$OpenSolid_Point3d$along, normalAxis, d),
+							radius: _elm_lang$core$Basics$sqrt((r * r) + (d * d))
+						}));
+			} else {
+				return _elm_lang$core$Maybe$Nothing;
+			}
+		},
+		_opensolid$geometry$OpenSolid_Circle3d$throughPoints(
+			{ctor: '_Tuple3', _0: _p6._0, _1: _p6._1, _2: _p6._2}));
+};
+var _opensolid$geometry$OpenSolid_Sphere3d$scaleAbout = F3(
+	function (point, scale, sphere) {
+		return _opensolid$geometry$OpenSolid_Sphere3d$with(
+			{
+				centerPoint: A3(
+					_opensolid$geometry$OpenSolid_Point3d$scaleAbout,
+					point,
+					scale,
+					_opensolid$geometry$OpenSolid_Sphere3d$centerPoint(sphere)),
+				radius: _elm_lang$core$Basics$abs(
+					scale * _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere))
+			});
+	});
+var _opensolid$geometry$OpenSolid_Sphere3d$rotateAround = F3(
+	function (axis, angle, sphere) {
+		var rotatePoint = A2(_opensolid$geometry$OpenSolid_Point3d$rotateAround, axis, angle);
+		return _opensolid$geometry$OpenSolid_Sphere3d$with(
+			{
+				centerPoint: rotatePoint(
+					_opensolid$geometry$OpenSolid_Sphere3d$centerPoint(sphere)),
+				radius: _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Sphere3d$translateBy = F2(
+	function (displacement, sphere) {
+		return _opensolid$geometry$OpenSolid_Sphere3d$with(
+			{
+				centerPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$translateBy,
+					displacement,
+					_opensolid$geometry$OpenSolid_Sphere3d$centerPoint(sphere)),
+				radius: _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Sphere3d$mirrorAcross = F2(
+	function (plane, sphere) {
+		var mirrorPoint = _opensolid$geometry$OpenSolid_Point3d$mirrorAcross(plane);
+		return _opensolid$geometry$OpenSolid_Sphere3d$with(
+			{
+				centerPoint: mirrorPoint(
+					_opensolid$geometry$OpenSolid_Sphere3d$centerPoint(sphere)),
+				radius: _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Sphere3d$relativeTo = F2(
+	function (frame, sphere) {
+		return _opensolid$geometry$OpenSolid_Sphere3d$with(
+			{
+				centerPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$relativeTo,
+					frame,
+					_opensolid$geometry$OpenSolid_Sphere3d$centerPoint(sphere)),
+				radius: _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Sphere3d$placeIn = F2(
+	function (frame, sphere) {
+		return _opensolid$geometry$OpenSolid_Sphere3d$with(
+			{
+				centerPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$placeIn,
+					frame,
+					_opensolid$geometry$OpenSolid_Sphere3d$centerPoint(sphere)),
+				radius: _opensolid$geometry$OpenSolid_Sphere3d$radius(sphere)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Sphere3d$unit = _opensolid$geometry$OpenSolid_Sphere3d$with(
+	{centerPoint: _opensolid$geometry$OpenSolid_Point3d$origin, radius: 1});

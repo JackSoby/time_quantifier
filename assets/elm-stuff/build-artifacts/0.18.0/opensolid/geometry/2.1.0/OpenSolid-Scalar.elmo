@@ -1,0 +1,32 @@
+var _opensolid$geometry$OpenSolid_Scalar$hullOf = function (values) {
+	var _p0 = values;
+	if (_p0.ctor === '[]') {
+		return _elm_lang$core$Maybe$Nothing;
+	} else {
+		var _p2 = _p0._1;
+		var _p1 = _p0._0;
+		var maxValue = A3(_elm_lang$core$List$foldl, _elm_lang$core$Basics$max, _p1, _p2);
+		var minValue = A3(_elm_lang$core$List$foldl, _elm_lang$core$Basics$min, _p1, _p2);
+		var result = _opensolid$geometry$OpenSolid_Geometry_Internal$Interval(
+			{minValue: minValue, maxValue: maxValue});
+		return _elm_lang$core$Maybe$Just(result);
+	}
+};
+var _opensolid$geometry$OpenSolid_Scalar$hull = F2(
+	function (firstValue, secondValue) {
+		return _opensolid$geometry$OpenSolid_Geometry_Internal$Interval(
+			{
+				minValue: A2(_elm_lang$core$Basics$min, firstValue, secondValue),
+				maxValue: A2(_elm_lang$core$Basics$max, firstValue, secondValue)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Scalar$interpolateFrom = F3(
+	function (start, end, parameter) {
+		return (_elm_lang$core$Native_Utils.cmp(parameter, 0.5) < 1) ? (start + (parameter * (end - start))) : (end + ((1 - parameter) * (start - end)));
+	});
+var _opensolid$geometry$OpenSolid_Scalar$equalWithin = F3(
+	function (tolerance, firstValue, secondValue) {
+		return _elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Basics$abs(secondValue - firstValue),
+			tolerance) < 1;
+	});

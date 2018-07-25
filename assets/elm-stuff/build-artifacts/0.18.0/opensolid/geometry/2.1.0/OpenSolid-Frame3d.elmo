@@ -1,0 +1,299 @@
+var _opensolid$geometry$OpenSolid_Frame3d$zDirection = function (_p0) {
+	var _p1 = _p0;
+	return _p1._0.zDirection;
+};
+var _opensolid$geometry$OpenSolid_Frame3d$yDirection = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0.yDirection;
+};
+var _opensolid$geometry$OpenSolid_Frame3d$xDirection = function (_p4) {
+	var _p5 = _p4;
+	return _p5._0.xDirection;
+};
+var _opensolid$geometry$OpenSolid_Frame3d$isRightHanded = function (frame) {
+	var zVector = _opensolid$geometry$OpenSolid_Direction3d$toVector(
+		_opensolid$geometry$OpenSolid_Frame3d$zDirection(frame));
+	var yVector = _opensolid$geometry$OpenSolid_Direction3d$toVector(
+		_opensolid$geometry$OpenSolid_Frame3d$yDirection(frame));
+	var xVector = _opensolid$geometry$OpenSolid_Direction3d$toVector(
+		_opensolid$geometry$OpenSolid_Frame3d$xDirection(frame));
+	return _elm_lang$core$Native_Utils.cmp(
+		A2(
+			_opensolid$geometry$OpenSolid_Vector3d$dotProduct,
+			zVector,
+			A2(_opensolid$geometry$OpenSolid_Vector3d$crossProduct, xVector, yVector)),
+		0) > 0;
+};
+var _opensolid$geometry$OpenSolid_Frame3d$originPoint = function (_p6) {
+	var _p7 = _p6;
+	return _p7._0.originPoint;
+};
+var _opensolid$geometry$OpenSolid_Frame3d$xAxis = function (frame) {
+	return _opensolid$geometry$OpenSolid_Axis3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			direction: _opensolid$geometry$OpenSolid_Frame3d$xDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$yAxis = function (frame) {
+	return _opensolid$geometry$OpenSolid_Axis3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			direction: _opensolid$geometry$OpenSolid_Frame3d$yDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$zAxis = function (frame) {
+	return _opensolid$geometry$OpenSolid_Axis3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			direction: _opensolid$geometry$OpenSolid_Frame3d$zDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$xyPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_Plane3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			normalDirection: _opensolid$geometry$OpenSolid_Frame3d$zDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$yxPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_Plane3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			normalDirection: _opensolid$geometry$OpenSolid_Direction3d$flip(
+				_opensolid$geometry$OpenSolid_Frame3d$zDirection(frame))
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$yzPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_Plane3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			normalDirection: _opensolid$geometry$OpenSolid_Frame3d$xDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$zyPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_Plane3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			normalDirection: _opensolid$geometry$OpenSolid_Direction3d$flip(
+				_opensolid$geometry$OpenSolid_Frame3d$xDirection(frame))
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$zxPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_Plane3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			normalDirection: _opensolid$geometry$OpenSolid_Frame3d$yDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$xzPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_Plane3d$with(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			normalDirection: _opensolid$geometry$OpenSolid_Direction3d$flip(
+				_opensolid$geometry$OpenSolid_Frame3d$yDirection(frame))
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$xySketchPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			xDirection: _opensolid$geometry$OpenSolid_Frame3d$xDirection(frame),
+			yDirection: _opensolid$geometry$OpenSolid_Frame3d$yDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$yxSketchPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			xDirection: _opensolid$geometry$OpenSolid_Frame3d$yDirection(frame),
+			yDirection: _opensolid$geometry$OpenSolid_Frame3d$xDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$yzSketchPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			xDirection: _opensolid$geometry$OpenSolid_Frame3d$yDirection(frame),
+			yDirection: _opensolid$geometry$OpenSolid_Frame3d$zDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$zySketchPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			xDirection: _opensolid$geometry$OpenSolid_Frame3d$zDirection(frame),
+			yDirection: _opensolid$geometry$OpenSolid_Frame3d$yDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$zxSketchPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			xDirection: _opensolid$geometry$OpenSolid_Frame3d$zDirection(frame),
+			yDirection: _opensolid$geometry$OpenSolid_Frame3d$xDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$xzSketchPlane = function (frame) {
+	return _opensolid$geometry$OpenSolid_SketchPlane3d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			xDirection: _opensolid$geometry$OpenSolid_Frame3d$xDirection(frame),
+			yDirection: _opensolid$geometry$OpenSolid_Frame3d$zDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$unsafe = _opensolid$geometry$OpenSolid_Geometry_Internal$Frame3d;
+var _opensolid$geometry$OpenSolid_Frame3d$atPoint = function (point) {
+	return _opensolid$geometry$OpenSolid_Frame3d$unsafe(
+		{originPoint: point, xDirection: _opensolid$geometry$OpenSolid_Direction3d$x, yDirection: _opensolid$geometry$OpenSolid_Direction3d$y, zDirection: _opensolid$geometry$OpenSolid_Direction3d$z});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$flipX = function (frame) {
+	return _opensolid$geometry$OpenSolid_Frame3d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			xDirection: _opensolid$geometry$OpenSolid_Direction3d$flip(
+				_opensolid$geometry$OpenSolid_Frame3d$xDirection(frame)),
+			yDirection: _opensolid$geometry$OpenSolid_Frame3d$yDirection(frame),
+			zDirection: _opensolid$geometry$OpenSolid_Frame3d$zDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$flipY = function (frame) {
+	return _opensolid$geometry$OpenSolid_Frame3d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			xDirection: _opensolid$geometry$OpenSolid_Frame3d$xDirection(frame),
+			yDirection: _opensolid$geometry$OpenSolid_Direction3d$flip(
+				_opensolid$geometry$OpenSolid_Frame3d$yDirection(frame)),
+			zDirection: _opensolid$geometry$OpenSolid_Frame3d$zDirection(frame)
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$flipZ = function (frame) {
+	return _opensolid$geometry$OpenSolid_Frame3d$unsafe(
+		{
+			originPoint: _opensolid$geometry$OpenSolid_Frame3d$originPoint(frame),
+			xDirection: _opensolid$geometry$OpenSolid_Frame3d$xDirection(frame),
+			yDirection: _opensolid$geometry$OpenSolid_Frame3d$yDirection(frame),
+			zDirection: _opensolid$geometry$OpenSolid_Direction3d$flip(
+				_opensolid$geometry$OpenSolid_Frame3d$zDirection(frame))
+		});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$moveTo = F2(
+	function (newOrigin, frame) {
+		return _opensolid$geometry$OpenSolid_Frame3d$unsafe(
+			{
+				originPoint: newOrigin,
+				xDirection: _opensolid$geometry$OpenSolid_Frame3d$xDirection(frame),
+				yDirection: _opensolid$geometry$OpenSolid_Frame3d$yDirection(frame),
+				zDirection: _opensolid$geometry$OpenSolid_Frame3d$zDirection(frame)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Frame3d$rotateAround = F2(
+	function (axis, angle) {
+		var rotateDirection = A2(_opensolid$geometry$OpenSolid_Direction3d$rotateAround, axis, angle);
+		var rotatePoint = A2(_opensolid$geometry$OpenSolid_Point3d$rotateAround, axis, angle);
+		return function (frame) {
+			return _opensolid$geometry$OpenSolid_Frame3d$unsafe(
+				{
+					originPoint: rotatePoint(
+						_opensolid$geometry$OpenSolid_Frame3d$originPoint(frame)),
+					xDirection: rotateDirection(
+						_opensolid$geometry$OpenSolid_Frame3d$xDirection(frame)),
+					yDirection: rotateDirection(
+						_opensolid$geometry$OpenSolid_Frame3d$yDirection(frame)),
+					zDirection: rotateDirection(
+						_opensolid$geometry$OpenSolid_Frame3d$zDirection(frame))
+				});
+		};
+	});
+var _opensolid$geometry$OpenSolid_Frame3d$rotateAroundOwn = F3(
+	function (axis, angle, frame) {
+		return A3(
+			_opensolid$geometry$OpenSolid_Frame3d$rotateAround,
+			axis(frame),
+			angle,
+			frame);
+	});
+var _opensolid$geometry$OpenSolid_Frame3d$translateBy = F2(
+	function (vector, frame) {
+		return _opensolid$geometry$OpenSolid_Frame3d$unsafe(
+			{
+				originPoint: A2(
+					_opensolid$geometry$OpenSolid_Point3d$translateBy,
+					vector,
+					_opensolid$geometry$OpenSolid_Frame3d$originPoint(frame)),
+				xDirection: _opensolid$geometry$OpenSolid_Frame3d$xDirection(frame),
+				yDirection: _opensolid$geometry$OpenSolid_Frame3d$yDirection(frame),
+				zDirection: _opensolid$geometry$OpenSolid_Frame3d$zDirection(frame)
+			});
+	});
+var _opensolid$geometry$OpenSolid_Frame3d$translateAlongOwn = F3(
+	function (axis, distance, frame) {
+		var displacement = _opensolid$geometry$OpenSolid_Vector3d$with(
+			{
+				length: distance,
+				direction: _opensolid$geometry$OpenSolid_Axis3d$direction(
+					axis(frame))
+			});
+		return A2(_opensolid$geometry$OpenSolid_Frame3d$translateBy, displacement, frame);
+	});
+var _opensolid$geometry$OpenSolid_Frame3d$mirrorAcross = function (plane) {
+	var mirrorDirection = _opensolid$geometry$OpenSolid_Direction3d$mirrorAcross(plane);
+	var mirrorPoint = _opensolid$geometry$OpenSolid_Point3d$mirrorAcross(plane);
+	return function (frame) {
+		return _opensolid$geometry$OpenSolid_Frame3d$unsafe(
+			{
+				originPoint: mirrorPoint(
+					_opensolid$geometry$OpenSolid_Frame3d$originPoint(frame)),
+				xDirection: mirrorDirection(
+					_opensolid$geometry$OpenSolid_Frame3d$xDirection(frame)),
+				yDirection: mirrorDirection(
+					_opensolid$geometry$OpenSolid_Frame3d$yDirection(frame)),
+				zDirection: mirrorDirection(
+					_opensolid$geometry$OpenSolid_Frame3d$zDirection(frame))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Frame3d$relativeTo = function (otherFrame) {
+	var relativeDirection = _opensolid$geometry$OpenSolid_Direction3d$relativeTo(otherFrame);
+	var relativePoint = _opensolid$geometry$OpenSolid_Point3d$relativeTo(otherFrame);
+	return function (frame) {
+		return _opensolid$geometry$OpenSolid_Frame3d$unsafe(
+			{
+				originPoint: relativePoint(
+					_opensolid$geometry$OpenSolid_Frame3d$originPoint(frame)),
+				xDirection: relativeDirection(
+					_opensolid$geometry$OpenSolid_Frame3d$xDirection(frame)),
+				yDirection: relativeDirection(
+					_opensolid$geometry$OpenSolid_Frame3d$yDirection(frame)),
+				zDirection: relativeDirection(
+					_opensolid$geometry$OpenSolid_Frame3d$zDirection(frame))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Frame3d$placeIn = function (otherFrame) {
+	var placeDirection = _opensolid$geometry$OpenSolid_Direction3d$placeIn(otherFrame);
+	var placePoint = _opensolid$geometry$OpenSolid_Point3d$placeIn(otherFrame);
+	return function (frame) {
+		return _opensolid$geometry$OpenSolid_Frame3d$unsafe(
+			{
+				originPoint: placePoint(
+					_opensolid$geometry$OpenSolid_Frame3d$originPoint(frame)),
+				xDirection: placeDirection(
+					_opensolid$geometry$OpenSolid_Frame3d$xDirection(frame)),
+				yDirection: placeDirection(
+					_opensolid$geometry$OpenSolid_Frame3d$yDirection(frame)),
+				zDirection: placeDirection(
+					_opensolid$geometry$OpenSolid_Frame3d$zDirection(frame))
+			});
+	};
+};
+var _opensolid$geometry$OpenSolid_Frame3d$with = function (_p8) {
+	var _p9 = _p8;
+	var _p11 = _p9.zDirection;
+	var _p10 = _opensolid$geometry$OpenSolid_Direction3d$perpendicularBasis(_p11);
+	var xDirection = _p10._0;
+	var yDirection = _p10._1;
+	return _opensolid$geometry$OpenSolid_Frame3d$unsafe(
+		{originPoint: _p9.originPoint, xDirection: xDirection, yDirection: yDirection, zDirection: _p11});
+};
+var _opensolid$geometry$OpenSolid_Frame3d$xyz = _opensolid$geometry$OpenSolid_Frame3d$atPoint(_opensolid$geometry$OpenSolid_Point3d$origin);

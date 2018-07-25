@@ -1,0 +1,100 @@
+var _gampleman$elm_visualization$Visualization_Scale_Band$indexOfHelp = F3(
+	function (index, value, list) {
+		indexOfHelp:
+		while (true) {
+			var _p0 = list;
+			if (_p0.ctor === '[]') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				if (_elm_lang$core$Native_Utils.eq(value, _p0._0)) {
+					return _elm_lang$core$Maybe$Just(index);
+				} else {
+					var _v1 = index + 1,
+						_v2 = value,
+						_v3 = _p0._1;
+					index = _v1;
+					value = _v2;
+					list = _v3;
+					continue indexOfHelp;
+				}
+			}
+		}
+	});
+var _gampleman$elm_visualization$Visualization_Scale_Band$indexOf = _gampleman$elm_visualization$Visualization_Scale_Band$indexOfHelp(0);
+var _gampleman$elm_visualization$Visualization_Scale_Band$normalizeConfig = function (_p1) {
+	var _p2 = _p1;
+	return {
+		paddingInner: A3(_elm_lang$core$Basics$clamp, 0, 1, _p2.paddingInner),
+		paddingOuter: A3(_elm_lang$core$Basics$clamp, 0, 1, _p2.paddingOuter),
+		align: A3(_elm_lang$core$Basics$clamp, 0, 1, _p2.align)
+	};
+};
+var _gampleman$elm_visualization$Visualization_Scale_Band$bandwidth = F3(
+	function (cfg, domain, _p3) {
+		var _p4 = _p3;
+		var _p8 = _p4._1;
+		var _p7 = _p4._0;
+		var n = _elm_lang$core$Basics$toFloat(
+			_elm_lang$core$List$length(domain));
+		var _p5 = (_elm_lang$core$Native_Utils.cmp(_p7, _p8) < 0) ? {ctor: '_Tuple2', _0: _p7, _1: _p8} : {ctor: '_Tuple2', _0: _p8, _1: _p7};
+		var start = _p5._0;
+		var stop = _p5._1;
+		var _p6 = _gampleman$elm_visualization$Visualization_Scale_Band$normalizeConfig(cfg);
+		var paddingInner = _p6.paddingInner;
+		var paddingOuter = _p6.paddingOuter;
+		var align = _p6.align;
+		var step = (stop - start) / A2(_elm_lang$core$Basics$max, 1, (n - paddingInner) + (paddingOuter * 2));
+		return step * (1 - paddingInner);
+	});
+var _gampleman$elm_visualization$Visualization_Scale_Band$computePositions = F4(
+	function (index, cfg, n, _p9) {
+		var _p10 = _p9;
+		var _p13 = _p10._1;
+		var _p12 = _p10._0;
+		var _p11 = _gampleman$elm_visualization$Visualization_Scale_Band$normalizeConfig(cfg);
+		var paddingInner = _p11.paddingInner;
+		var paddingOuter = _p11.paddingOuter;
+		var align = _p11.align;
+		var step = (_p13 - _p12) / A2(_elm_lang$core$Basics$max, 1, (n - paddingInner) + (paddingOuter * 2));
+		var start2 = _p12 + (((_p13 - _p12) - (step * (n - paddingInner))) * align);
+		return {ctor: '_Tuple2', _0: start2, _1: step};
+	});
+var _gampleman$elm_visualization$Visualization_Scale_Band$convert = F4(
+	function (cfg, domain, _p14, value) {
+		var _p15 = _p14;
+		var _p21 = _p15._1;
+		var _p20 = _p15._0;
+		var _p16 = A2(_gampleman$elm_visualization$Visualization_Scale_Band$indexOf, value, domain);
+		if (_p16.ctor === 'Just') {
+			var _p19 = _p16._0;
+			var n = _elm_lang$core$Basics$toFloat(
+				_elm_lang$core$List$length(domain));
+			if (_elm_lang$core$Native_Utils.cmp(_p20, _p21) < 0) {
+				var _p17 = A4(
+					_gampleman$elm_visualization$Visualization_Scale_Band$computePositions,
+					_p19,
+					cfg,
+					n,
+					{ctor: '_Tuple2', _0: _p20, _1: _p21});
+				var start2 = _p17._0;
+				var step = _p17._1;
+				return start2 + (step * _p19);
+			} else {
+				var _p18 = A4(
+					_gampleman$elm_visualization$Visualization_Scale_Band$computePositions,
+					_p19,
+					cfg,
+					n,
+					{ctor: '_Tuple2', _0: _p21, _1: _p20});
+				var stop2 = _p18._0;
+				var step = _p18._1;
+				return stop2 + (step * ((n - _p19) - 1));
+			}
+		} else {
+			return 0 / 0;
+		}
+	});
+var _gampleman$elm_visualization$Visualization_Scale_Band$Config = F3(
+	function (a, b, c) {
+		return {paddingInner: a, paddingOuter: b, align: c};
+	});

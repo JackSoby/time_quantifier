@@ -1,0 +1,168 @@
+var _opensolid$geometry$OpenSolid_Interval$cosIncludesMax = function (_p0) {
+	var _p1 = _p0;
+	var maxBranch = _elm_lang$core$Basics$floor(_p1._0.maxValue / (2 * _elm_lang$core$Basics$pi));
+	var minBranch = _elm_lang$core$Basics$floor(_p1._0.minValue / (2 * _elm_lang$core$Basics$pi));
+	return !_elm_lang$core$Native_Utils.eq(minBranch, maxBranch);
+};
+var _opensolid$geometry$OpenSolid_Interval$shiftBy = F2(
+	function (delta, _p2) {
+		var _p3 = _p2;
+		return _opensolid$geometry$OpenSolid_Geometry_Internal$Interval(
+			{minValue: _p3._0.minValue + delta, maxValue: _p3._0.maxValue + delta});
+	});
+var _opensolid$geometry$OpenSolid_Interval$cosIncludesMinMax = function (interval) {
+	return {
+		ctor: '_Tuple2',
+		_0: _opensolid$geometry$OpenSolid_Interval$cosIncludesMax(
+			A2(_opensolid$geometry$OpenSolid_Interval$shiftBy, _elm_lang$core$Basics$pi, interval)),
+		_1: _opensolid$geometry$OpenSolid_Interval$cosIncludesMax(interval)
+	};
+};
+var _opensolid$geometry$OpenSolid_Interval$sinIncludesMinMax = function (interval) {
+	return _opensolid$geometry$OpenSolid_Interval$cosIncludesMinMax(
+		A2(_opensolid$geometry$OpenSolid_Interval$shiftBy, (0 - _elm_lang$core$Basics$pi) / 2, interval));
+};
+var _opensolid$geometry$OpenSolid_Interval$isSingleton = function (_p4) {
+	var _p5 = _p4;
+	return _elm_lang$core$Native_Utils.eq(_p5._0.minValue, _p5._0.maxValue);
+};
+var _opensolid$geometry$OpenSolid_Interval$contains = F2(
+	function (value, _p6) {
+		var _p7 = _p6;
+		return (_elm_lang$core$Native_Utils.cmp(_p7._0.minValue, value) < 1) && (_elm_lang$core$Native_Utils.cmp(value, _p7._0.maxValue) < 1);
+	});
+var _opensolid$geometry$OpenSolid_Interval$interpolate = F2(
+	function (t, _p8) {
+		var _p9 = _p8;
+		return A3(_opensolid$geometry$OpenSolid_Scalar$interpolateFrom, _p9._0.minValue, _p9._0.maxValue, t);
+	});
+var _opensolid$geometry$OpenSolid_Interval$width = function (_p10) {
+	var _p11 = _p10;
+	return _p11._0.maxValue - _p11._0.minValue;
+};
+var _opensolid$geometry$OpenSolid_Interval$midpoint = function (_p12) {
+	var _p13 = _p12;
+	var _p14 = _p13._0.minValue;
+	return _p14 + (0.5 * (_p13._0.maxValue - _p14));
+};
+var _opensolid$geometry$OpenSolid_Interval$maxValue = function (_p15) {
+	var _p16 = _p15;
+	return _p16._0.maxValue;
+};
+var _opensolid$geometry$OpenSolid_Interval$minValue = function (_p17) {
+	var _p18 = _p17;
+	return _p18._0.minValue;
+};
+var _opensolid$geometry$OpenSolid_Interval$intersects = F2(
+	function (firstInterval, secondInterval) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_opensolid$geometry$OpenSolid_Interval$minValue(firstInterval),
+			_opensolid$geometry$OpenSolid_Interval$maxValue(secondInterval)) < 1) && (_elm_lang$core$Native_Utils.cmp(
+			_opensolid$geometry$OpenSolid_Interval$maxValue(firstInterval),
+			_opensolid$geometry$OpenSolid_Interval$minValue(secondInterval)) > -1);
+	});
+var _opensolid$geometry$OpenSolid_Interval$isContainedIn = F2(
+	function (firstInterval, secondInterval) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_opensolid$geometry$OpenSolid_Interval$minValue(secondInterval),
+			_opensolid$geometry$OpenSolid_Interval$minValue(firstInterval)) > -1) && (_elm_lang$core$Native_Utils.cmp(
+			_opensolid$geometry$OpenSolid_Interval$maxValue(secondInterval),
+			_opensolid$geometry$OpenSolid_Interval$maxValue(firstInterval)) < 1);
+	});
+var _opensolid$geometry$OpenSolid_Interval$extrema = function (_p19) {
+	var _p20 = _p19;
+	return _p20._0;
+};
+var _opensolid$geometry$OpenSolid_Interval$intersection = F2(
+	function (firstInterval, secondInterval) {
+		var resultMax = A2(
+			_elm_lang$core$Basics$min,
+			_opensolid$geometry$OpenSolid_Interval$maxValue(firstInterval),
+			_opensolid$geometry$OpenSolid_Interval$maxValue(secondInterval));
+		var resultMin = A2(
+			_elm_lang$core$Basics$max,
+			_opensolid$geometry$OpenSolid_Interval$minValue(firstInterval),
+			_opensolid$geometry$OpenSolid_Interval$minValue(secondInterval));
+		return (_elm_lang$core$Native_Utils.cmp(resultMin, resultMax) < 1) ? _elm_lang$core$Maybe$Just(
+			_opensolid$geometry$OpenSolid_Geometry_Internal$Interval(
+				{minValue: resultMin, maxValue: resultMax})) : _elm_lang$core$Maybe$Nothing;
+	});
+var _opensolid$geometry$OpenSolid_Interval$hull = F2(
+	function (firstInterval, secondInterval) {
+		return _opensolid$geometry$OpenSolid_Geometry_Internal$Interval(
+			{
+				minValue: A2(
+					_elm_lang$core$Basics$min,
+					_opensolid$geometry$OpenSolid_Interval$minValue(firstInterval),
+					_opensolid$geometry$OpenSolid_Interval$minValue(secondInterval)),
+				maxValue: A2(
+					_elm_lang$core$Basics$max,
+					_opensolid$geometry$OpenSolid_Interval$maxValue(firstInterval),
+					_opensolid$geometry$OpenSolid_Interval$maxValue(secondInterval))
+			});
+	});
+var _opensolid$geometry$OpenSolid_Interval$hullOf = function (intervals) {
+	var _p21 = intervals;
+	if (_p21.ctor === '::') {
+		return _elm_lang$core$Maybe$Just(
+			A3(_elm_lang$core$List$foldl, _opensolid$geometry$OpenSolid_Interval$hull, _p21._0, _p21._1));
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _opensolid$geometry$OpenSolid_Interval$singleton = function (value) {
+	return _opensolid$geometry$OpenSolid_Geometry_Internal$Interval(
+		{minValue: value, maxValue: value});
+};
+var _opensolid$geometry$OpenSolid_Interval$sin = function (_p22) {
+	var _p23 = _p22;
+	var _p27 = _p23._0.minValue;
+	var _p26 = _p23._0.maxValue;
+	var _p25 = _p23;
+	if (_opensolid$geometry$OpenSolid_Interval$isSingleton(_p25)) {
+		return _opensolid$geometry$OpenSolid_Interval$singleton(
+			_elm_lang$core$Basics$sin(_p27));
+	} else {
+		var _p24 = _opensolid$geometry$OpenSolid_Interval$sinIncludesMinMax(_p25);
+		var includesMin = _p24._0;
+		var includesMax = _p24._1;
+		var newMin = includesMin ? -1 : A2(
+			_elm_lang$core$Basics$min,
+			_elm_lang$core$Basics$sin(_p27),
+			_elm_lang$core$Basics$sin(_p26));
+		var newMax = includesMax ? 1 : A2(
+			_elm_lang$core$Basics$max,
+			_elm_lang$core$Basics$sin(_p27),
+			_elm_lang$core$Basics$sin(_p26));
+		return _opensolid$geometry$OpenSolid_Geometry_Internal$Interval(
+			{minValue: newMin, maxValue: newMax});
+	}
+};
+var _opensolid$geometry$OpenSolid_Interval$cos = function (_p28) {
+	var _p29 = _p28;
+	var _p33 = _p29._0.minValue;
+	var _p32 = _p29._0.maxValue;
+	var _p31 = _p29;
+	if (_opensolid$geometry$OpenSolid_Interval$isSingleton(_p31)) {
+		return _opensolid$geometry$OpenSolid_Interval$singleton(
+			_elm_lang$core$Basics$cos(_p33));
+	} else {
+		var _p30 = _opensolid$geometry$OpenSolid_Interval$cosIncludesMinMax(_p31);
+		var includesMin = _p30._0;
+		var includesMax = _p30._1;
+		var newMin = includesMin ? -1 : A2(
+			_elm_lang$core$Basics$min,
+			_elm_lang$core$Basics$cos(_p33),
+			_elm_lang$core$Basics$cos(_p32));
+		var newMax = includesMax ? 1 : A2(
+			_elm_lang$core$Basics$max,
+			_elm_lang$core$Basics$cos(_p33),
+			_elm_lang$core$Basics$cos(_p32));
+		return _opensolid$geometry$OpenSolid_Geometry_Internal$Interval(
+			{minValue: newMin, maxValue: newMax});
+	}
+};
+var _opensolid$geometry$OpenSolid_Interval$with = function (extrema) {
+	return (_elm_lang$core$Native_Utils.cmp(extrema.minValue, extrema.maxValue) < 1) ? _opensolid$geometry$OpenSolid_Geometry_Internal$Interval(extrema) : _opensolid$geometry$OpenSolid_Geometry_Internal$Interval(
+		{minValue: extrema.maxValue, maxValue: extrema.minValue});
+};

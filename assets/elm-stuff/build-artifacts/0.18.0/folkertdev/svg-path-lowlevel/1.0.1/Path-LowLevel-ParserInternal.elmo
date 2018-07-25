@@ -1,0 +1,479 @@
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$command = function (_p0) {
+	var _p1 = _p0;
+	var _p4 = _p1.constructor;
+	var _p3 = _p1.character;
+	var _p2 = _p1.$arguments;
+	return _elm_tools$parser$Parser$oneOf(
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_tools$parser$Parser_ops['|='],
+				A2(
+					_elm_tools$parser$Parser_ops['|.'],
+					A2(
+						_elm_tools$parser$Parser_ops['|.'],
+						_elm_tools$parser$Parser$succeed(
+							_p4(_folkertdev$svg_path_lowlevel$Path_LowLevel$Absolute)),
+						_elm_tools$parser$Parser$symbol(
+							_elm_lang$core$String$fromChar(
+								_elm_lang$core$Char$toUpper(_p3)))),
+					A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$zeroOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)),
+				_p2),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_tools$parser$Parser_ops['|='],
+					A2(
+						_elm_tools$parser$Parser_ops['|.'],
+						A2(
+							_elm_tools$parser$Parser_ops['|.'],
+							_elm_tools$parser$Parser$succeed(
+								_p4(_folkertdev$svg_path_lowlevel$Path_LowLevel$Relative)),
+							_elm_tools$parser$Parser$symbol(
+								_elm_lang$core$String$fromChar(
+									_elm_lang$core$Char$toLower(_p3)))),
+						A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$zeroOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)),
+					_p2),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$ellipticalArcArgument = function () {
+	var helper = F6(
+		function (rx, ry, xAxisRotate, arc, sweep, target) {
+			var _p5 = _folkertdev$svg_path_lowlevel$Path_LowLevel$decodeFlags(
+				{ctor: '_Tuple2', _0: arc, _1: sweep});
+			if (_p5.ctor === 'Just') {
+				return _elm_tools$parser$Parser$succeed(
+					{
+						radii: {ctor: '_Tuple2', _0: rx, _1: ry},
+						xAxisRotate: xAxisRotate,
+						arcFlag: _p5._0._0,
+						direction: _p5._0._1,
+						target: target
+					});
+			} else {
+				return _elm_tools$parser$Parser$fail('could not parse the arc and sweep flags');
+			}
+		});
+	return _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$join(
+		A2(
+			_elm_tools$parser$Parser_ops['|='],
+			A2(
+				_elm_tools$parser$Parser_ops['|.'],
+				A2(
+					_elm_tools$parser$Parser_ops['|='],
+					A2(
+						_elm_tools$parser$Parser_ops['|.'],
+						A2(
+							_elm_tools$parser$Parser_ops['|='],
+							A2(
+								_elm_tools$parser$Parser_ops['|.'],
+								A2(
+									_elm_tools$parser$Parser_ops['|='],
+									A2(
+										_elm_tools$parser$Parser_ops['|.'],
+										A2(
+											_elm_tools$parser$Parser_ops['|='],
+											A2(
+												_elm_tools$parser$Parser_ops['|.'],
+												A2(
+													_elm_tools$parser$Parser_ops['|='],
+													_elm_tools$parser$Parser$succeed(helper),
+													_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$nonNegativeNumber),
+												A2(
+													_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+													{ctor: '_Tuple0'},
+													_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)),
+											_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$nonNegativeNumber),
+										A2(
+											_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+											{ctor: '_Tuple0'},
+											_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)),
+									_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$number),
+								_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp),
+							_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$flag),
+						A2(
+							_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+							{ctor: '_Tuple0'},
+							_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)),
+					_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$flag),
+				A2(
+					_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+					{ctor: '_Tuple0'},
+					_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)),
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair));
+}();
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$ellipticalArcArgumentSequence = _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited(
+	{
+		item: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$ellipticalArcArgument,
+		delimiter: A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '_Tuple0'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$ellipticalArc = A2(
+	_elm_tools$parser$Parser$inContext,
+	'elliptical arc',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$command(
+		{
+			constructor: _folkertdev$svg_path_lowlevel$Path_LowLevel$EllipticalArc,
+			character: _elm_lang$core$Native_Utils.chr('a'),
+			$arguments: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$ellipticalArcArgumentSequence
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$smoothQuadraticBezierCurvetoArgumentSequence = _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited(
+	{
+		item: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair,
+		delimiter: A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '_Tuple0'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$smoothQuadraticBezierCurveto = A2(
+	_elm_tools$parser$Parser$inContext,
+	'smooth quadratic bezier curveto',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$command(
+		{
+			constructor: _folkertdev$svg_path_lowlevel$Path_LowLevel$SmoothQuadraticBezierCurveTo,
+			character: _elm_lang$core$Native_Utils.chr('t'),
+			$arguments: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$smoothQuadraticBezierCurvetoArgumentSequence
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$quadraticBezierCurvetoArgument = A2(
+	_elm_tools$parser$Parser_ops['|='],
+	A2(
+		_elm_tools$parser$Parser_ops['|.'],
+		A2(
+			_elm_tools$parser$Parser_ops['|='],
+			_elm_tools$parser$Parser$succeed(
+				F2(
+					function (v0, v1) {
+						return {ctor: '_Tuple2', _0: v0, _1: v1};
+					})),
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair),
+		A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '_Tuple0'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)),
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair);
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$quadraticBezierCurvetoArgumentSequence = A2(
+	_elm_tools$parser$Parser$inContext,
+	'quadratic bezier curveto argument sequence',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited(
+		{
+			item: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$quadraticBezierCurvetoArgument,
+			delimiter: A2(
+				_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+				{ctor: '_Tuple0'},
+				_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$quadraticBezierCurveto = A2(
+	_elm_tools$parser$Parser$inContext,
+	'quadratic bezier curveto',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$command(
+		{
+			constructor: _folkertdev$svg_path_lowlevel$Path_LowLevel$QuadraticBezierCurveTo,
+			character: _elm_lang$core$Native_Utils.chr('q'),
+			$arguments: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$quadraticBezierCurvetoArgumentSequence
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$smoothCurvetoArgument = A2(
+	_elm_tools$parser$Parser_ops['|='],
+	A2(
+		_elm_tools$parser$Parser_ops['|.'],
+		A2(
+			_elm_tools$parser$Parser_ops['|='],
+			_elm_tools$parser$Parser$succeed(
+				F2(
+					function (v0, v1) {
+						return {ctor: '_Tuple2', _0: v0, _1: v1};
+					})),
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair),
+		A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '_Tuple0'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)),
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair);
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$smoothCurvetoArgumentSequence = _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited(
+	{
+		item: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$smoothCurvetoArgument,
+		delimiter: A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '_Tuple0'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$smoothCurveto = A2(
+	_elm_tools$parser$Parser$inContext,
+	'smooth curveto',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$command(
+		{
+			constructor: _folkertdev$svg_path_lowlevel$Path_LowLevel$SmoothCurveTo,
+			character: _elm_lang$core$Native_Utils.chr('s'),
+			$arguments: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$smoothCurvetoArgumentSequence
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$curvetoArgument = A2(
+	_elm_tools$parser$Parser_ops['|='],
+	A2(
+		_elm_tools$parser$Parser_ops['|.'],
+		A2(
+			_elm_tools$parser$Parser_ops['|='],
+			A2(
+				_elm_tools$parser$Parser_ops['|.'],
+				A2(
+					_elm_tools$parser$Parser_ops['|='],
+					_elm_tools$parser$Parser$succeed(
+						F3(
+							function (v0, v1, v2) {
+								return {ctor: '_Tuple3', _0: v0, _1: v1, _2: v2};
+							})),
+					_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair),
+				A2(
+					_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+					{ctor: '_Tuple0'},
+					_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)),
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair),
+		A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '_Tuple0'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)),
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair);
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$curvetoArgumentSequence = _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited(
+	{
+		item: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$curvetoArgument,
+		delimiter: A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '_Tuple0'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$curveto = A2(
+	_elm_tools$parser$Parser$inContext,
+	'curveto',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$command(
+		{
+			constructor: _folkertdev$svg_path_lowlevel$Path_LowLevel$CurveTo,
+			character: _elm_lang$core$Native_Utils.chr('c'),
+			$arguments: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$curvetoArgumentSequence
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$verticalLinetoArgumentSequence = _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited(
+	{
+		item: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$number,
+		delimiter: A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '_Tuple0'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$verticalLineto = A2(
+	_elm_tools$parser$Parser$inContext,
+	'vertical lineto',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$command(
+		{
+			constructor: _folkertdev$svg_path_lowlevel$Path_LowLevel$Vertical,
+			character: _elm_lang$core$Native_Utils.chr('v'),
+			$arguments: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$verticalLinetoArgumentSequence
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$horizontalLinetoArgumentSequence = _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited(
+	{
+		item: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$number,
+		delimiter: A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '_Tuple0'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$horizontalLineto = A2(
+	_elm_tools$parser$Parser$inContext,
+	'horizontal lineto',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$command(
+		{
+			constructor: _folkertdev$svg_path_lowlevel$Path_LowLevel$Horizontal,
+			character: _elm_lang$core$Native_Utils.chr('h'),
+			$arguments: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$horizontalLinetoArgumentSequence
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$linetoArgumentSequence = _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited(
+	{
+		item: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair,
+		delimiter: A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '_Tuple0'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$lineto = A2(
+	_elm_tools$parser$Parser$inContext,
+	'lineto',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$command(
+		{
+			constructor: _folkertdev$svg_path_lowlevel$Path_LowLevel$LineTo,
+			character: _elm_lang$core$Native_Utils.chr('l'),
+			$arguments: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$linetoArgumentSequence
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$closepath = A2(
+	_elm_tools$parser$Parser$inContext,
+	'closepath',
+	_elm_tools$parser$Parser$oneOf(
+		{
+			ctor: '::',
+			_0: A2(
+				_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers_ops['|-'],
+				_elm_tools$parser$Parser$symbol('z'),
+				_elm_tools$parser$Parser$succeed(_folkertdev$svg_path_lowlevel$Path_LowLevel$ClosePath)),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers_ops['|-'],
+					_elm_tools$parser$Parser$symbol('Z'),
+					_elm_tools$parser$Parser$succeed(_folkertdev$svg_path_lowlevel$Path_LowLevel$ClosePath)),
+				_1: {ctor: '[]'}
+			}
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$movetoArgumentSequence = _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited(
+	{
+		item: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$coordinatePair,
+		delimiter: A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '_Tuple0'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$commaWsp)
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$moveto = A2(
+	_elm_tools$parser$Parser$inContext,
+	'moveto',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$command(
+		{
+			constructor: F2(
+				function (mode, coordinates) {
+					var _p6 = coordinates;
+					if (_p6.ctor === '[]') {
+						return _elm_lang$core$Native_Utils.crashCase(
+							'Path.LowLevel.ParserInternal',
+							{
+								start: {line: 83, column: 21},
+								end: {line: 92, column: 69}
+							},
+							_p6)('movetoArgumentSequence succeeded but parsed no coordinates');
+					} else {
+						if (_p6._1.ctor === '[]') {
+							return {
+								ctor: '_Tuple2',
+								_0: A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$MoveTo, mode, _p6._0),
+								_1: _elm_lang$core$Maybe$Nothing
+							};
+						} else {
+							return {
+								ctor: '_Tuple2',
+								_0: A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$MoveTo, mode, _p6._0),
+								_1: _elm_lang$core$Maybe$Just(
+									A2(_folkertdev$svg_path_lowlevel$Path_LowLevel$LineTo, mode, _p6._1))
+							};
+						}
+					}
+				}),
+			character: _elm_lang$core$Native_Utils.chr('m'),
+			$arguments: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$movetoArgumentSequence
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$drawtoCommand = _elm_tools$parser$Parser$oneOf(
+	{
+		ctor: '::',
+		_0: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$closepath,
+		_1: {
+			ctor: '::',
+			_0: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$lineto,
+			_1: {
+				ctor: '::',
+				_0: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$horizontalLineto,
+				_1: {
+					ctor: '::',
+					_0: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$verticalLineto,
+					_1: {
+						ctor: '::',
+						_0: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$curveto,
+						_1: {
+							ctor: '::',
+							_0: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$smoothCurveto,
+							_1: {
+								ctor: '::',
+								_0: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$quadraticBezierCurveto,
+								_1: {
+									ctor: '::',
+									_0: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$smoothQuadraticBezierCurveto,
+									_1: {
+										ctor: '::',
+										_0: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$ellipticalArc,
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$drawtoCommands = A2(
+	_elm_tools$parser$Parser$inContext,
+	'drawto commands',
+	_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited(
+		{
+			item: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$drawtoCommand,
+			delimiter: A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$zeroOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)
+		}));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$moveToDrawToCommandGroup = A2(
+	_elm_tools$parser$Parser$inContext,
+	'moveto drawto command group',
+	A2(
+		_elm_tools$parser$Parser_ops['|='],
+		A2(
+			_elm_tools$parser$Parser_ops['|.'],
+			A2(
+				_elm_tools$parser$Parser_ops['|='],
+				_elm_tools$parser$Parser$succeed(
+					F2(
+						function (_p8, drawtos) {
+							var _p9 = _p8;
+							var _p11 = _p9._0;
+							var _p10 = _p9._1;
+							if (_p10.ctor === 'Nothing') {
+								return {ctor: '_Tuple2', _0: _p11, _1: drawtos};
+							} else {
+								return {
+									ctor: '_Tuple2',
+									_0: _p11,
+									_1: {ctor: '::', _0: _p10._0, _1: drawtos}
+								};
+							}
+						})),
+				_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$moveto),
+			A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$zeroOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)),
+		A2(
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+			{ctor: '[]'},
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$drawtoCommands)));
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$moveToDrawToCommandGroups = _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$delimited(
+	{
+		item: _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$moveToDrawToCommandGroup,
+		delimiter: A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$zeroOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)
+	});
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$svgMixedSubPath = A2(
+	_elm_tools$parser$Parser_ops['|.'],
+	A2(
+		_elm_tools$parser$Parser_ops['|.'],
+		A2(
+			_elm_tools$parser$Parser_ops['|='],
+			A2(
+				_elm_tools$parser$Parser_ops['|.'],
+				_elm_tools$parser$Parser$succeed(_elm_lang$core$Basics$identity),
+				A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$zeroOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)),
+			_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$moveToDrawToCommandGroup),
+		A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$zeroOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)),
+	_elm_tools$parser$Parser$end);
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$svgMixedPath = A2(
+	_elm_tools$parser$Parser_ops['|.'],
+	A2(
+		_elm_tools$parser$Parser_ops['|.'],
+		A2(
+			_elm_tools$parser$Parser_ops['|='],
+			A2(
+				_elm_tools$parser$Parser_ops['|.'],
+				_elm_tools$parser$Parser$succeed(_elm_lang$core$Basics$identity),
+				A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$zeroOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)),
+			A2(
+				_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$withDefault,
+				{ctor: '[]'},
+				_folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$moveToDrawToCommandGroups)),
+		A2(_elm_tools$parser$Parser$ignore, _elm_tools$parser$Parser$zeroOrMore, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserHelpers$isWhitespace)),
+	_elm_tools$parser$Parser$end);

@@ -1,0 +1,18 @@
+var _opensolid$geometry$OpenSolid_Bootstrap_BoundingBox3d$with = function (_p0) {
+	var _p1 = _p0;
+	var _p7 = _p1.minZ;
+	var _p6 = _p1.minY;
+	var _p5 = _p1.minX;
+	var _p4 = _p1.maxZ;
+	var _p3 = _p1.maxY;
+	var _p2 = _p1.maxX;
+	return ((_elm_lang$core$Native_Utils.cmp(_p5, _p2) < 1) && ((_elm_lang$core$Native_Utils.cmp(_p6, _p3) < 1) && (_elm_lang$core$Native_Utils.cmp(_p7, _p4) < 1))) ? _opensolid$geometry$OpenSolid_Geometry_Internal$BoundingBox3d(_p1) : _opensolid$geometry$OpenSolid_Geometry_Internal$BoundingBox3d(
+		{
+			minX: A2(_elm_lang$core$Basics$min, _p5, _p2),
+			maxX: A2(_elm_lang$core$Basics$max, _p5, _p2),
+			minY: A2(_elm_lang$core$Basics$min, _p6, _p3),
+			maxY: A2(_elm_lang$core$Basics$max, _p6, _p3),
+			minZ: A2(_elm_lang$core$Basics$min, _p7, _p4),
+			maxZ: A2(_elm_lang$core$Basics$max, _p7, _p4)
+		});
+};

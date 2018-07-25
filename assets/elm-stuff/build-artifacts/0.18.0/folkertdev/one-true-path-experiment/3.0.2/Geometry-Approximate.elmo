@@ -1,0 +1,65 @@
+var _folkertdev$one_true_path_experiment$Geometry_Approximate$approximate = F3(
+	function (config, data, s) {
+		approximate:
+		while (true) {
+			var splitFurther = function (data) {
+				var upper = config.upperBound(data);
+				var lower = config.lowerBound(data);
+				var average = (lower + upper) / 2;
+				return _elm_lang$core$Native_Utils.cmp((average - lower) / average, config.percentageError) > 0;
+			};
+			if (splitFurther(data)) {
+				var _p0 = A2(config.split, 0.5, data);
+				var left = _p0._0;
+				var right = _p0._1;
+				if (_elm_lang$core$Native_Utils.cmp(
+					s,
+					config.lowerBound(left)) < 0) {
+					var _v0 = config,
+						_v1 = left,
+						_v2 = s;
+					config = _v0;
+					data = _v1;
+					s = _v2;
+					continue approximate;
+				} else {
+					if (_elm_lang$core$Native_Utils.cmp(
+						s,
+						config.upperBound(data)) > 0) {
+						return _elm_lang$core$Maybe$Nothing;
+					} else {
+						if (_elm_lang$core$Native_Utils.cmp(
+							s,
+							config.upperBound(left)) > 0) {
+							var _v3 = config,
+								_v4 = right,
+								_v5 = s - config.length(left);
+							config = _v3;
+							data = _v4;
+							s = _v5;
+							continue approximate;
+						} else {
+							var _p1 = A3(_folkertdev$one_true_path_experiment$Geometry_Approximate$approximate, config, left, s);
+							if (_p1.ctor === 'Just') {
+								return _elm_lang$core$Maybe$Just(_p1._0);
+							} else {
+								var _v7 = config,
+									_v8 = right,
+									_v9 = s - config.length(left);
+								config = _v7;
+								data = _v8;
+								s = _v9;
+								continue approximate;
+							}
+						}
+					}
+				}
+			} else {
+				return config.baseCase(data);
+			}
+		}
+	});
+var _folkertdev$one_true_path_experiment$Geometry_Approximate$Config = F6(
+	function (a, b, c, d, e, f) {
+		return {split: a, percentageError: b, upperBound: c, lowerBound: d, baseCase: e, length: f};
+	});

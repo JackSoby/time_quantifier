@@ -1,0 +1,7 @@
+var _folkertdev$svg_path_lowlevel$Path_LowLevel_Parser$parse = function (input) {
+	return A2(
+		_elm_lang$core$Result$map,
+		_elm_lang$core$List$map(
+			_elm_lang$core$Basics$uncurry(_folkertdev$svg_path_lowlevel$Path_LowLevel$SubPath)),
+		A2(_elm_tools$parser$Parser$run, _folkertdev$svg_path_lowlevel$Path_LowLevel_ParserInternal$svgMixedPath, input));
+};

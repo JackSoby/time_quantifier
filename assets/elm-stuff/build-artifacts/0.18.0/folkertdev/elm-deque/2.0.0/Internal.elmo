@@ -1,0 +1,216 @@
+var _folkertdev$elm_deque$Internal$rebalance = function (_p0) {
+	var _p1 = _p0;
+	var _p6 = _p1.sizeR;
+	var _p5 = _p1.sizeF;
+	var _p4 = _p1.rear;
+	var _p3 = _p1.front;
+	var _p2 = _p1;
+	var size1 = ((_p5 + _p6) / 2) | 0;
+	var size2 = (_p5 + _p6) - size1;
+	var balanceConstant = 4;
+	if (_elm_lang$core$Native_Utils.cmp(_p5 + _p6, 2) < 0) {
+		return _p2;
+	} else {
+		if (_elm_lang$core$Native_Utils.cmp(_p5, (balanceConstant * _p6) + 1) > 0) {
+			var newRear = A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p4,
+				_elm_lang$core$List$reverse(
+					A2(_elm_lang$core$List$drop, size1, _p3)));
+			var newFront = A2(_elm_lang$core$List$take, size1, _p3);
+			return _elm_lang$core$Native_Utils.update(
+				_p2,
+				{sizeF: size1, front: newFront, rear: newRear, sizeR: size2});
+		} else {
+			if (_elm_lang$core$Native_Utils.cmp(_p6, (balanceConstant * _p5) + 1) > 0) {
+				var newRear = A2(_elm_lang$core$List$take, size1, _p4);
+				var newFront = A2(
+					_elm_lang$core$Basics_ops['++'],
+					_p3,
+					_elm_lang$core$List$reverse(
+						A2(_elm_lang$core$List$drop, size1, _p4)));
+				return _elm_lang$core$Native_Utils.update(
+					_p2,
+					{sizeF: size1, front: newFront, rear: newRear, sizeR: size2});
+			} else {
+				return _p2;
+			}
+		}
+	}
+};
+var _folkertdev$elm_deque$Internal$fromList = F2(
+	function (empty, list) {
+		return _folkertdev$elm_deque$Internal$rebalance(
+			_elm_lang$core$Native_Utils.update(
+				empty,
+				{
+					sizeF: _elm_lang$core$List$length(list),
+					front: list
+				}));
+	});
+var _folkertdev$elm_deque$Internal$toList = function (deque) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		deque.front,
+		_elm_lang$core$List$reverse(deque.rear));
+};
+var _folkertdev$elm_deque$Internal$foldr = F3(
+	function (f, initial, deque) {
+		return function (initial_) {
+			return A3(_elm_lang$core$List$foldr, f, initial_, deque.front);
+		}(
+			A3(_elm_lang$core$List$foldl, f, initial, deque.rear));
+	});
+var _folkertdev$elm_deque$Internal$foldl = F3(
+	function (f, initial, deque) {
+		return function (initial_) {
+			return A3(_elm_lang$core$List$foldr, f, initial_, deque.rear);
+		}(
+			A3(_elm_lang$core$List$foldl, f, initial, deque.front));
+	});
+var _folkertdev$elm_deque$Internal$filter = F2(
+	function (p, deque) {
+		var newRear = A2(_elm_lang$core$List$filter, p, deque.rear);
+		var newFront = A2(_elm_lang$core$List$filter, p, deque.front);
+		return _folkertdev$elm_deque$Internal$rebalance(
+			_elm_lang$core$Native_Utils.update(
+				deque,
+				{
+					sizeF: _elm_lang$core$List$length(newFront),
+					front: newFront,
+					sizeR: _elm_lang$core$List$length(newRear),
+					rear: newRear
+				}));
+	});
+var _folkertdev$elm_deque$Internal$map = F2(
+	function (f, deque) {
+		return _elm_lang$core$Native_Utils.update(
+			deque,
+			{
+				front: A2(_elm_lang$core$List$map, f, deque.front),
+				rear: A2(_elm_lang$core$List$map, f, deque.rear)
+			});
+	});
+var _folkertdev$elm_deque$Internal$length = function (deque) {
+	return deque.sizeF + deque.sizeR;
+};
+var _folkertdev$elm_deque$Internal$member = F2(
+	function (elem, deque) {
+		return A2(_elm_lang$core$List$member, elem, deque.front) || A2(_elm_lang$core$List$member, elem, deque.rear);
+	});
+var _folkertdev$elm_deque$Internal$isEmpty = function (deque) {
+	return _elm_lang$core$Native_Utils.eq(
+		_folkertdev$elm_deque$Internal$length(deque),
+		0);
+};
+var _folkertdev$elm_deque$Internal$takeBack = F2(
+	function (i, deque) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(_elm_lang$core$List$take, i, deque.rear),
+			A2(
+				_elm_lang$core$List$take,
+				i - deque.sizeR,
+				_elm_lang$core$List$reverse(deque.front)));
+	});
+var _folkertdev$elm_deque$Internal$takeFront = F2(
+	function (i, deque) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(_elm_lang$core$List$take, i, deque.front),
+			A2(
+				_elm_lang$core$List$take,
+				i - deque.sizeF,
+				_elm_lang$core$List$reverse(deque.rear)));
+	});
+var _folkertdev$elm_deque$Internal$popBack = F2(
+	function (empty, _p7) {
+		var _p8 = _p7;
+		var _p11 = _p8;
+		var _p9 = {ctor: '_Tuple2', _0: _p8.front, _1: _p8.rear};
+		if (_p9._1.ctor === '[]') {
+			if (_p9._0.ctor === '[]') {
+				return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: empty};
+			} else {
+				if (_p9._0._1.ctor === '[]') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Maybe$Just(_p9._0._0),
+						_1: empty
+					};
+				} else {
+					return _elm_lang$core$Native_Utils.crashCase(
+						'Internal',
+						{
+							start: {line: 75, column: 5},
+							end: {line: 89, column: 14}
+						},
+						_p9)('AbstractDeque record is too far unbalanced');
+				}
+			}
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Just(_p9._1._0),
+				_1: _folkertdev$elm_deque$Internal$rebalance(
+					_elm_lang$core$Native_Utils.update(
+						_p11,
+						{sizeR: _p11.sizeR - 1, rear: _p9._1._1}))
+			};
+		}
+	});
+var _folkertdev$elm_deque$Internal$popFront = F2(
+	function (empty, _p12) {
+		var _p13 = _p12;
+		var _p16 = _p13;
+		var _p14 = {ctor: '_Tuple2', _0: _p13.front, _1: _p13.rear};
+		if (_p14._0.ctor === '[]') {
+			if (_p14._1.ctor === '[]') {
+				return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: empty};
+			} else {
+				if (_p14._1._1.ctor === '[]') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Maybe$Just(_p14._1._0),
+						_1: empty
+					};
+				} else {
+					return _elm_lang$core$Native_Utils.crashCase(
+						'Internal',
+						{
+							start: {line: 53, column: 5},
+							end: {line: 67, column: 14}
+						},
+						_p14)('AbstractDeque record is too far unbalanced');
+				}
+			}
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Just(_p14._0._0),
+				_1: _folkertdev$elm_deque$Internal$rebalance(
+					_elm_lang$core$Native_Utils.update(
+						_p16,
+						{sizeF: _p16.sizeF - 1, front: _p14._0._1}))
+			};
+		}
+	});
+var _folkertdev$elm_deque$Internal$last = function (deque) {
+	var _p17 = {ctor: '_Tuple2', _0: deque.front, _1: deque.rear};
+	if ((((_p17.ctor === '_Tuple2') && (_p17._0.ctor === '::')) && (_p17._0._1.ctor === '[]')) && (_p17._1.ctor === '[]')) {
+		return _elm_lang$core$Maybe$Just(_p17._0._0);
+	} else {
+		return _elm_lang$core$List$head(deque.rear);
+	}
+};
+var _folkertdev$elm_deque$Internal$first = function (deque) {
+	var _p18 = {ctor: '_Tuple2', _0: deque.front, _1: deque.rear};
+	if ((((_p18.ctor === '_Tuple2') && (_p18._0.ctor === '[]')) && (_p18._1.ctor === '::')) && (_p18._1._1.ctor === '[]')) {
+		return _elm_lang$core$Maybe$Just(_p18._1._0);
+	} else {
+		return _elm_lang$core$List$head(deque.front);
+	}
+};
+var _folkertdev$elm_deque$Internal$Deque = function (a) {
+	return {ctor: 'Deque', _0: a};
+};
